@@ -37,14 +37,23 @@ namespace TwitchIRCGame
 
         public void NewMessageParse(Chatter chatter)
         {
+            string[] message = chatter.message.Split(' ');
             if (playerTeams[0].ContainsKey(chatter.tags.userId) || playerTeams[1].ContainsKey(chatter.tags.userId))
             {
                 //TODO action
+                if (message[0] == "!leave")
+                {
+                    Player deletePlayer;
+                    string deleteId = chatter.tags.userId;
+                    int containTeam = playerTeams[0].ContainsKey(deleteId) ? 0 : 1;
+                    deletePlayer = playerTeams[containTeam][deleteId];
+                    playerTeams[containTeam].Remove(deleteId);
+                    Destroy(deletePlayer.gameObject);
+                }
             }
             else if (spawnCount < maxTeamPlayerCount * 2)
             {
-                string[] message = chatter.message.Split(' ');
-                if (message[0] == "!join")
+                if ((message.Length == 2) && (message[0] == "!join"))
                 {
                     Player newPlayer;
                     spawnCount++;
