@@ -6,6 +6,7 @@ using UnityEngine;
 
 namespace TwitchIRCGame
 {
+    [Obsolete]
     public class PlayerCreator : MonoBehaviour
     {
         [SerializeField]
