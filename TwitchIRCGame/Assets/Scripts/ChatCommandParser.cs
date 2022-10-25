@@ -16,8 +16,26 @@ namespace TwitchIRCGame
 
         private void CommandParse(Chatter chatter)
         {
-            string[] command = chatter.message.Split(' ');
+            if (IsPlayer(chatter.tags.userId))
+            {
+                string[] command = chatter.message.Split(' ');
+                if (command[0][0] == '!')
+                {
+                    switch (command[0])
+                    {
+                        case "!attack":
+                            break;
+
+                    }
+                }
+            }
             
+
+        }
+
+        private bool IsPlayer(string playerID)
+        {
+            return GameManager.Instance.playerTeam.ContainsKey(playerID);
         }
     }
 

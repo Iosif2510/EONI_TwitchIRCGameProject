@@ -7,7 +7,6 @@ namespace TwitchIRCGame
 {
     public class Player : MonoBehaviour
     {
-        //private IRCTags ircTag;
         private string playerName;
         private TextMeshProUGUI nameTextUI;
         public int teamNumber;
@@ -21,17 +20,6 @@ namespace TwitchIRCGame
                 playerName = value;
             }
         }
-
-
-        //public IRCTags Tag
-        //{
-        //    get { return ircTag; }
-        //    set
-        //    {
-        //        ircTag = value;
-        //        this.Name = ircTag.displayName;
-        //    }
-        //}
 
         // Start is called before the first frame update
         void Awake()

@@ -16,7 +16,6 @@ namespace TwitchIRCGame
                 return instance;
             }
         }
-
         
         private BattleManager battleManager;
         private UIManager uiManager;
@@ -24,6 +23,8 @@ namespace TwitchIRCGame
         public static UIManager UI { get => Instance.uiManager; }
         public static BattleManager Battle { get => Instance.battleManager; }
 
+        // nth player: playerTeam[playerNames[n]]
+        public List<string> playerIDs;
         public Dictionary<string, Player> playerTeam;
 
         private void Awake()
@@ -46,6 +47,12 @@ namespace TwitchIRCGame
                 instance = go.GetComponent<GameManager>();
                 DontDestroyOnLoad(go);
             }
+        }
+
+        private void DataInit()
+        {
+            playerIDs = new List<string>(4);
+            playerTeam = new Dictionary<string, Player>(4);
         }
 
         
