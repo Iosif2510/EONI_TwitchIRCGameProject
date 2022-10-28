@@ -14,10 +14,10 @@ namespace TwitchIRCGame
         [SerializeField]
         private int maxTeamPlayerCount;
         [SerializeField]
-        private Player playerPrefab;
+        private PlayerCharacter playerPrefab;
 
         private int spawnCount = 0;
-        private List<Dictionary<string, Player>> playerTeams;
+        private List<Dictionary<string, PlayerCharacter>> playerTeams;
         [SerializeField]
         private Transform playerPositionParent;
         private List<Transform> playerPositions;
@@ -25,9 +25,9 @@ namespace TwitchIRCGame
         // Start is called before the first frame update
         void Awake()
         {
-            playerTeams = new List<Dictionary<string, Player>>(2);
-            playerTeams.Add(new Dictionary<string, Player>(maxTeamPlayerCount));
-            playerTeams.Add(new Dictionary<string, Player>(maxTeamPlayerCount));
+            playerTeams = new List<Dictionary<string, PlayerCharacter>>(2);
+            playerTeams.Add(new Dictionary<string, PlayerCharacter>(maxTeamPlayerCount));
+            playerTeams.Add(new Dictionary<string, PlayerCharacter>(maxTeamPlayerCount));
             playerPositions = new List<Transform>();
             foreach (Transform position in playerPositionParent)
             {
@@ -44,7 +44,7 @@ namespace TwitchIRCGame
                 //TODO action
                 if (message[0] == "!leave")
                 {
-                    Player deletePlayer;
+                    PlayerCharacter deletePlayer;
                     string deleteId = chatter.tags.userId;
                     int containTeam = playerTeams[0].ContainsKey(deleteId) ? 0 : 1;
                     deletePlayer = playerTeams[containTeam][deleteId];
@@ -56,7 +56,7 @@ namespace TwitchIRCGame
             {
                 if ((message.Length == 2) && (message[0] == "!join"))
                 {
-                    Player newPlayer;
+                    PlayerCharacter newPlayer;
                     spawnCount++;
                     int teamIndex = int.Parse(message[1]) - 1;
                     if ((teamIndex == 0) || (teamIndex == 1))

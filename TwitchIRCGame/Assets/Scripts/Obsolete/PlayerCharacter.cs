@@ -5,7 +5,7 @@ using TMPro;
 
 namespace TwitchIRCGame
 {
-    public class Player : MonoBehaviour
+    public class PlayerCharacter : MonoBehaviour
     {
         private string playerName;
         private TextMeshProUGUI nameTextUI;

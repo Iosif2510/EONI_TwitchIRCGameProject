@@ -25,7 +25,7 @@ namespace TwitchIRCGame
 
         // nth player: playerTeam[playerNames[n]]
         public List<string> playerIDs;
-        public Dictionary<string, Player> playerTeam;
+        public Dictionary<string, PlayerCharacter> playerTeam;
 
         private void Awake()
         {
@@ -52,7 +52,7 @@ namespace TwitchIRCGame
         private void DataInit()
         {
             playerIDs = new List<string>(4);
-            playerTeam = new Dictionary<string, Player>(4);
+            playerTeam = new Dictionary<string, PlayerCharacter>(4);
         }
 
         
