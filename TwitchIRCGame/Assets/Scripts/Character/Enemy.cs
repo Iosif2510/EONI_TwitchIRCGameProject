@@ -4,10 +4,8 @@ using UnityEngine;
 
 namespace TwitchIRCGame
 {
-    public class Servant : Character
+    public class Enemy : Character
     {
-        protected string chatterID;
-
         public override void Attack(bool typedAttack)
         {
             base.Attack(typedAttack);
@@ -17,16 +15,15 @@ namespace TwitchIRCGame
                 Debug.Log($"{characterName} attacked {target.Name}!");
                 AttackTarget(target, typedAttack);
             }
-            
         }
 
         public override void Taunt()
         {
             base.Taunt();
-            foreach (var enemy in GameManager.Battle.enemies)
+            foreach (var servants in GameManager.Battle.servants)
             {
                 //Taunt Animation
-                TauntTarget(enemy);
+                TauntTarget(servants);
             }
             Debug.Log($"{characterName} taunted!");
         }

@@ -35,7 +35,7 @@ namespace TwitchIRCGame
 
         private bool IsPlayer(string playerID)
         {
-            return GameManager.Instance.playerTeam.ContainsKey(playerID);
+            return GameManager.Instance.servantTeam.ContainsKey(playerID);
         }
     }
 

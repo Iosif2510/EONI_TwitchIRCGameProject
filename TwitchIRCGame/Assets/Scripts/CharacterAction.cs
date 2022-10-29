@@ -10,16 +10,23 @@ namespace TwitchIRCGame
 {
     public class CharacterAction
     {
-        private string actionName;
-        private UnityEvent characterEvent;
-        private string actionDescription;
+        protected string actionName;
+        protected UnityEvent actionEvent = new UnityEvent();
+        protected string actionDescription;
+
+        public Character user;
 
         public string ActionName => actionName;
         public string Description => actionDescription;
 
         public void DoAction()
         {
-            characterEvent.Invoke();
+            actionEvent.Invoke();
+        }
+
+        public virtual void SetAction(Character user) 
+        {
+            this.user = user;
         }
     }
 }

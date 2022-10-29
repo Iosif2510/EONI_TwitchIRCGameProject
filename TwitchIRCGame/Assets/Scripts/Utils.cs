@@ -15,7 +15,9 @@ namespace TwitchIRCGame
             if ((attackType == CharacterType.None) || (damageType == CharacterType.None)) return 0;
             else
             {
-                return ((int)attackType - (int)damageType) % 3;
+                int returnInt = ((int)attackType - (int)damageType) % 3;
+                if (returnInt < 0) returnInt += 3;
+                return returnInt;
             }
         }
     }

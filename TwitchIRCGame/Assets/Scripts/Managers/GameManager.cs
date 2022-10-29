@@ -16,22 +16,44 @@ namespace TwitchIRCGame
                 return instance;
             }
         }
-        
         private BattleManager battleManager;
         private UIManager uiManager;
 
-        public static UIManager UI { get => Instance.uiManager; }
-        public static BattleManager Battle { get => Instance.battleManager; }
+        public static UIManager UI 
+        {
+            get
+            {
+                if (Instance.uiManager == null) 
+                {
+                    Instance.uiManager = Instance.gameObject.GetComponent<UIManager>();
+                }
+                return Instance.uiManager;
+            }
+        }
+        public static BattleManager Battle
+        {
+            get
+            {
+                {
+                    if (Instance.battleManager == null)
+                    {
+                        Instance.battleManager = Instance.gameObject.GetComponent<BattleManager>();
+                    }
+                    return Instance.battleManager;
+                }
+            }
+        }
 
         // nth player: playerTeam[playerNames[n]]
-        public List<string> playerIDs;
-        public Dictionary<string, PlayerCharacter> playerTeam;
+        public List<string> servantIDs;
+        public Dictionary<string, Servant> servantTeam;
 
         private void Awake()
         {
-            SingletonInit();
-            uiManager = gameObject.GetComponent<UIManager>();
-            battleManager = gameObject.GetComponent<BattleManager>();
+            
+            DataInit();
+            //uiManager = gameObject.GetComponent<UIManager>();
+            //battleManager = gameObject.GetComponent<BattleManager>();
         }
 
         private static void SingletonInit()
@@ -51,8 +73,8 @@ namespace TwitchIRCGame
 
         private void DataInit()
         {
-            playerIDs = new List<string>(4);
-            playerTeam = new Dictionary<string, PlayerCharacter>(4);
+            servantIDs = new List<string>(4);
+            servantTeam = new Dictionary<string, Servant>(4);
         }
 
         
