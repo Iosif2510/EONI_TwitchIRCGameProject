@@ -8,9 +8,9 @@ namespace TwitchIRCGame
 {
     public class TauntAction : CharacterAction
     {
-        public override void SetAction(Character user)
+        public override void SetUser(Character user)
         {
-            base.SetAction(user);
+            base.SetUser(user);
             SetTaunt();
         }
 

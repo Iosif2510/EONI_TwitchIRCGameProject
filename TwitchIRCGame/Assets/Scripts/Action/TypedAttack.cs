@@ -6,17 +6,16 @@ using System.Threading.Tasks;
 
 namespace TwitchIRCGame
 {
-    public class NonTypeAttack : CharacterAction
+    public class TypedAttack : CharacterAction
     {
-        public override void SetAction(Character user)
+        public override void SetUser(Character user)
         {
-            base.SetAction(user);
+            base.SetUser(user);
             SetAttack();
         }
-
         private void SetAttack()
         {
-            actionEvent.AddListener(() => user.Attack(false));
+            actionEvent.AddListener(() => user.Attack(true));
         }
     }
 }

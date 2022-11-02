@@ -60,8 +60,8 @@ namespace TwitchIRCGame
             servants[1].AddAction(new TypedAttack());
             servants[2].AddAction(new TypedAttack());
             servants[2].AddAction(new NonTypeAttack());
-            servants[3].AddAction(new TauntAction());
-            servants[3].AddAction(new NonTypeAttack());
+            //servants[3].AddAction(new TauntAction());
+            //servants[3].AddAction(new NonTypeAttack());
 
             enemies[0].AddAction(new TypedAttack());
             enemies[0].AddAction(new NonTypeAttack());
@@ -69,28 +69,30 @@ namespace TwitchIRCGame
             enemies[1].AddAction(new TypedAttack());
             enemies[2].AddAction(new TypedAttack());
             enemies[2].AddAction(new NonTypeAttack());
-            enemies[3].AddAction(new TauntAction());
-            enemies[3].AddAction(new NonTypeAttack());
+            //enemies[3].AddAction(new TauntAction());
+            //enemies[3].AddAction(new NonTypeAttack());
 
-            SelectAction(true, 0, 1, 3);
-            SelectAction(true, 3, 0, 0);
-            SelectAction(true, 2, 0, 2);
-            SelectAction(true, 1, 1, 1);
+            SelectAction(true, 0, 1, 2);
+            SelectAction(true, 1, 0, 0);
+            SelectAction(true, 2, 0, 1);
+            //SelectAction(true, 1, 1, 1);
 
             SelectAction(false, 0, 0, 2);
-            SelectAction(false, 1, 1, 3);
+            SelectAction(false, 1, 1, 1);
             SelectAction(false, 2, 1, 0);
-            SelectAction(false, 3, 0, 0);
+            //SelectAction(false, 3, 0, 0);
         }
         private void StartActions()
         {
             for (int i = 0; i < maxTeamNum * 2; i++)
             {
+                // 도발, 방어 등 선행동
                 if (phaseActionList[i] == null) continue;
                 else if (phaseActionList[i].GetType() == typeof(TauntAction)) phaseActionList[i].DoAction();
             }
             for (int i = 0; i < maxTeamNum * 2; i++)
             {
+                // 공격 등 후행동
                 if (phaseActionList[i] == null) continue;
                 else if (phaseActionList[i].GetType() != typeof(TauntAction)) phaseActionList[i].DoAction();
             }

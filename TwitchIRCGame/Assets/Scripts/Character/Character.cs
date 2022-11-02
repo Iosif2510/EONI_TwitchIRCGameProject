@@ -22,17 +22,21 @@ namespace TwitchIRCGame
         protected int maxHealth;
         protected int health;
         [SerializeField]
-        protected int damage;
+        protected int basicDamage = 10;
         [SerializeField]
         protected int speed;              // 공격 순서 결정, 미사용
         [SerializeField]
-        protected int critPercentage;     // 크리티컬 확률, 백분율
+        protected float basicCritPercentage = .02f;     // 크리티컬 확률
+        [SerializeField]
+        protected float basicCritDamageScale = 2f;     // 크리티컬 시 대미지 배율
+
 
         [SerializeField]
         protected int place;
         protected List<Character> opponentTarget;
         protected List<Character> friendlyTarget;
 
+        // 액션 리스트: 턴 종료 후 순차적으로 액션 시행
         protected List<CharacterAction> actions;
 
         public string Name => characterName;
@@ -93,10 +97,22 @@ namespace TwitchIRCGame
 
         public void AddAction(CharacterAction action)
         {
+            // 액션 리스트 안에 해당 캐릭터의 액션이 있으면 지우고 새로 등록
+            foreach (var remainAction in actions)
+            {
+                if (remainAction.user == this)
+                {
+                    actions.Remove(remainAction);
+                    action.SetUser(this);
+                    actions.Add(action);
+                    return;
+                }
+            }
+            // 액션 리스트 안에 해당 캐릭터의 액션이 없을 경우
             if (actions.Count >= 3) return;     // 3개까지만 수용
             else
             {
-                action.SetAction(this);
+                action.SetUser(this);
                 actions.Add(action);
             }
         }
@@ -120,9 +136,14 @@ namespace TwitchIRCGame
 
         protected void AttackTarget(Character target, bool typedAttack)
         {
+            AttackTarget(target, typedAttack, basicDamage, basicCritPercentage, basicCritDamageScale);
+        }
+
+        protected void AttackTarget(Character target, bool typedAttack, int damage, float critPercentage, float critScale)
+        {
             if (target == null) return;
             int finalDamage = damage;
-            if (Random.Range(0, 100) < critPercentage) finalDamage *= 2;
+            if (Random.Range(0, 100) < critPercentage * 100) finalDamage = (int)(finalDamage * critScale);
             target.Damage(typedAttack ? characterType : CharacterType.None, finalDamage);
         }
 

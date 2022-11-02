@@ -24,7 +24,7 @@ namespace TwitchIRCGame
             actionEvent.Invoke();
         }
 
-        public virtual void SetAction(Character user) 
+        public virtual void SetUser(Character user) 
         {
             this.user = user;
         }
