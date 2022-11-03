@@ -97,18 +97,6 @@ namespace TwitchIRCGame
 
         public void AddAction(CharacterAction action)
         {
-            // 액션 리스트 안에 해당 캐릭터의 액션이 있으면 지우고 새로 등록
-            foreach (var remainAction in actions)
-            {
-                if (remainAction.user == this)
-                {
-                    actions.Remove(remainAction);
-                    action.SetUser(this);
-                    actions.Add(action);
-                    return;
-                }
-            }
-            // 액션 리스트 안에 해당 캐릭터의 액션이 없을 경우
             if (actions.Count >= 3) return;     // 3개까지만 수용
             else
             {
