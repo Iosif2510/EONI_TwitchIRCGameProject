@@ -92,23 +92,17 @@ namespace TwitchIRCGame
             }
             int finalDamage = Mathf.FloorToInt(damage * (1 + typeDamagePercent));
             health -= finalDamage;
+            if (health < 0) health = 0; // 사망에 관한처리를 해야함
             Debug.Log($"{characterName} got {finalDamage} damage!");
         }
 
-        public void AddAction(CharacterAction action)
+        public int Showhealth()
         {
-            /* // 액션 리스트 안에 해당 캐릭터의 액션이 있으면 지우고 새로 등록
-            foreach (var remainAction in actions)
-            {
-                if (remainAction.user == this)
-                {
-                    actions.Remove(remainAction);
-                    action.SetUser(this);
-                    actions.Add(action);
-                    return;
-                }
-            }*/
-            // 액션 리스트 안에 해당 캐릭터의 액션이 없을 경우
+            return this.health;
+        }
+
+        public void AddAction(CharacterAction action)
+        {            
             if (actions.Count >= 3) return;     // 3개까지만 수용
             else
             {

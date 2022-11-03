@@ -30,6 +30,8 @@ namespace TwitchIRCGame
             }
             Debug.Log($"{characterName} taunted!");
         }
+
+        
     }
 }
 
