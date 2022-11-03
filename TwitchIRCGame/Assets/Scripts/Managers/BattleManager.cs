@@ -78,15 +78,15 @@ namespace TwitchIRCGame
         {
             Debug.Log("Test Scenario");
             // 아군 행동 지정 (characterIndex = 10은 소환사를 의미)
-            SelectAction(true, 10, 0, 0);
+            SelectAction(true, 10, 1, 0);
             SelectAction(true, 0, 0, 0);
-            SelectAction(true, 1, 0, 1);
+            SelectAction(true, 1, 1, 1);
             SelectAction(true, 2, 0, 1);
 
             // 적 행동 지정 (opponentIndex = 10은 소환사를 의미)
-            SelectAction(false, 0, 0, 0);
+            SelectAction(false, 0, 1, 0);
             SelectAction(false, 1, 0, 1);
-            SelectAction(false, 2, 0, 10);
+            SelectAction(false, 2, 1, 10);
         }
         private void SelectAction(bool isServant, int characterIndex, int actionIndex, int opponentIndex)
         {
