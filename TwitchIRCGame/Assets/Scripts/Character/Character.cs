@@ -23,8 +23,10 @@ namespace TwitchIRCGame
         protected int health;
         [SerializeField]
         protected int basicDamage = 10;
+        /*
         [SerializeField]
         protected int speed;              // 공격 순서 결정, 미사용
+        */
         [SerializeField]
         protected float basicCritPercentage = .02f;     // 크리티컬 확률
         [SerializeField]
@@ -75,6 +77,8 @@ namespace TwitchIRCGame
         public void Damage(CharacterType attackType, int damage)
         {
             float typeDamagePercent;
+            // TODO: 상성 관련 상수들 함수 밖으로 빼기
+            // 상성 처리 자체를 Character.Damage()가 아닌 외부에서 해도 좋음
             switch (TypeSynergy(attackType, this.characterType))
             {
                 case 0:
