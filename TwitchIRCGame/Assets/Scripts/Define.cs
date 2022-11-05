@@ -16,5 +16,13 @@ namespace TwitchIRCGame
             Grass,
             None
         }
+
+        public enum CharacterClass
+        {
+            None,
+            Summoner,
+            Servant,
+            Enemy
+        }
     }
 }
