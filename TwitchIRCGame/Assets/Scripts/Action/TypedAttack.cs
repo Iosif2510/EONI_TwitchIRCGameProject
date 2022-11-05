@@ -12,11 +12,6 @@ namespace TwitchIRCGame
         public override bool IsTargetOpponent => true;
         public override int ActionOrder => 1;
 
-        public TypedAttack()
-        {
-
-        }
-
         public override void SetUser(Character user)
         {
             base.SetUser(user);

@@ -23,10 +23,6 @@ namespace TwitchIRCGame
         public abstract bool IsTargetOpponent { get; }  // 아군대상: false / 적군대상: true
         public abstract int ActionOrder { get; }        // ActionOrder 순으로 BattleManager에서 액션 시행
 
-        //public abstract bool IsTargeted();
-        //public abstract bool IsTargetOpponent();
-        //public abstract int ActionOrder();
-
         public void DoAction()
         {
             actionEvent.Invoke();
