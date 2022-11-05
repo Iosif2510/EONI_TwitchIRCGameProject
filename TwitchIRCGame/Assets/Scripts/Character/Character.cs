@@ -23,8 +23,10 @@ namespace TwitchIRCGame
         protected int health;
         [SerializeField]
         protected int basicDamage = 10;
+        /*
         [SerializeField]
         protected int speed;              // 공격 순서 결정, 미사용
+        */
         [SerializeField]
         protected float basicCritPercentage = .02f;     // 크리티컬 확률
         [SerializeField]
@@ -74,22 +76,7 @@ namespace TwitchIRCGame
 
         public void Damage(CharacterType attackType, int damage)
         {
-            float typeDamagePercent;
-            switch (TypeSynergy(attackType, this.characterType))
-            {
-                case 0:
-                    typeDamagePercent = 0;
-                    break;
-                case 1:
-                    typeDamagePercent = 0.33f;
-                    break;
-                case 2:
-                    typeDamagePercent = -0.33f;
-                    break;
-                default:
-                    typeDamagePercent = 0;
-                    break;
-            }
+            float typeDamagePercent = TypeDamagePercent(attackType, this.characterType);
             int finalDamage = Mathf.FloorToInt(damage * (1 + typeDamagePercent));
             health -= finalDamage;
             if (health < 0) health = 0; // 사망에 관한처리를 해야함
