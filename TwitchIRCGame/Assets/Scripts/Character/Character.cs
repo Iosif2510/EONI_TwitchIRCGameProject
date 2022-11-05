@@ -23,8 +23,10 @@ namespace TwitchIRCGame
         protected int health;
         [SerializeField]
         protected int basicDamage = 10;
+        /*
         [SerializeField]
         protected int speed;              // 공격 순서 결정, 미사용
+        */
         [SerializeField]
         protected float basicCritPercentage = .02f;     // 크리티컬 확률
         [SerializeField]
@@ -63,8 +65,8 @@ namespace TwitchIRCGame
             actions = new List<CharacterAction>(3);
             health = maxHealth;
             level = 1;
-            opponentTarget = new List<Character>(GameManager.Battle.MaxTeamNum);
-            friendlyTarget = new List<Character>(GameManager.Battle.MaxTeamNum);
+            opponentTarget = new List<Character>(GameManager.Battle.MaxEnemyNum);
+            friendlyTarget = new List<Character>(GameManager.Battle.MaxServantNum);
         }
 
         private void Start()
@@ -74,29 +76,20 @@ namespace TwitchIRCGame
 
         public void Damage(CharacterType attackType, int damage)
         {
-            float typeDamagePercent;
-            switch (TypeSynergy(attackType, this.characterType))
-            {
-                case 0:
-                    typeDamagePercent = 0;
-                    break;
-                case 1:
-                    typeDamagePercent = 0.33f;
-                    break;
-                case 2:
-                    typeDamagePercent = -0.33f;
-                    break;
-                default:
-                    typeDamagePercent = 0;
-                    break;
-            }
+            float typeDamagePercent = TypeDamagePercent(attackType, this.characterType);
             int finalDamage = Mathf.FloorToInt(damage * (1 + typeDamagePercent));
             health -= finalDamage;
+            if (health < 0) health = 0; // 사망에 관한처리를 해야함
             Debug.Log($"{characterName} got {finalDamage} damage!");
         }
 
-        public void AddAction(CharacterAction action)
+        public int Showhealth()
         {
+            return this.health;
+        }
+
+        public void AddAction(CharacterAction action)
+        {            
             if (actions.Count >= 3) return;     // 3개까지만 수용
             else
             {
@@ -108,6 +101,16 @@ namespace TwitchIRCGame
         public void DeleteAction(CharacterAction action)
         {
             actions.Remove(action);
+        }
+
+        public void ClearTarget()
+        {
+            this.opponentTarget.Clear();
+        }
+
+        public void AddTarget(Character target)
+        {
+            this.opponentTarget.Add(target);
         }
 
         public void SetSingleTarget(Character target)

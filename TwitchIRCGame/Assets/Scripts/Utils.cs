@@ -8,7 +8,7 @@ namespace TwitchIRCGame
     public static class Utils
     {
         /// <summary>
-        /// 0: 公惑己, 1: 沥惑己, 2: 开惑己
+        /// 0: 欷戨, 1: 旆暯, 2: 雮挫劚
         /// </summary>
         public static int TypeSynergy(CharacterType attackType, CharacterType damageType)
         {
@@ -19,6 +19,20 @@ namespace TwitchIRCGame
                 if (returnInt < 0) returnInt += 3;
                 return returnInt;
             }
+        }
+
+        public static float TypeDamagePercent(CharacterType attackType, CharacterType damageType)
+        {
+            var damagePercentTable = new Dictionary<int, float>()
+            {
+                {0, NEUTRAL_DAMAGE_PERCENT},
+                {1, WEAK_DAMAGE_PERCENT},
+                {2, RESISTANT_DAMAGE_PERCENT}
+            };
+
+            int synergy = TypeSynergy(attackType, damageType);
+            // @assert 0 <= synergy && synergy < 3
+            return damagePercentTable[synergy];
         }
     }
 }

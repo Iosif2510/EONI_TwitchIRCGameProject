@@ -4,9 +4,11 @@ using UnityEngine;
 
 namespace TwitchIRCGame
 {
-    public class Servant : Character
+    public class Summoner : Character
     {
         protected string chatterID;
+        
+        public int ChoiceA, ChoiceE;
 
         public override void Attack(bool typedAttack)
         {
@@ -30,8 +32,6 @@ namespace TwitchIRCGame
             }
             Debug.Log($"{characterName} taunted!");
         }
-
-        
     }
 }
 
