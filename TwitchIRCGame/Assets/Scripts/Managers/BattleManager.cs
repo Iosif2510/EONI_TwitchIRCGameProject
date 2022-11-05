@@ -46,6 +46,7 @@ namespace TwitchIRCGame
         private void InitBattle()
         {
             //enemies = new List<Enemy>(maxTeamNum);
+            summonerAction = null;
             servantActionList = new CharacterAction[maxServantNum];
             for (int i = 0; i < maxServantNum; i++)
             {
@@ -140,7 +141,7 @@ namespace TwitchIRCGame
             // 소환사 행동 지정
             SelectAction(CharacterClass.Summoner, 0, summoner.ChoiceA, summoner.ChoiceE);
 
-            // 사역마 행동 지정, 행동을 선택하지 않은 경우 SelectAction을 안함
+            // 사역마 행동 지정, 행동을 선택하지 않은 경우 ActionList에 null (1.selectaction자체를 안함 or 2.actionindex에 3을 넘는 수치 넣기)
             SelectAction(CharacterClass.Servant, 0, 0, 0);
             SelectAction(CharacterClass.Servant, 1, 1, 1);
             SelectAction(CharacterClass.Servant, 2, 1, 2);
@@ -158,7 +159,11 @@ namespace TwitchIRCGame
             switch (characterClass)
             {
                 case CharacterClass.Summoner:
-                    if (summoner.Actions.Count <= actionIndex) return;   //TODO error
+                    if (summoner.Actions.Count <= actionIndex)
+                    {
+                        summonerAction = null;  //null을 넣어줘야 마지막으로 한 행동 반복안함
+                        return;     //TODO error
+                    }
                     summonerAction = summoner.Actions[actionIndex];
                     if (summoner.Actions[actionIndex].IsTargeted)
                     {
@@ -175,7 +180,10 @@ namespace TwitchIRCGame
                     
                     break;
                 case CharacterClass.Servant:
-                    if (servants[characterIndex].Actions.Count <= actionIndex) return;   //TODO error
+                    if (servants[characterIndex].Actions.Count <= actionIndex) {
+                        servantActionList[characterIndex] = null;
+                        return;   //TODO error
+                    }
                     servantActionList[characterIndex] = servants[characterIndex].Actions[actionIndex];
                     if (servants[characterIndex].Actions[actionIndex].IsTargeted)
                     {
@@ -191,7 +199,11 @@ namespace TwitchIRCGame
                     }
                     break;
                 case CharacterClass.Enemy:
-                    if (enemies[characterIndex].Actions.Count <= actionIndex) return;   //TODO error
+                    if (enemies[characterIndex].Actions.Count <= actionIndex)
+                    {
+                        enemyActionList[characterIndex] = null;
+                        return;   //TODO error
+                    }
                     enemyActionList[characterIndex] = enemies[characterIndex].Actions[actionIndex];
                     if (enemies[characterIndex].Actions[actionIndex].IsTargeted)
                     {
@@ -211,7 +223,7 @@ namespace TwitchIRCGame
 
         private void StartActions()
         {
-            summonerAction.DoAction();
+            if(summonerAction != null) summonerAction.DoAction(); // 에러 핸들링
             for (int order = 0; order < 3; order++)
             {
                 for (int i = 0; i < maxServantNum; i++)
