@@ -76,24 +76,7 @@ namespace TwitchIRCGame
 
         public void Damage(CharacterType attackType, int damage)
         {
-            float typeDamagePercent;
-            // TODO: 상성 관련 상수들 함수 밖으로 빼기
-            // 상성 처리 자체를 Character.Damage()가 아닌 외부에서 해도 좋음
-            switch (TypeSynergy(attackType, this.characterType))
-            {
-                case 0:
-                    typeDamagePercent = 0;
-                    break;
-                case 1:
-                    typeDamagePercent = 0.33f;
-                    break;
-                case 2:
-                    typeDamagePercent = -0.33f;
-                    break;
-                default:
-                    typeDamagePercent = 0;
-                    break;
-            }
+            float typeDamagePercent = TypeDamagePercent(attackType, this.characterType);
             int finalDamage = Mathf.FloorToInt(damage * (1 + typeDamagePercent));
             health -= finalDamage;
             if (health < 0) health = 0; // 사망에 관한처리를 해야함
