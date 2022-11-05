@@ -1,14 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static TwitchIRCGame.Define;
 
 namespace TwitchIRCGame
 {
     public class BattleManager : MonoBehaviour
     {
         [SerializeField]
-        private int maxTeamNum = 3; // 아군 사역마는 3명까지, 적군은 4명까지라 걍 하드코딩함
-        public int MaxTeamNum => maxTeamNum;
+        private int maxServantNum = 3;
+        [SerializeField]
+        private int maxEnemyNum = 4;
+        public int MaxServantNum => maxServantNum;
+        public int MaxEnemyNum => maxEnemyNum;
 
         [SerializeField]
         public Summoner summoner;      // 임시 에디터 직렬화
@@ -17,7 +21,9 @@ namespace TwitchIRCGame
         [SerializeField]
         public List<Enemy> enemies;
 
-        private CharacterAction[] phaseActionList;
+        private CharacterAction summonerAction;
+        private CharacterAction[] servantActionList;
+        private CharacterAction[] enemyActionList;
 
         private bool OnTurn = false;
 
@@ -40,10 +46,15 @@ namespace TwitchIRCGame
         private void InitBattle()
         {
             //enemies = new List<Enemy>(maxTeamNum);
-            phaseActionList = new CharacterAction[8];
-            for (int i = 0; i < 8; i++)
+            servantActionList = new CharacterAction[maxServantNum];
+            for (int i = 0; i < maxServantNum; i++)
             {
-                phaseActionList[i] = null;
+                servantActionList[i] = null;
+            }
+            enemyActionList = new CharacterAction[maxEnemyNum];
+            for (int i = 0; i < maxEnemyNum; i++)
+            {
+                enemyActionList[i] = null;
             }
         }
 
@@ -126,69 +137,93 @@ namespace TwitchIRCGame
         private void TestScenario()
         {
             Debug.Log("Test Scenario");            
-            // 소환사 행동 지정 (characterIndex = 10은 소환사를 의미)
-            SelectAction(true, 10, summoner.ChoiceA, summoner.ChoiceE);
+            // 소환사 행동 지정
+            SelectAction(CharacterClass.Summoner, 0, summoner.ChoiceA, summoner.ChoiceE);
 
             // 사역마 행동 지정, 행동을 선택하지 않은 경우 SelectAction을 안함
-            SelectAction(true, 0, 0, 0);
-            SelectAction(true, 1, 1, 1);
-            SelectAction(true, 2, 1, 2);
+            SelectAction(CharacterClass.Servant, 0, 0, 0);
+            SelectAction(CharacterClass.Servant, 1, 1, 1);
+            SelectAction(CharacterClass.Servant, 2, 1, 2);
 
-            // 적 행동 지정 (opponentIndex = 10은 소환사를 의미)
-            SelectAction(false, 0, 1, 0);
-            SelectAction(false, 1, 0, 1);
-            SelectAction(false, 2, 1, 10);
+            // 적 행동 지정 (opponentIndex = -1은 소환사를 의미)
+            SelectAction(CharacterClass.Enemy, 0, 1, 0);
+            SelectAction(CharacterClass.Enemy, 1, 0);
+            SelectAction(CharacterClass.Enemy, 2, 1, -1);
         }
-        private void SelectAction(bool isServant, int characterIndex, int actionIndex, int opponentIndex)
+        private void SelectAction(CharacterClass characterClass, int characterIndex, int actionIndex, int targetIndex = 0)
         {
             // 순서 구현은 하기나름
+            // targeted
             // phaseActionList 순서대로 실행됨
-            if (isServant)
+            switch (characterClass)
             {
-                if (characterIndex == 10) // 소환사의 행동
-                {
+                case CharacterClass.Summoner:
                     if (summoner.Actions.Count <= actionIndex) return;   //TODO error
-                    phaseActionList[0] = summoner.Actions[actionIndex];
-                    summoner.SetSingleTarget(enemies[opponentIndex]);
-                }
-                else // 사역마의 행동
-                {
+                    summonerAction = summoner.Actions[actionIndex];
+                    if (summoner.Actions[actionIndex].IsTargeted)
+                    {
+                        if (summoner.Actions[actionIndex].IsTargetOpponent)
+                        {
+                            summoner.SetSingleTarget(enemies[targetIndex]);
+                        }
+                        else
+                        {
+                            if (targetIndex == -1) summoner.SetSingleTarget(summoner);
+                            else summoner.SetSingleTarget(servants[targetIndex]);
+                        }
+                    }
+                    
+                    break;
+                case CharacterClass.Servant:
                     if (servants[characterIndex].Actions.Count <= actionIndex) return;   //TODO error
-                    phaseActionList[characterIndex + 1] = servants[characterIndex].Actions[actionIndex];
-                    servants[characterIndex].SetSingleTarget(enemies[opponentIndex]);
-                }
+                    servantActionList[characterIndex] = servants[characterIndex].Actions[actionIndex];
+                    if (servants[characterIndex].Actions[actionIndex].IsTargeted)
+                    {
+                        if (servants[characterIndex].Actions[actionIndex].IsTargetOpponent)
+                        {
+                            servants[characterIndex].SetSingleTarget(enemies[targetIndex]);
+                        }
+                        else
+                        {
+                            if (targetIndex == -1) servants[characterIndex].SetSingleTarget(summoner);
+                            else servants[characterIndex].SetSingleTarget(servants[targetIndex]);
+                        }
+                    }
+                    break;
+                case CharacterClass.Enemy:
+                    if (enemies[characterIndex].Actions.Count <= actionIndex) return;   //TODO error
+                    enemyActionList[characterIndex] = enemies[characterIndex].Actions[actionIndex];
+                    if (enemies[characterIndex].Actions[actionIndex].IsTargeted)
+                    {
+                        if (enemies[characterIndex].Actions[actionIndex].IsTargetOpponent)
+                        {
+                            if (targetIndex == -1) enemies[characterIndex].SetSingleTarget(summoner);
+                            else enemies[characterIndex].SetSingleTarget(servants[targetIndex]);
+                        }
+                        else
+                        {
+                            enemies[characterIndex].SetSingleTarget(enemies[targetIndex]);
+                        }
+                    }
+                    break;
             }
-            else
-            {
-                if (enemies[characterIndex].Actions.Count <= actionIndex) return;   //TODO error
-                if (opponentIndex == 10) // 소환사 대상
-                {
-                    phaseActionList[characterIndex + 4] = enemies[characterIndex].Actions[actionIndex];
-                    enemies[characterIndex].SetSingleTarget(summoner);
-                }
-                else // 사역마 대상
-                {
-                    phaseActionList[characterIndex + 4] = enemies[characterIndex].Actions[actionIndex];
-                    enemies[characterIndex].SetSingleTarget(servants[opponentIndex]);
-                }
-
-            }
-        }
+        } 
 
         private void StartActions()
         {
-            for (int i = 0; i < 8; i++)
+            summonerAction.DoAction();
+            for (int order = 0; order < 3; order++)
             {
-                // 도발, 방어 등 선행동
-                if (phaseActionList[i] == null) continue;
-                else if (phaseActionList[i].GetType() == typeof(TauntAction)) phaseActionList[i].DoAction();
-            }
-            for (int i = 0; i < 8; i++)
-            {
-                // 공격 등 후행동
-                if (phaseActionList[i] == null) continue;
-                else if (phaseActionList[i].GetType() != typeof(TauntAction)) phaseActionList[i].DoAction();
-                if (summoner.Showhealth() == 0) break; // 소환사 사망 시 break
+                for (int i = 0; i < maxServantNum; i++)
+                {
+                    if (servantActionList[i] == null) continue;
+                    else if (servantActionList[i].ActionOrder == order) servantActionList[i].DoAction();
+                }
+                for (int i = 0; i < maxEnemyNum; i++)
+                {
+                    if (enemyActionList[i] == null) continue;
+                    else if (enemyActionList[i].ActionOrder == order) enemyActionList[i].DoAction();
+                }
             }
             OnTurn = false;
         }

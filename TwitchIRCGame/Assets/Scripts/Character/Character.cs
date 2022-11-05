@@ -65,8 +65,8 @@ namespace TwitchIRCGame
             actions = new List<CharacterAction>(3);
             health = maxHealth;
             level = 1;
-            opponentTarget = new List<Character>(GameManager.Battle.MaxTeamNum);
-            friendlyTarget = new List<Character>(GameManager.Battle.MaxTeamNum);
+            opponentTarget = new List<Character>(GameManager.Battle.MaxEnemyNum);
+            friendlyTarget = new List<Character>(GameManager.Battle.MaxServantNum);
         }
 
         private void Start()
@@ -101,6 +101,16 @@ namespace TwitchIRCGame
         public void DeleteAction(CharacterAction action)
         {
             actions.Remove(action);
+        }
+
+        public void ClearTarget()
+        {
+            this.opponentTarget.Clear();
+        }
+
+        public void AddTarget(Character target)
+        {
+            this.opponentTarget.Add(target);
         }
 
         public void SetSingleTarget(Character target)

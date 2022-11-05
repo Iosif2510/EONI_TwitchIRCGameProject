@@ -16,7 +16,15 @@ namespace TwitchIRCGame
             Grass,
             None
         }
-        
+
+        public enum CharacterClass
+        {
+            None,
+            Summoner,
+            Servant,
+            Enemy
+        }
+
         public const float NEUTRAL_DAMAGE_PERCENT = 0.0f;
         public const float WEAK_DAMAGE_PERCENT = 0.33f;
         public const float RESISTANT_DAMAGE_PERCENT = -0.33f;
