@@ -75,7 +75,7 @@ namespace TwitchIRCGame
             if(!OnTurn)
             {
                 OnTurn = true;
-                Debug.Log("Test");
+                Debug.Log("Turn End");
                 TestScenario(); // 소환사,사역마,적의 액션 대상 지정 
                 StartActions();
             }
@@ -85,7 +85,7 @@ namespace TwitchIRCGame
         {
             if (!OnTurn)
             {
-                Debug.Log("button1");
+                Debug.Log("Action1");
                 summoner.ChoiceA = 0;
             }
         }
@@ -93,7 +93,7 @@ namespace TwitchIRCGame
         {
             if (!OnTurn)
             {
-                Debug.Log("button2");
+                Debug.Log("Action2");
                 summoner.ChoiceA = 1;
             }
         }
@@ -101,8 +101,40 @@ namespace TwitchIRCGame
         {
             if (!OnTurn)
             {
-                Debug.Log("button3");
+                Debug.Log("Action3");
                 summoner.ChoiceA = 2;
+            }
+        }
+        public void Enemy1(GameObject button) // 액션1 버튼
+        {
+            if (!OnTurn)
+            {
+                Debug.Log("Enemy1");
+                summoner.ChoiceE = 0;
+            }
+        }
+        public void Enemy2(GameObject button) // 액션1 버튼
+        {
+            if (!OnTurn)
+            {
+                Debug.Log("Enemy2");
+                summoner.ChoiceE = 1;
+            }
+        }
+        public void Enemy3(GameObject button) // 액션1 버튼
+        {
+            if (!OnTurn)
+            {
+                Debug.Log("Enemy3");
+                summoner.ChoiceE = 2;
+            }
+        }
+        public void Enemy4(GameObject button) // 액션1 버튼
+        {
+            if (!OnTurn)
+            {
+                Debug.Log("Enemy4");
+                summoner.ChoiceE = 3;
             }
         }
 
