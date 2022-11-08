@@ -23,26 +23,28 @@ namespace TwitchIRCGame
         protected int health;
         [SerializeField]
         protected int basicDamage = 10;
+        /// <summary>치명타 발생 확률입니다.</summary>
         [SerializeField]
-        protected float basicCritPercentage = .02f;     // 크리티컬 확률
+        protected float basicCritPercentage = .02f;
+        /// <summary>치명타 발생 시의 대미지 배율입니다.</summary>
         [SerializeField]
-        protected float basicCritDamageScale = 2f;     // 크리티컬 시 대미지 배율
+        protected float basicCritDamageScale = 2f;
 
 
         [SerializeField]
         protected int place;
         protected List<Character> opponentTarget;
         protected List<Character> friendlyTarget;
-
-        // 액션 리스트: 턴 종료 후 순차적으로 액션 시행
+        
         protected List<CharacterAction> actions;
 
         public string Name => characterName;
         public int Health => health;
-        public int Place => place;  // playerTeam 혹은 enemyTeam index
+        /// <summary>팀 진영 내에서의 위치를 의미합니다.</summary>
+        public int Place => place;
         public List<Character> OpponentTarget => opponentTarget;
-
-        protected UnityEvent ReturnAfterAction = new UnityEvent();     // 도발, 디버프 등으로 바뀐 수치가 한 턴 후에 원복되는 이벤트
+        /// <summary>도발, 디버프 등으로 변동된 수치가 한 턴 후에 원상 복귀되는 이벤트입니다.</summary>
+        protected UnityEvent ReturnAfterAction = new UnityEvent();
 
         public int Level
         {
@@ -54,6 +56,7 @@ namespace TwitchIRCGame
             }
         }
 
+        /// <summary>행동 슬롯입니다. 행동을 최대 3개까지 등록 가능합니다.</summary>
         public List<CharacterAction> Actions => actions;
 
         private void Awake()
@@ -76,7 +79,7 @@ namespace TwitchIRCGame
             float typeDamagePercent = TypeDamagePercent(attackType, this.characterType);
             int finalDamage = Mathf.FloorToInt(damage * (1 + typeDamagePercent));
             health -= finalDamage;
-            if (health < 0) health = 0; // 사망에 관한처리를 해야함
+            if (health < 0) health = 0; // TODO: 사망 처리 필요
             Debug.Log($"{characterName} got {finalDamage} damage!");
         }
 
