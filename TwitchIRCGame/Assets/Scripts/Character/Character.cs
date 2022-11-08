@@ -84,7 +84,7 @@ namespace TwitchIRCGame
         }
 
         // DEPRECATED: public 변수인 Health를 쓸 것; 지워도 안전하면 지우기 바람
-        [Obsolete("public 변수인 Health를 사용해야 합니다.", true)]
+        [System.Obsolete("public 변수인 Health를 사용해야 합니다.", true)]
         public int Showhealth()
         {
             return this.health;
