@@ -8,7 +8,8 @@ namespace TwitchIRCGame
     public static class Utils
     {
         /// <summary>
-        /// 0: 중립, 1: 취약, 2: 내성
+        /// <c>damageType</c>이 <c>attackType</c>에 대해 가지는 상성을 반환합니다.<br/>
+        /// 중립: <c>0</c>, 취약: <c>1</c>, 내성: <c>2</c>
         /// </summary>
         public static int TypeSynergy(CharacterType attackType, CharacterType damageType)
         {
@@ -21,6 +22,10 @@ namespace TwitchIRCGame
             }
         }
 
+        /// <summary>
+        /// <c>damageType</c>이 <c>attackType</c>에 대해 가지는 상성에 따라
+        /// 산출된 대미지 증감율을 반환합니다.<br/>
+        /// </summary>
         public static float TypeDamagePercent(CharacterType attackType, CharacterType damageType)
         {
             var damagePercentTable = new Dictionary<int, float>()
@@ -31,7 +36,6 @@ namespace TwitchIRCGame
             };
 
             int synergy = TypeSynergy(attackType, damageType);
-            // @assert 0 <= synergy && synergy < 3
             return damagePercentTable[synergy];
         }
     }
