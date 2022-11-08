@@ -21,12 +21,10 @@ namespace TwitchIRCGame
         [SerializeField]
         public List<Enemy> enemies;
 
-        private CharacterAction summonerAction;
+        public CharacterAction summonerAction;
         private CharacterAction[] servantActionList;
         private CharacterAction[] enemyActionList;
-
-        private bool OnTurn = false;
-
+        
         private void Awake()
         {
             //InitServants();
@@ -64,78 +62,19 @@ namespace TwitchIRCGame
             SetActionLists(); // 액션 리스트 설정: 이건 사실 배틀에서 구현할 부분이 아님
                                 // 임의로 만들어 두고 나중에 다른 씬에서 구현
         }
-
+        
+        /*
         private void Update()
         {
-            if(!OnTurn) ActionChoiceTime();
+            ActionChoiceTime();
         }
+        */
 
-        public void OnButtonClick(GameObject button) // 턴 종료 버튼
+        public void DoTurnEnd() // 턴 종료 버튼
         {   
-            if(!OnTurn)
-            {
-                OnTurn = true;
-                Debug.Log("Turn End");
-                TestScenario(); // 소환사,사역마,적의 액션 대상 지정 
-                StartActions();
-            }
+            TestScenario(); // 소환사,사역마,적의 액션 대상 지정 
+            StartActions(); 
 
-        }
-        public void Action1(GameObject button) // 액션1 버튼
-        {
-            if (!OnTurn)
-            {
-                Debug.Log("Action1");
-                summoner.ChoiceA = 0;
-            }
-        }
-        public void Action2(GameObject button) // 액션2 버튼
-        {
-            if (!OnTurn)
-            {
-                Debug.Log("Action2");
-                summoner.ChoiceA = 1;
-            }
-        }
-        public void Action3(GameObject button) // 액션3 버튼
-        {
-            if (!OnTurn)
-            {
-                Debug.Log("Action3");
-                summoner.ChoiceA = 2;
-            }
-        }
-        public void Enemy1(GameObject button) // 액션1 버튼
-        {
-            if (!OnTurn)
-            {
-                Debug.Log("Enemy1");
-                summoner.ChoiceE = 0;
-            }
-        }
-        public void Enemy2(GameObject button) // 액션1 버튼
-        {
-            if (!OnTurn)
-            {
-                Debug.Log("Enemy2");
-                summoner.ChoiceE = 1;
-            }
-        }
-        public void Enemy3(GameObject button) // 액션1 버튼
-        {
-            if (!OnTurn)
-            {
-                Debug.Log("Enemy3");
-                summoner.ChoiceE = 2;
-            }
-        }
-        public void Enemy4(GameObject button) // 액션1 버튼
-        {
-            if (!OnTurn)
-            {
-                Debug.Log("Enemy4");
-                summoner.ChoiceE = 3;
-            }
         }
 
         private void SetActionLists()
@@ -164,16 +103,14 @@ namespace TwitchIRCGame
             // summoner는 클릭을 통해서 행동과 대상 선택            
 
             // servant는 채팅을 통해서 행동과 대상 선택
-            // twitch chat 연동 기능 필요
-            
+            // twitch chat 연동 기능 필요            
+            // 해당 사역마가 선택 완료 시에 이를 나타내는 Interface 필요
         }
         private void TestScenario()
         {
             Debug.Log("Test Scenario");            
-            // 소환사 행동 지정
-            SelectAction(CharacterClass.Summoner, 0, summoner.ChoiceA, summoner.ChoiceE);
-
-            // 사역마 행동 지정, 행동을 선택하지 않은 경우 ActionList에 null (1.selectaction자체를 안함 or 2.actionindex에 3을 넘는 수치 넣기)
+            // 소환사 행동 지정은 버튼으로 선택(UIManager)
+            // 사역마 행동 지정, 행동을 선택하지 않은 경우 ActionList에 null
             SelectAction(CharacterClass.Servant, 0, 0, 0);
             SelectAction(CharacterClass.Servant, 1, 1, 1);
             SelectAction(CharacterClass.Servant, 2, 1, 2);
@@ -189,7 +126,8 @@ namespace TwitchIRCGame
             // targeted
             // phaseActionList 순서대로 실행됨
             switch (characterClass)
-            {
+            {   
+                /*  UIManager에서 구현
                 case CharacterClass.Summoner:
                     if (summoner.Actions.Count <= actionIndex)
                     {
@@ -211,10 +149,16 @@ namespace TwitchIRCGame
                     }
                     
                     break;
+                */
                 case CharacterClass.Servant:
                     if (servants[characterIndex].Actions.Count <= actionIndex) {
                         servantActionList[characterIndex] = null;
                         return;   //TODO error
+                    }
+                    else if (enemies.Count <= targetIndex)
+                    {
+                        servantActionList[characterIndex] = null;
+                        return;
                     }
                     servantActionList[characterIndex] = servants[characterIndex].Actions[actionIndex];
                     if (servants[characterIndex].Actions[actionIndex].IsTargeted)
@@ -235,6 +179,11 @@ namespace TwitchIRCGame
                     {
                         enemyActionList[characterIndex] = null;
                         return;   //TODO error
+                    }
+                    else if ((servants.Count + 1) <= targetIndex)
+                    {
+                        enemyActionList[characterIndex] = null;
+                        return;
                     }
                     enemyActionList[characterIndex] = enemies[characterIndex].Actions[actionIndex];
                     if (enemies[characterIndex].Actions[actionIndex].IsTargeted)
@@ -269,7 +218,6 @@ namespace TwitchIRCGame
                     else if (enemyActionList[i].ActionOrder == order) enemyActionList[i].DoAction();
                 }
             }
-            OnTurn = false;
         }
         
 
