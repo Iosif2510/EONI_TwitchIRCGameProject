@@ -23,10 +23,6 @@ namespace TwitchIRCGame
         protected int health;
         [SerializeField]
         protected int basicDamage = 10;
-        /*
-        [SerializeField]
-        protected int speed;              // 공격 순서 결정, 미사용
-        */
         [SerializeField]
         protected float basicCritPercentage = .02f;     // 크리티컬 확률
         [SerializeField]
@@ -65,6 +61,7 @@ namespace TwitchIRCGame
             actions = new List<CharacterAction>(3);
             health = maxHealth;
             level = 1;
+            // TODO: Enemy도 Character를 상속하는데 코드는 아군 캐릭터에만 맞추어져 있음
             opponentTarget = new List<Character>(GameManager.Battle.MaxEnemyNum);
             friendlyTarget = new List<Character>(GameManager.Battle.MaxServantNum);
         }
