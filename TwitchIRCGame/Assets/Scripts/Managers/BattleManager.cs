@@ -115,12 +115,17 @@ namespace TwitchIRCGame
             SelectAction(CharacterClass.Servant, 1, 1, 1);
             SelectAction(CharacterClass.Servant, 2, 1, 2);
 
-            /// 적 행동 지정 (opponentIndex = -1은 소환사를 의미)
+            /// 적 행동 지정
             SelectAction(CharacterClass.Enemy, 0, 1, 0);
             SelectAction(CharacterClass.Enemy, 1, 0);
             SelectAction(CharacterClass.Enemy, 2, 1, -1);
         }
         
+        /// <summary>현재 턴에서 사용될 행동을 지정합니다.</summary>
+        /// <param name="characterIndex">캐릭터 리스트에서 해당 캐릭터의 인덱스</param>
+        /// <param name="actionIndex">행동 슬롯에서 해당 행동의 인덱스</param>
+        /// <param name="targetIndex">대상 캐릭터의 인덱스 (-1이면 사역마를 의미)</param>
+        /// <returns></returns>
         private void SelectAction(CharacterClass characterClass, int characterIndex, int actionIndex, int targetIndex = 0)
         {
             // 순서 구현은 하기나름
@@ -180,6 +185,7 @@ namespace TwitchIRCGame
             }
         } 
 
+        /// <summary>지정한 행동들을 실행합니다.</summary>
         private void StartActions()
         {
             if(summonerAction != null) summonerAction.DoAction(); // 에러 핸들링
