@@ -161,8 +161,6 @@ MonoBehaviour:
   basicCritPercentage: 0.02
   basicCritDamageScale: 2
   place: 0
-  ChoiceA: 0
-  ChoiceE: 0
 --- !u!212 &20407220
 SpriteRenderer:
   m_ObjectHideFlags: 0
