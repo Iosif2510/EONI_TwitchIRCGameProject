@@ -15,18 +15,16 @@ namespace TwitchIRCGame
         public int MaxEnemyNum => maxEnemyNum;
 
         [SerializeField]
-        public Summoner summoner;      // ÀÓ½Ã ¿¡µğÅÍ Á÷·ÄÈ­
+        public Summoner summoner;      // ì„ì‹œ ì—ë””í„° ì§ë ¬í™” <- ë¬´ìŠ¨ ëœ»?
         [SerializeField]
         public List<Servant> servants;
         [SerializeField]
         public List<Enemy> enemies;
 
-        private CharacterAction summonerAction;
+        public CharacterAction summonerAction;
         private CharacterAction[] servantActionList;
         private CharacterAction[] enemyActionList;
-
-        private bool OnTurn = false;
-
+        
         private void Awake()
         {
             //InitServants();
@@ -46,6 +44,7 @@ namespace TwitchIRCGame
         private void InitBattle()
         {
             //enemies = new List<Enemy>(maxTeamNum);
+            summonerAction = null;
             servantActionList = new CharacterAction[maxServantNum];
             for (int i = 0; i < maxServantNum; i++)
             {
@@ -60,54 +59,27 @@ namespace TwitchIRCGame
 
         private void Start()
         {
-            SetActionLists(); // ¾×¼Ç ¸®½ºÆ® ¼³Á¤: ÀÌ°Ç »ç½Ç ¹èÆ²¿¡¼­ ±¸ÇöÇÒ ºÎºĞÀÌ ¾Æ´Ô
-                                // ÀÓÀÇ·Î ¸¸µé¾î µÎ°í ³ªÁß¿¡ ´Ù¸¥ ¾À¿¡¼­ ±¸Çö
+            // BattleManagerì—ì„œ êµ¬í˜„í•  ë¶€ë¶„ì´ ì•„ë‹ˆë¯€ë¡œ, ì„ì‹œë¡œ ì“°ê³  ë‚˜ì¤‘ì— ë‹¤ë¥¸ ì”¬ì—ì„œ êµ¬í˜„
+            SetActionLists();
         }
-
+        
+        /*
         private void Update()
         {
-            if(!OnTurn) ActionChoiceTime();
+            ActionChoiceTime();
         }
+        */
 
-        public void OnButtonClick(GameObject button) // ÅÏ Á¾·á ¹öÆ°
+        /// <summary>í„´ì„ ì¢…ë£Œí•©ë‹ˆë‹¤.</summary>
+        public void DoTurnEnd()
         {   
-            if(!OnTurn)
-            {
-                OnTurn = true;
-                Debug.Log("Test");
-                TestScenario(); // ¼ÒÈ¯»ç,»ç¿ª¸¶,ÀûÀÇ ¾×¼Ç ´ë»ó ÁöÁ¤ 
-                StartActions();
-            }
-
-        }
-        public void Action1(GameObject button) // ¾×¼Ç1 ¹öÆ°
-        {
-            if (!OnTurn)
-            {
-                Debug.Log("button1");
-                summoner.ChoiceA = 0;
-            }
-        }
-        public void Action2(GameObject button) // ¾×¼Ç2 ¹öÆ°
-        {
-            if (!OnTurn)
-            {
-                Debug.Log("button2");
-                summoner.ChoiceA = 1;
-            }
-        }
-        public void Action3(GameObject button) // ¾×¼Ç3 ¹öÆ°
-        {
-            if (!OnTurn)
-            {
-                Debug.Log("button3");
-                summoner.ChoiceA = 2;
-            }
+            TestScenario();
+            StartActions();
         }
 
         private void SetActionLists()
         {
-            // ¾Æ±º Çàµ¿ ¼³Á¤
+            // ì•„êµ° í–‰ë™ ì„¤ì •
             summoner.AddAction(new TauntAction());
             summoner.AddAction(new NonTypeAttack());
             servants[0].AddAction(new TauntAction());
@@ -117,7 +89,7 @@ namespace TwitchIRCGame
             servants[2].AddAction(new TauntAction());
             servants[2].AddAction(new TypedAttack());
 
-            // Àû±º Çàµ¿ ¼³Á¤
+            // ì êµ° í–‰ë™ ì„¤ì •
             enemies[0].AddAction(new TauntAction());
             enemies[0].AddAction(new NonTypeAttack());
             enemies[1].AddAction(new TauntAction());
@@ -128,54 +100,49 @@ namespace TwitchIRCGame
 
         private void ActionChoiceTime()
         {
-            // summoner´Â Å¬¸¯À» ÅëÇØ¼­ Çàµ¿°ú ´ë»ó ¼±ÅÃ            
+            // summonerëŠ” í´ë¦­ì„ í†µí•´ì„œ í–‰ë™ê³¼ ëŒ€ìƒ ì„ íƒ            
 
-            // servant´Â Ã¤ÆÃÀ» ÅëÇØ¼­ Çàµ¿°ú ´ë»ó ¼±ÅÃ
-            // twitch chat ¿¬µ¿ ±â´É ÇÊ¿ä
-            
+            // servantëŠ” ì±„íŒ…ì„ í†µí•´ì„œ í–‰ë™ê³¼ ëŒ€ìƒ ì„ íƒ
+            // Twitch chat ì—°ë™ ê¸°ëŠ¥ í•„ìš”            
+            // í•´ë‹¹ ì‚¬ì—­ë§ˆê°€ ì„ íƒ ì™„ë£Œ ì‹œì— ì´ë¥¼ ë‚˜íƒ€ë‚´ëŠ” interface í•„ìš”
         }
         private void TestScenario()
         {
             Debug.Log("Test Scenario");            
-            // ¼ÒÈ¯»ç Çàµ¿ ÁöÁ¤
-            SelectAction(CharacterClass.Summoner, 0, summoner.ChoiceA, summoner.ChoiceE);
-
-            // »ç¿ª¸¶ Çàµ¿ ÁöÁ¤, Çàµ¿À» ¼±ÅÃÇÏÁö ¾ÊÀº °æ¿ì SelectActionÀ» ¾ÈÇÔ
+            // ì†Œí™˜ì‚¬ í–‰ë™ ì§€ì •ì€ ë²„íŠ¼ìœ¼ë¡œ ì„ íƒ(UIManager)
+            // ì‚¬ì—­ë§ˆ í–‰ë™ ì§€ì •, í–‰ë™ì„ ì„ íƒí•˜ì§€ ì•Šì€ ê²½ìš° ActionListì— null
             SelectAction(CharacterClass.Servant, 0, 0, 0);
             SelectAction(CharacterClass.Servant, 1, 1, 1);
             SelectAction(CharacterClass.Servant, 2, 1, 2);
 
-            // Àû Çàµ¿ ÁöÁ¤ (opponentIndex = -1Àº ¼ÒÈ¯»ç¸¦ ÀÇ¹Ì)
+            /// ì  í–‰ë™ ì§€ì •
             SelectAction(CharacterClass.Enemy, 0, 1, 0);
             SelectAction(CharacterClass.Enemy, 1, 0);
             SelectAction(CharacterClass.Enemy, 2, 1, -1);
         }
+        
+        /// <summary>í˜„ì¬ í„´ì—ì„œ ì‚¬ìš©ë  í–‰ë™ì„ ì§€ì •í•©ë‹ˆë‹¤.</summary>
+        /// <param name="characterIndex">ìºë¦­í„° ë¦¬ìŠ¤íŠ¸ì—ì„œ í•´ë‹¹ ìºë¦­í„°ì˜ ì¸ë±ìŠ¤</param>
+        /// <param name="actionIndex">í–‰ë™ ìŠ¬ë¡¯ì—ì„œ í•´ë‹¹ í–‰ë™ì˜ ì¸ë±ìŠ¤</param>
+        /// <param name="targetIndex">ëŒ€ìƒ ìºë¦­í„°ì˜ ì¸ë±ìŠ¤ (-1ì´ë©´ ì‚¬ì—­ë§ˆë¥¼ ì˜ë¯¸)</param>
+        /// <returns></returns>
         private void SelectAction(CharacterClass characterClass, int characterIndex, int actionIndex, int targetIndex = 0)
         {
-            // ¼ø¼­ ±¸ÇöÀº ÇÏ±â³ª¸§
+            // ìˆœì„œ êµ¬í˜„ì€ í•˜ê¸°ë‚˜ë¦„
             // targeted
-            // phaseActionList ¼ø¼­´ë·Î ½ÇÇàµÊ
+            // phaseActionList ìˆœì„œëŒ€ë¡œ ì‹¤í–‰ë¨
             switch (characterClass)
             {
-                case CharacterClass.Summoner:
-                    if (summoner.Actions.Count <= actionIndex) return;   //TODO error
-                    summonerAction = summoner.Actions[actionIndex];
-                    if (summoner.Actions[actionIndex].IsTargeted)
-                    {
-                        if (summoner.Actions[actionIndex].IsTargetOpponent)
-                        {
-                            summoner.SetSingleTarget(enemies[targetIndex]);
-                        }
-                        else
-                        {
-                            if (targetIndex == -1) summoner.SetSingleTarget(summoner);
-                            else summoner.SetSingleTarget(servants[targetIndex]);
-                        }
-                    }
-                    
-                    break;
                 case CharacterClass.Servant:
-                    if (servants[characterIndex].Actions.Count <= actionIndex) return;   //TODO error
+                    if (servants[characterIndex].Actions.Count <= actionIndex) {
+                        servantActionList[characterIndex] = null;
+                        return;   //TODO error
+                    }
+                    else if (enemies.Count <= targetIndex)
+                    {
+                        servantActionList[characterIndex] = null;
+                        return;
+                    }
                     servantActionList[characterIndex] = servants[characterIndex].Actions[actionIndex];
                     if (servants[characterIndex].Actions[actionIndex].IsTargeted)
                     {
@@ -191,7 +158,16 @@ namespace TwitchIRCGame
                     }
                     break;
                 case CharacterClass.Enemy:
-                    if (enemies[characterIndex].Actions.Count <= actionIndex) return;   //TODO error
+                    if (enemies[characterIndex].Actions.Count <= actionIndex)
+                    {
+                        enemyActionList[characterIndex] = null;
+                        return;   //TODO error
+                    }
+                    else if ((servants.Count + 1) <= targetIndex)
+                    {
+                        enemyActionList[characterIndex] = null;
+                        return;
+                    }
                     enemyActionList[characterIndex] = enemies[characterIndex].Actions[actionIndex];
                     if (enemies[characterIndex].Actions[actionIndex].IsTargeted)
                     {
@@ -209,9 +185,10 @@ namespace TwitchIRCGame
             }
         } 
 
+        /// <summary>ì§€ì •í•œ í–‰ë™ë“¤ì„ ì‹¤í–‰í•©ë‹ˆë‹¤.</summary>
         private void StartActions()
         {
-            summonerAction.DoAction();
+            if(summonerAction != null) summonerAction.DoAction(); // ì—ëŸ¬ í•¸ë“¤ë§
             for (int order = 0; order < 3; order++)
             {
                 for (int i = 0; i < maxServantNum; i++)
@@ -225,7 +202,17 @@ namespace TwitchIRCGame
                     else if (enemyActionList[i].ActionOrder == order) enemyActionList[i].DoAction();
                 }
             }
-            OnTurn = false;
+
+            summonerAction = null;  // ¾×¼Ç¸®½ºÆ® ÃÊ±âÈ­
+            for (int i = 0; i < maxServantNum; i++)
+            {
+                servantActionList[i] = null;
+            }
+            for (int i = 0; i < maxEnemyNum; i++)
+            {
+                enemyActionList[i] = null;
+            }
+
         }
         
 

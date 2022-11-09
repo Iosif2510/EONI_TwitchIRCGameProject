@@ -7,8 +7,6 @@ namespace TwitchIRCGame
     public class Summoner : Character
     {
         protected string chatterID;
-        
-        public int ChoiceA, ChoiceE;
 
         public override void Attack(bool typedAttack)
         {
@@ -19,7 +17,6 @@ namespace TwitchIRCGame
                 Debug.Log($"{characterName} attacked {target.Name}!");
                 AttackTarget(target, typedAttack);
             }
-            
         }
 
         public override void Taunt()
