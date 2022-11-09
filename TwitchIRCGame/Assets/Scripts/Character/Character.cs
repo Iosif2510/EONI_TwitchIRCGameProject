@@ -82,12 +82,7 @@ namespace TwitchIRCGame
             if (health < 0) health = 0; // 사망에 관한처리를 해야함
             Debug.Log($"{characterName} got {finalDamage} damage!");
         }
-
-        public int Showhealth()
-        {
-            return this.health;
-        }
-
+        
         public void AddAction(CharacterAction action)
         {            
             if (actions.Count >= 3) return;     // 3개까지만 수용

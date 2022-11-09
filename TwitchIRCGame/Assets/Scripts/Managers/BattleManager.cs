@@ -218,6 +218,17 @@ namespace TwitchIRCGame
                     else if (enemyActionList[i].ActionOrder == order) enemyActionList[i].DoAction();
                 }
             }
+
+            summonerAction = null;  // 액션리스트 초기화
+            for (int i = 0; i < maxServantNum; i++)
+            {
+                servantActionList[i] = null;
+            }
+            for (int i = 0; i < maxEnemyNum; i++)
+            {
+                enemyActionList[i] = null;
+            }
+
         }
         
 

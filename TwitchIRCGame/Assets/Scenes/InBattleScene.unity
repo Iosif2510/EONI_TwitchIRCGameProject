@@ -1687,7 +1687,6 @@ GameObject:
   - component: {fileID: 531001308}
   - component: {fileID: 531001307}
   - component: {fileID: 531001306}
-  - component: {fileID: 531001305}
   m_Layer: 5
   m_Name: Action2
   m_TagString: Untagged
@@ -1716,18 +1715,6 @@ RectTransform:
   m_AnchoredPosition: {x: -1000, y: -450}
   m_SizeDelta: {x: 200, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &531001305
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 531001303}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4be8c007078cad144b844e1dab7e5f2d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &531001306
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2003,7 +1990,6 @@ GameObject:
   - component: {fileID: 672428796}
   - component: {fileID: 672428795}
   - component: {fileID: 672428794}
-  - component: {fileID: 672428793}
   m_Layer: 5
   m_Name: Servant1
   m_TagString: Untagged
@@ -2032,18 +2018,6 @@ RectTransform:
   m_AnchoredPosition: {x: -580, y: 140}
   m_SizeDelta: {x: 200, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &672428793
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 672428791}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4be8c007078cad144b844e1dab7e5f2d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &672428794
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2150,7 +2124,6 @@ GameObject:
   - component: {fileID: 683740051}
   - component: {fileID: 683740050}
   - component: {fileID: 683740049}
-  - component: {fileID: 683740048}
   m_Layer: 5
   m_Name: Action3
   m_TagString: Untagged
@@ -2179,18 +2152,6 @@ RectTransform:
   m_AnchoredPosition: {x: -1000, y: -600}
   m_SizeDelta: {x: 200, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &683740048
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 683740046}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4be8c007078cad144b844e1dab7e5f2d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &683740049
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2400,7 +2361,6 @@ GameObject:
   - component: {fileID: 729074942}
   - component: {fileID: 729074941}
   - component: {fileID: 729074940}
-  - component: {fileID: 729074939}
   m_Layer: 5
   m_Name: Enemy2
   m_TagString: Untagged
@@ -2429,18 +2389,6 @@ RectTransform:
   m_AnchoredPosition: {x: 580, y: 140}
   m_SizeDelta: {x: 200, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &729074939
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 729074937}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4be8c007078cad144b844e1dab7e5f2d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &729074940
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2682,7 +2630,6 @@ GameObject:
   - component: {fileID: 924790159}
   - component: {fileID: 924790158}
   - component: {fileID: 924790157}
-  - component: {fileID: 924790156}
   m_Layer: 5
   m_Name: Enemy3
   m_TagString: Untagged
@@ -2711,18 +2658,6 @@ RectTransform:
   m_AnchoredPosition: {x: 580, y: -140}
   m_SizeDelta: {x: 200, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &924790156
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 924790154}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4be8c007078cad144b844e1dab7e5f2d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &924790157
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2829,7 +2764,6 @@ GameObject:
   - component: {fileID: 1079794766}
   - component: {fileID: 1079794765}
   - component: {fileID: 1079794764}
-  - component: {fileID: 1079794763}
   m_Layer: 5
   m_Name: Enemy4
   m_TagString: Untagged
@@ -2858,18 +2792,6 @@ RectTransform:
   m_AnchoredPosition: {x: 870, y: 0}
   m_SizeDelta: {x: 200, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1079794763
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1079794761}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4be8c007078cad144b844e1dab7e5f2d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1079794764
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3177,7 +3099,6 @@ GameObject:
   - component: {fileID: 1157320130}
   - component: {fileID: 1157320129}
   - component: {fileID: 1157320128}
-  - component: {fileID: 1157320127}
   m_Layer: 5
   m_Name: Servant2
   m_TagString: Untagged
@@ -3206,18 +3127,6 @@ RectTransform:
   m_AnchoredPosition: {x: -580, y: -140}
   m_SizeDelta: {x: 200, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1157320127
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1157320125}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4be8c007078cad144b844e1dab7e5f2d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1157320128
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3408,7 +3317,6 @@ GameObject:
   - component: {fileID: 1326465285}
   - component: {fileID: 1326465284}
   - component: {fileID: 1326465283}
-  - component: {fileID: 1326465282}
   m_Layer: 5
   m_Name: Action1
   m_TagString: Untagged
@@ -3437,18 +3345,6 @@ RectTransform:
   m_AnchoredPosition: {x: -1000, y: -300}
   m_SizeDelta: {x: 200, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1326465282
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1326465280}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4be8c007078cad144b844e1dab7e5f2d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1326465283
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3555,7 +3451,6 @@ GameObject:
   - component: {fileID: 1349905982}
   - component: {fileID: 1349905981}
   - component: {fileID: 1349905980}
-  - component: {fileID: 1349905979}
   m_Layer: 5
   m_Name: Enemy1
   m_TagString: Untagged
@@ -3584,18 +3479,6 @@ RectTransform:
   m_AnchoredPosition: {x: 284, y: 0}
   m_SizeDelta: {x: 200, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1349905979
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1349905977}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4be8c007078cad144b844e1dab7e5f2d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1349905980
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3807,7 +3690,6 @@ GameObject:
   - component: {fileID: 1611272415}
   - component: {fileID: 1611272414}
   - component: {fileID: 1611272413}
-  - component: {fileID: 1611272412}
   m_Layer: 5
   m_Name: Servant3
   m_TagString: Untagged
@@ -3836,18 +3718,6 @@ RectTransform:
   m_AnchoredPosition: {x: -284, y: 0}
   m_SizeDelta: {x: 200, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1611272412
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1611272410}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4be8c007078cad144b844e1dab7e5f2d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1611272413
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4791,7 +4661,6 @@ GameObject:
   - component: {fileID: 2013453005}
   - component: {fileID: 2013453004}
   - component: {fileID: 2013453003}
-  - component: {fileID: 2013453002}
   m_Layer: 5
   m_Name: TurnEnd
   m_TagString: Untagged
@@ -4820,18 +4689,6 @@ RectTransform:
   m_AnchoredPosition: {x: 1000, y: 500}
   m_SizeDelta: {x: 200, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &2013453002
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2013453000}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4be8c007078cad144b844e1dab7e5f2d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &2013453003
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5313,7 +5170,6 @@ GameObject:
   - component: {fileID: 2145831240}
   - component: {fileID: 2145831239}
   - component: {fileID: 2145831238}
-  - component: {fileID: 2145831237}
   m_Layer: 5
   m_Name: Summoner
   m_TagString: Untagged
@@ -5342,18 +5198,6 @@ RectTransform:
   m_AnchoredPosition: {x: -870, y: 0}
   m_SizeDelta: {x: 200, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &2145831237
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2145831235}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4be8c007078cad144b844e1dab7e5f2d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &2145831238
 MonoBehaviour:
   m_ObjectHideFlags: 0
