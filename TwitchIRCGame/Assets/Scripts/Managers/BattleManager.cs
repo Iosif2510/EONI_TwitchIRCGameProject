@@ -228,15 +228,17 @@ namespace TwitchIRCGame
             {
                 for (int i = 0; i < maxServantNum; i++)
                 {
-                    if (servantActionList[i] == null)
-                        continue;
-                    else if (servantActionList[i].ActionOrder == order)
+                    if (servantActionList[i] == null) continue;
+                    
+                    if (servantActionList[i].ActionOrder == order)
                         servantActionList[i].DoAction();
                 }
                 for (int i = 0; i < maxEnemyNum; i++)
                 {
                     if (enemyActionList[i] == null) continue;
-                    else if (enemyActionList[i].ActionOrder == order) enemyActionList[i].DoAction();
+                    
+                    if (enemyActionList[i].ActionOrder == order)
+                        enemyActionList[i].DoAction();
                 }
             }
 
@@ -249,9 +251,7 @@ namespace TwitchIRCGame
             {
                 enemyActionList[i] = null;
             }
-
         }
-        
 
         private void Mission()
         {
