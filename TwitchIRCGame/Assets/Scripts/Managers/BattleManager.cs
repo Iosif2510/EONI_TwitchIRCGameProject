@@ -156,7 +156,7 @@ namespace TwitchIRCGame
                         enemyActionList[characterIndex] = null;
                         return;   //TODO error
                     }
-                    else if ((servants.Count + 1) <= targetIndex)
+                    if (servants.Count <= targetIndex)
                     {
                         enemyActionList[characterIndex] = null;
                         return;
