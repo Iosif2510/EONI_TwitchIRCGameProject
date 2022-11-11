@@ -15,7 +15,7 @@ namespace TwitchIRCGame
         public int MaxEnemyNum => maxEnemyNum;
 
         [SerializeField]
-        public Summoner summoner;      // 임시 에디터 직렬화 <- 무슨 뜻?
+        public Summoner summoner;      // 임시 에디터 직렬화
         [SerializeField]
         public List<Servant> servants;
         [SerializeField]
@@ -70,8 +70,7 @@ namespace TwitchIRCGame
         }
         */
 
-        /// <summary>턴을 종료합니다.</summary>
-        public void DoTurnEnd()
+        public void EndTurn()
         {   
             TestScenario();
             StartActions();
@@ -117,7 +116,7 @@ namespace TwitchIRCGame
 
             /// 적 행동 지정
             SelectAction(CharacterClass.Enemy, 0, 1, 0);
-            SelectAction(CharacterClass.Enemy, 1, 0);
+            SelectAction(CharacterClass.Enemy, 1, 0, 0);
             SelectAction(CharacterClass.Enemy, 2, 1, -1);
         }
         
@@ -125,7 +124,6 @@ namespace TwitchIRCGame
         /// <param name="characterIndex">캐릭터 리스트에서 해당 캐릭터의 인덱스</param>
         /// <param name="actionIndex">행동 슬롯에서 해당 행동의 인덱스</param>
         /// <param name="targetIndex">대상 캐릭터의 인덱스 (-1이면 사역마를 의미)</param>
-        /// <returns></returns>
         private void SelectAction(CharacterClass characterClass, int characterIndex, int actionIndex, int targetIndex = 0)
         {
             // 순서 구현은 하기나름
@@ -203,7 +201,7 @@ namespace TwitchIRCGame
                 }
             }
 
-            summonerAction = null;  // �׼Ǹ���Ʈ �ʱ�ȭ
+            summonerAction = null;
             for (int i = 0; i < maxServantNum; i++)
             {
                 servantActionList[i] = null;

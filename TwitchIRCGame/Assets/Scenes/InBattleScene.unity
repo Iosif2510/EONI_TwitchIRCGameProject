@@ -1759,7 +1759,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1145988222}
         m_TargetAssemblyTypeName: TwitchIRCGame.UIManager, Assembly-CSharp
-        m_MethodName: SummonerAction
+        m_MethodName: SetSummonerAction
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2062,7 +2062,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1145988222}
         m_TargetAssemblyTypeName: TwitchIRCGame.UIManager, Assembly-CSharp
-        m_MethodName: SummonerTarget
+        m_MethodName: SetSummonerTarget
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2196,7 +2196,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1145988222}
         m_TargetAssemblyTypeName: TwitchIRCGame.UIManager, Assembly-CSharp
-        m_MethodName: SummonerAction
+        m_MethodName: SetSummonerAction
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2433,7 +2433,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1145988222}
         m_TargetAssemblyTypeName: TwitchIRCGame.UIManager, Assembly-CSharp
-        m_MethodName: SummonerTarget
+        m_MethodName: SetSummonerTarget
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2702,7 +2702,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1145988222}
         m_TargetAssemblyTypeName: TwitchIRCGame.UIManager, Assembly-CSharp
-        m_MethodName: SummonerTarget
+        m_MethodName: SetSummonerTarget
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2836,7 +2836,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1145988222}
         m_TargetAssemblyTypeName: TwitchIRCGame.UIManager, Assembly-CSharp
-        m_MethodName: SummonerTarget
+        m_MethodName: SetSummonerTarget
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3171,7 +3171,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1145988222}
         m_TargetAssemblyTypeName: TwitchIRCGame.UIManager, Assembly-CSharp
-        m_MethodName: SummonerTarget
+        m_MethodName: SetSummonerTarget
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3389,7 +3389,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1145988222}
         m_TargetAssemblyTypeName: TwitchIRCGame.UIManager, Assembly-CSharp
-        m_MethodName: SummonerAction
+        m_MethodName: SetSummonerAction
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3523,7 +3523,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1145988222}
         m_TargetAssemblyTypeName: TwitchIRCGame.UIManager, Assembly-CSharp
-        m_MethodName: SummonerTarget
+        m_MethodName: SetSummonerTarget
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3762,7 +3762,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1145988222}
         m_TargetAssemblyTypeName: TwitchIRCGame.UIManager, Assembly-CSharp
-        m_MethodName: SummonerTarget
+        m_MethodName: SetSummonerTarget
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4733,7 +4733,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1145988222}
         m_TargetAssemblyTypeName: TwitchIRCGame.UIManager, Assembly-CSharp
-        m_MethodName: TurnEndButton
+        m_MethodName: EndTurn
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5242,7 +5242,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1145988222}
         m_TargetAssemblyTypeName: TwitchIRCGame.UIManager, Assembly-CSharp
-        m_MethodName: SummonerTarget
+        m_MethodName: SetSummonerTarget
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
