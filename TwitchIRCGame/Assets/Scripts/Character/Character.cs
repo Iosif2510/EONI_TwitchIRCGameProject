@@ -83,13 +83,6 @@ namespace TwitchIRCGame
             Debug.Log($"{characterName} got {finalDamage} damage!");
         }
 
-        // DEPRECATED: public 변수인 Health를 쓸 것; 지워도 안전하면 지우기 바람
-        [System.Obsolete("public 변수인 Health를 사용해야 합니다.", true)]
-        public int Showhealth()
-        {
-            return this.health;
-        }
-
         // 제안: 행동 슬롯을 배열로 설정하여 AddAction(action, slotNumber)으로 고치는 건 어떤지?
         public void AddAction(CharacterAction action)
         {            
