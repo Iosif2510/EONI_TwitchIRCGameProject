@@ -79,10 +79,12 @@ namespace TwitchIRCGame
             bool isRequiredTargetEnemy = selectedAction.IsTargetOpponent;
 
             bool isInputTargetAlive = true;
+            /* 현재 단계에서 enemies와 servants가 빈 리스트라서 잠시 꺼둠
             if (isInputTargetEnemy)
                 isInputTargetAlive = GameManager.Battle.enemies.Count < -targetIndex;
             else if (targetIndex != SUMMONER)
                 isInputTargetAlive = GameManager.Battle.servants.Count < targetIndex;
+            */
             
             // 대상이 없거나 전체가 대상인 행동일 경우 무효
             if (isTargetless)
