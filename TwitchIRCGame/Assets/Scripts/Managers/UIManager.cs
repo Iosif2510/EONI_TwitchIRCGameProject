@@ -47,7 +47,7 @@ namespace TwitchIRCGame
         {
             if (GameManager.Battle.summoner.Actions.Count < actionIndex)
             {
-                Debug.Log("There is no action " + actionIndex + " in the slot");
+                Debug.Log("Action " + actionIndex + " is not in the slot");
                 return;
             }
             
