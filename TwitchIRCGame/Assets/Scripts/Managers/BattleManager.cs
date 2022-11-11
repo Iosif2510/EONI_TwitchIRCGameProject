@@ -60,24 +60,6 @@ namespace TwitchIRCGame
         private void Start()
         {
             // BattleManager에서 구현할 부분이 아니므로, 임시로 쓰고 나중에 다른 씬에서 구현
-            SetActionLists();
-        }
-        
-        /*
-        private void Update()
-        {
-            ActionChoiceTime();
-        }
-        */
-
-        public void EndTurn()
-        {   
-            TestScenario();
-            StartActions();
-        }
-
-        private void SetActionLists()
-        {
             // 아군 행동 설정
             summoner.AddAction(new TauntAction());
             summoner.AddAction(new NonTypeAttack());
@@ -95,6 +77,19 @@ namespace TwitchIRCGame
             enemies[1].AddAction(new TypedAttack());
             enemies[2].AddAction(new TauntAction());
             enemies[2].AddAction(new TypedAttack());
+        }
+        
+        /*
+        private void Update()
+        {
+            ActionChoiceTime();
+        }
+        */
+
+        public void EndTurn()
+        {   
+            TestScenario();
+            StartActions();
         }
 
         private void ActionChoiceTime()
