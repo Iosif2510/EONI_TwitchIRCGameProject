@@ -182,7 +182,7 @@ namespace TwitchIRCGame
         private void StartActions()
         {
             if(summonerAction != null) summonerAction.DoAction(); // 에러 핸들링
-            for (int order = 0; order < 3; order++)
+            for (int order = 0; order < ORDER_MAX; order++)
             {
                 for (int i = 0; i < maxServantNum; i++)
                 {
