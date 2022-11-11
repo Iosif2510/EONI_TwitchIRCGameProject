@@ -59,14 +59,11 @@ namespace TwitchIRCGame
         /// <summary>행동 슬롯입니다. 행동을 최대 3개까지 등록 가능합니다.</summary>
         public List<CharacterAction> Actions => actions;
 
-        private void Awake()
+        protected virtual void Awake()
         {
             actions = new List<CharacterAction>(3);
             health = maxHealth;
             level = 1;
-            // TODO: Enemy도 Character를 상속하는데 코드는 아군 캐릭터에만 맞추어져 있음
-            opponentTarget = new List<Character>(GameManager.Battle.MaxEnemyNum);
-            friendlyTarget = new List<Character>(GameManager.Battle.MaxServantNum);
         }
 
         private void Start()
