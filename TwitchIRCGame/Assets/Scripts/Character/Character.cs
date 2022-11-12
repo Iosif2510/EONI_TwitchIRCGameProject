@@ -9,7 +9,7 @@ using static TwitchIRCGame.Utils;
 
 namespace TwitchIRCGame
 {
-    public class Character : MonoBehaviour
+    public abstract class Character : MonoBehaviour
     {
         [SerializeField]
         protected string characterName;
@@ -76,7 +76,11 @@ namespace TwitchIRCGame
             float typeDamagePercent = TypeDamagePercent(attackType, this.characterType);
             int finalDamage = Mathf.FloorToInt(damage * (1 + typeDamagePercent));
             health -= finalDamage;
-            if (health < 0) health = 0; // TODO: 사망 처리 필요
+            if (health < 0)
+            {
+                health = 0; // TODO: 사망 처리 필요
+                Die();
+            }
             Debug.Log($"{characterName} got {finalDamage} damage!");
         }
 
@@ -157,6 +161,11 @@ namespace TwitchIRCGame
         {
             this.opponentTarget.Clear();
             this.opponentTarget.Add(originalTarget);
+        }
+
+        public virtual void Die()
+        {
+
         }
 
     }

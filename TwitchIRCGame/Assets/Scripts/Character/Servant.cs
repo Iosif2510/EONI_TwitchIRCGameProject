@@ -7,6 +7,7 @@ namespace TwitchIRCGame
     public class Servant : Character
     {
         protected string chatterID;
+        public string ChatterID => chatterID;
 
         protected override void Awake()
         {
@@ -38,7 +39,13 @@ namespace TwitchIRCGame
             Debug.Log($"{characterName} taunted!");
         }
 
-        
+        public override void Die()
+        {
+            base.Die();
+            gameObject.SetActive(false);
+        }
+
+
     }
 }
 

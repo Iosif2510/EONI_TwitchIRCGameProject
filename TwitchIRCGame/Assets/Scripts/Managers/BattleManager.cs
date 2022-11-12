@@ -30,16 +30,16 @@ namespace TwitchIRCGame
             //InitServants();
             InitBattle();
         }
-        /*
+
         private void InitServants()
         {
-            servants = new List<Servant>(maxTeamNum);
+            servants = new List<Servant>(maxServantNum);
             for (int i = 0; i < GameManager.Instance.servantIDs.Count; i++)
             {
                 servants.Add(GameManager.Instance.servantTeam[GameManager.Instance.servantIDs[i]]);
             }
         }
-        */
+
 
         private void InitBattle()
         {
