@@ -14,8 +14,11 @@ namespace TwitchIRCGame
         public Camera mainCamera;
 
         // for summoner action/enemy button
-        private int actionIndex;
-        private int targetIndex;
+        private int selectedActionIndex = NOT_SELECTED;
+        private int selectedTargetIndex = NOT_SELECTED;
+
+        private const int SUMMONER = -1;
+        private const int NOT_SELECTED = -2;
 
         private static UIManager instance;
         public static UIManager Instance
@@ -39,78 +42,125 @@ namespace TwitchIRCGame
                 if (instance != this) Destroy(gameObject);
             }
         }
-
-        public void SummonerAction(int getactionIndex) // action 1, 2, 3: parameter 0, 1 ,2
+        
+        public void ToggleSummonerAction(int actionIndex)
         {
-            actionIndex = getactionIndex;
-            Debug.Log("Action: " + (actionIndex+1));            
-        }
-        public void SummonerTarget(int gettargetIndex) // enemy 1, 2, 3, 4 : parameter 0, 1, 2, 3 / summoner : parameter -1 / servant 1, 2, 3 : parameter -2, -3, -4
-        {            
-            if (gettargetIndex < 0 && GameManager.Battle.summoner.Actions[actionIndex].IsTargetOpponent) // 잘못된 진영 타겟으로 선택 (적 스킬인데 아군 클릭)
+            if (GameManager.Battle.summoner.Actions.Count < actionIndex)
             {
-                GameManager.Battle.summonerAction = null;
+                Debug.Log("Action " + actionIndex + " is not in the slot");
                 return;
-            } 
-            else if (gettargetIndex >= 0 && !GameManager.Battle.summoner.Actions[actionIndex].IsTargetOpponent) // 잘못된 진영 타겟으로 선택 (아군 스킬인데 적 클릭)
-            {
-                GameManager.Battle.summonerAction = null;
-                return;
-            }
-
-            if(gettargetIndex >= 0 ) targetIndex = gettargetIndex;
-            else targetIndex = (-1)*gettargetIndex - 2;
-
-            if (GameManager.Battle.summoner.Actions[actionIndex].IsTargetOpponent)
-            {
-                Debug.Log("Target: Enemy " + (targetIndex + 1));
-            }
-            else
-            {
-                if (targetIndex == -1) Debug.Log("Target: Summoner");
-                else Debug.Log("Target: Servant " + (targetIndex + 1));
-            }
-
-        }
-
-        public void TurnEndButton() // 턴 종료 버튼
-        {
-            Debug.Log("Turn End Button On");
-
-            //summonerAction에 행동 추가
-            if (GameManager.Battle.summoner.Actions.Count <= actionIndex)
-            {
-                GameManager.Battle.summonerAction = null;  //null을 넣어줘야 마지막으로 한 행동 반복안함
-            }
-            else if(GameManager.Battle.summoner.Actions[actionIndex].IsTargetOpponent && GameManager.Battle.enemies.Count <= targetIndex)
-            {
-                GameManager.Battle.summonerAction = null;  
-            }
-            else if (!GameManager.Battle.summoner.Actions[actionIndex].IsTargetOpponent && GameManager.Battle.servants.Count <= targetIndex)
-            {
-                GameManager.Battle.summonerAction = null;
-            }
-            else
-            {
-                GameManager.Battle.summonerAction = GameManager.Battle.summoner.Actions[actionIndex];
-                if (GameManager.Battle.summoner.Actions[actionIndex].IsTargeted)
-                {
-                    if (GameManager.Battle.summoner.Actions[actionIndex].IsTargetOpponent)
-                    {
-                        GameManager.Battle.summoner.SetSingleTarget(GameManager.Battle.enemies[targetIndex]);
-                    }
-                    else
-                    {
-                        if (targetIndex == -1) GameManager.Battle.summoner.SetSingleTarget(GameManager.Battle.summoner);
-                        else GameManager.Battle.summoner.SetSingleTarget(GameManager.Battle.servants[targetIndex]);
-                    }
-                }
             }
             
-            GameManager.Battle.DoTurnEnd();
+            if (selectedActionIndex != actionIndex - 1) // 선택
+            {
+                selectedActionIndex = actionIndex - 1; // 인터페이스상 index는 1-indexed, 실제 구현된 index는 0-indexed
+                Debug.Log("Action " + actionIndex + " selected");
+            }
+            else // 선택 해제
+            { 
+                selectedActionIndex = NOT_SELECTED;
+                Debug.Log("Action " + actionIndex + " deselected");
+            }
+        }
+        
+        /// <param name="targetIndex">
+        /// 양수이면 아군 (1, 2, 3 -> 사역마 1, 2, 3),
+        /// 음수이면 적군 (-1, -2, -3 -> 적 1, 2, 3),
+        /// 0이면 소환사 자신을 의미합니다.
+        /// </param>
+        public void SetSummonerTarget(int targetIndex)
+        {
+            if (selectedActionIndex == NOT_SELECTED)
+                return;
+            
+            CharacterAction selectedAction = GameManager.Battle.summoner.Actions[selectedActionIndex];
+            bool isTargetless = !selectedAction.IsTargeted;
+            bool isInputTargetEnemy = targetIndex < 0;
+            bool isRequiredTargetEnemy = selectedAction.IsTargetOpponent;
 
+            bool isInputTargetAlive = true;
+            /* 현재 단계에서 enemies와 servants가 빈 리스트라서 잠시 꺼둠
+            if (isInputTargetEnemy)
+                isInputTargetAlive = GameManager.Battle.enemies.Count < -targetIndex;
+            else if (targetIndex != SUMMONER)
+                isInputTargetAlive = GameManager.Battle.servants.Count < targetIndex;
+            */
+            
+            // 대상이 없거나 전체가 대상인 행동일 경우 무효
+            if (isTargetless)
+                return;
+            
+            // 잘못된 대상을 선택한 경우 무효
+            if (isInputTargetEnemy != isRequiredTargetEnemy || !isInputTargetAlive)
+                return;
+
+            // 인터페이스상 index는 1-indexed, 실제 구현된 index는 0-indexed
+            // 소환사는 -1로 표현됨
+            selectedTargetIndex = (isInputTargetEnemy ? -targetIndex : targetIndex) - 1;
+            
+            if (isInputTargetEnemy)
+                Debug.Log("Target: Enemy " + (-targetIndex));
+            else if (selectedTargetIndex == SUMMONER)
+                Debug.Log("Target: Summoner");
+            else
+                Debug.Log("Target: Servant " + targetIndex);
         }
 
+        public void EndTurn() // 턴 종료 버튼
+        {
+            if (SelectAction())
+            {
+                Debug.Log("Turn ended");
+                GameManager.Battle.EndTurn();
+                
+                // 초기화
+                selectedActionIndex = NOT_SELECTED;
+                selectedTargetIndex = NOT_SELECTED;
+            }
+            else
+            {
+                Debug.Log("Turn not ended; please select the target");
+            }
+        }
 
+        /// <returns>
+        /// 행동은 선택했는데 대상이 제대로 선택되지 않은 경우 false를 반환합니다.
+        /// 그 외에는 true를 반환합니다.
+        /// </returns>
+        private bool SelectAction()
+        {
+            if (selectedActionIndex == NOT_SELECTED)
+            {
+                GameManager.Battle.summonerAction = null;
+                return true;
+            }
+
+            if (selectedTargetIndex == NOT_SELECTED)
+                return false;
+            
+            // 행동 선택
+            CharacterAction selectedAction = GameManager.Battle.summoner.Actions[selectedActionIndex];
+            GameManager.Battle.summonerAction = selectedAction;
+            
+            // 대상 선택
+            if (selectedAction.IsTargeted)
+            {
+                if (selectedAction.IsTargetOpponent)
+                {
+                    // 적군 선택
+                    GameManager.Battle.summoner.SetSingleTarget(GameManager.Battle.enemies[selectedTargetIndex]);
+                }
+                else
+                {
+                    // 아군 선택
+                    if (selectedTargetIndex == SUMMONER)
+                        GameManager.Battle.summoner.SetSingleTarget(GameManager.Battle.summoner);
+                    else
+                        GameManager.Battle.summoner.SetSingleTarget(GameManager.Battle.servants[selectedTargetIndex]);
+                }
+            }
+
+            return true;
+        }
     }
 }
