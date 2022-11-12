@@ -8,6 +8,13 @@ namespace TwitchIRCGame
     {
         protected string chatterID;
 
+        protected override void Awake()
+        {
+            base.Awake();
+            opponentTarget = new List<Character>(GameManager.Battle.MaxEnemyNum);
+            friendlyTarget = new List<Character>(GameManager.Battle.MaxServantNum);
+        }
+        
         public override void Attack(bool typedAttack)
         {
             base.Attack(typedAttack);

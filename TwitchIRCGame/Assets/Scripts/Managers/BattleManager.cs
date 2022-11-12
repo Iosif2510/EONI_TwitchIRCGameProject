@@ -15,7 +15,7 @@ namespace TwitchIRCGame
         public int MaxEnemyNum => maxEnemyNum;
 
         [SerializeField]
-        public Summoner summoner;      // 임시 에디터 직렬화 <- 무슨 뜻?
+        public Summoner summoner;      // 임시 에디터 직렬화
         [SerializeField]
         public List<Servant> servants;
         [SerializeField]
@@ -60,25 +60,6 @@ namespace TwitchIRCGame
         private void Start()
         {
             // BattleManager에서 구현할 부분이 아니므로, 임시로 쓰고 나중에 다른 씬에서 구현
-            SetActionLists();
-        }
-        
-        /*
-        private void Update()
-        {
-            ActionChoiceTime();
-        }
-        */
-
-        /// <summary>턴을 종료합니다.</summary>
-        public void DoTurnEnd()
-        {   
-            TestScenario();
-            StartActions();
-        }
-
-        private void SetActionLists()
-        {
             // 아군 행동 설정
             summoner.AddAction(new TauntAction());
             summoner.AddAction(new NonTypeAttack());
@@ -96,6 +77,19 @@ namespace TwitchIRCGame
             enemies[1].AddAction(new TypedAttack());
             enemies[2].AddAction(new TauntAction());
             enemies[2].AddAction(new TypedAttack());
+        }
+        
+        /*
+        private void Update()
+        {
+            ActionChoiceTime();
+        }
+        */
+
+        public void EndTurn()
+        {   
+            TestScenario();
+            StartActions();
         }
 
         private void ActionChoiceTime()
@@ -117,7 +111,7 @@ namespace TwitchIRCGame
 
             /// 적 행동 지정
             SelectAction(CharacterClass.Enemy, 0, 1, 0);
-            SelectAction(CharacterClass.Enemy, 1, 0);
+            SelectAction(CharacterClass.Enemy, 1, 0, 0);
             SelectAction(CharacterClass.Enemy, 2, 1, -1);
         }
         
@@ -125,49 +119,86 @@ namespace TwitchIRCGame
         /// <param name="characterIndex">캐릭터 리스트에서 해당 캐릭터의 인덱스</param>
         /// <param name="actionIndex">행동 슬롯에서 해당 행동의 인덱스</param>
         /// <param name="targetIndex">대상 캐릭터의 인덱스 (-1이면 사역마를 의미)</param>
-        /// <returns></returns>
         private void SelectAction(CharacterClass characterClass, int characterIndex, int actionIndex, int targetIndex = 0)
         {
-            // 순서 구현은 하기나름
-            // targeted
-            // phaseActionList 순서대로 실행됨
+            if (characterIndex < 0)
+                throw new System.Exception("Invalid character index: " + characterIndex);
+            if (actionIndex < 0)
+                throw new System.Exception("Invalid action index: " + actionIndex);
+            if (targetIndex < -1)
+                throw new System.Exception("Invalid target index: " + targetIndex);
+            
             switch (characterClass)
             {
                 case CharacterClass.Servant:
-                    if (servants[characterIndex].Actions.Count <= actionIndex) {
-                        servantActionList[characterIndex] = null;
-                        return;   //TODO error
-                    }
-                    else if (enemies.Count <= targetIndex)
-                    {
-                        servantActionList[characterIndex] = null;
+                    /*
+                    // 존재하지 않는 캐릭터 (?)
+                    if (servants.Count <= characterIndex) {
+                        throw new Exception("Servant " + (characterIndex + 1) + "does not exist");
                         return;
                     }
+                    */
+                    
+                    // 존재하지 않는 행동
+                    if (servants[characterIndex].Actions.Count <= actionIndex) {
+                        servantActionList[characterIndex] = null;
+                        // TODO: 오류 알림
+                        Debug.Log("Action " + (actionIndex + 1) + " is not in the slot");
+                        return;
+                    }
+                    
+                    // 존재하지 않는 대상
+                    if (targetIndex == -1 || enemies.Count <= targetIndex)
+                    {
+                        servantActionList[characterIndex] = null;
+                        // TODO: 오류 알림
+                        Debug.Log("Enemy " + (targetIndex + 1) + " does not exist");
+                        return;
+                    }
+                    
+                    // 행동 선택
                     servantActionList[characterIndex] = servants[characterIndex].Actions[actionIndex];
                     if (servants[characterIndex].Actions[actionIndex].IsTargeted)
                     {
                         if (servants[characterIndex].Actions[actionIndex].IsTargetOpponent)
                         {
+                            // 적군 선택
                             servants[characterIndex].SetSingleTarget(enemies[targetIndex]);
                         }
                         else
                         {
+                            // 아군 선택
                             if (targetIndex == -1) servants[characterIndex].SetSingleTarget(summoner);
                             else servants[characterIndex].SetSingleTarget(servants[targetIndex]);
                         }
                     }
                     break;
                 case CharacterClass.Enemy:
+                    /*
+                    // 존재하지 않는 캐릭터 (?)
+                    if (characterIndex < 0 || enemies.Count <= characterIndex) {
+                        throw new Exception("Enemy " + (characterIndex + 1) + "does not exist");
+                        return;
+                    }
+                    */
+                    
+                    // 존재하지 않는 행동
                     if (enemies[characterIndex].Actions.Count <= actionIndex)
                     {
                         enemyActionList[characterIndex] = null;
-                        return;   //TODO error
-                    }
-                    else if ((servants.Count + 1) <= targetIndex)
-                    {
-                        enemyActionList[characterIndex] = null;
+                        throw new System.Exception("Enemy " + (characterIndex + 1) + " has selected an invalid action: Action " + (actionIndex + 1));
                         return;
                     }
+                    
+                    // 존재하지 않는 대상
+                    if (servants.Count <= targetIndex)
+                    {
+                        enemyActionList[characterIndex] = null;
+                        throw new System.Exception("Enemy " + (characterIndex + 1) + " has selected an invalid target: Target " + (targetIndex + 1));
+                        return;
+                    }
+                    
+                    // 행동 선택
                     enemyActionList[characterIndex] = enemies[characterIndex].Actions[actionIndex];
                     if (enemies[characterIndex].Actions[actionIndex].IsTargeted)
                     {
@@ -182,28 +213,36 @@ namespace TwitchIRCGame
                         }
                     }
                     break;
+                default:
+                    throw new System.Exception("Summoner action should be selected by UI buttons");
             }
         } 
 
         /// <summary>지정한 행동들을 실행합니다.</summary>
         private void StartActions()
         {
-            if(summonerAction != null) summonerAction.DoAction(); // 에러 핸들링
-            for (int order = 0; order < 3; order++)
+            if (summonerAction != null)
+                summonerAction.DoAction();
+            
+            for (int order = 0; order < ORDER_MAX; order++)
             {
                 for (int i = 0; i < maxServantNum; i++)
                 {
                     if (servantActionList[i] == null) continue;
-                    else if (servantActionList[i].ActionOrder == order) servantActionList[i].DoAction();
+                    
+                    if (servantActionList[i].ActionOrder == order)
+                        servantActionList[i].DoAction();
                 }
                 for (int i = 0; i < maxEnemyNum; i++)
                 {
                     if (enemyActionList[i] == null) continue;
-                    else if (enemyActionList[i].ActionOrder == order) enemyActionList[i].DoAction();
+                    
+                    if (enemyActionList[i].ActionOrder == order)
+                        enemyActionList[i].DoAction();
                 }
             }
 
-            summonerAction = null;  // �׼Ǹ���Ʈ �ʱ�ȭ
+            summonerAction = null;
             for (int i = 0; i < maxServantNum; i++)
             {
                 servantActionList[i] = null;
@@ -212,9 +251,7 @@ namespace TwitchIRCGame
             {
                 enemyActionList[i] = null;
             }
-
         }
-        
 
         private void Mission()
         {

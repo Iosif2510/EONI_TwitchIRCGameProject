@@ -39,7 +39,8 @@ namespace TwitchIRCGame
         public abstract bool IsTargetOpponent { get; }
         
         /// <summary>
-        /// BattleManager에서 실행될 순서입니다.
+        /// BattleManager에서 실행될 순서입니다.<br/>
+        /// NOTE: <c>TwitchIRCGame.Define</c>에서 정의된 <c>ORDER</c> 관련 상수를 사용하십시오.
         /// </summary>
         public abstract int ActionOrder { get; }
 

@@ -59,14 +59,11 @@ namespace TwitchIRCGame
         /// <summary>행동 슬롯입니다. 행동을 최대 3개까지 등록 가능합니다.</summary>
         public List<CharacterAction> Actions => actions;
 
-        private void Awake()
+        protected virtual void Awake()
         {
             actions = new List<CharacterAction>(3);
             health = maxHealth;
             level = 1;
-            // TODO: Enemy도 Character를 상속하는데 코드는 아군 캐릭터에만 맞추어져 있음
-            opponentTarget = new List<Character>(GameManager.Battle.MaxEnemyNum);
-            friendlyTarget = new List<Character>(GameManager.Battle.MaxServantNum);
         }
 
         private void Start()
@@ -81,13 +78,6 @@ namespace TwitchIRCGame
             health -= finalDamage;
             if (health < 0) health = 0; // TODO: 사망 처리 필요
             Debug.Log($"{characterName} got {finalDamage} damage!");
-        }
-
-        // DEPRECATED: public 변수인 Health를 쓸 것; 지워도 안전하면 지우기 바람
-        [System.Obsolete("public 변수인 Health를 사용해야 합니다.", true)]
-        public int Showhealth()
-        {
-            return this.health;
         }
 
         // 제안: 행동 슬롯을 배열로 설정하여 AddAction(action, slotNumber)으로 고치는 건 어떤지?
