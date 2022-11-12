@@ -42,6 +42,8 @@ namespace TwitchIRCGame
         public override void Die()
         {
             base.Die();
+            //TODO die effect
+            GameManager.Instance.ServantDelete(this);
             gameObject.SetActive(false);
         }
 

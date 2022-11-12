@@ -121,6 +121,7 @@ namespace TwitchIRCGame
             string deleteID = servant.ChatterID;
             if (servantIDs.Contains(deleteID))
             {
+                //servantTeam[deleteID].
                 servantIDs.Remove(deleteID);
                 servantTeam.Remove(deleteID);
             }
