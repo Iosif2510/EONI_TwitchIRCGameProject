@@ -7,6 +7,23 @@ namespace TwitchIRCGame
 {
     public class BattleManager : MonoBehaviour
     {
+        public enum BattlePhase
+        {
+            SummonerSelectPhase,
+            WaitServantSelectPhase,
+            FightPhase,
+            CheckPhase,
+            BattleFinish
+        }
+
+        [SerializeField]
+        private BattlePhase currentPhase;
+        public BattlePhase CurrentPhase
+        {
+            get { return currentPhase; }
+            private set { currentPhase = value; }
+        }
+        
         [SerializeField]
         private int maxServantNum = 3;
         [SerializeField]
@@ -17,9 +34,9 @@ namespace TwitchIRCGame
         [SerializeField]
         public Summoner summoner;      // 임시 에디터 직렬화
         [SerializeField]
-        public List<Servant> servants;
+        public List<Character> servants;
         [SerializeField]
-        public List<Enemy> enemies;
+        public List<Character> enemies;
 
         public CharacterAction summonerAction;
         private CharacterAction[] servantActionList;
@@ -30,19 +47,19 @@ namespace TwitchIRCGame
             //InitServants();
             InitBattle();
         }
-        /*
+        
         private void InitServants()
         {
-            servants = new List<Servant>(maxTeamNum);
+            servants = new List<Character>(maxServantNum);
             for (int i = 0; i < GameManager.Instance.servantIDs.Count; i++)
             {
                 servants.Add(GameManager.Instance.servantTeam[GameManager.Instance.servantIDs[i]]);
             }
         }
-        */
 
         private void InitBattle()
         {
+            CurrentPhase = BattlePhase.SummonerSelectPhase;
             //enemies = new List<Enemy>(maxTeamNum);
             summonerAction = null;
             servantActionList = new CharacterAction[maxServantNum];
@@ -112,7 +129,7 @@ namespace TwitchIRCGame
             /// 적 행동 지정
             SelectAction(CharacterClass.Enemy, 0, 1, 0);
             SelectAction(CharacterClass.Enemy, 1, 0, 0);
-            SelectAction(CharacterClass.Enemy, 2, 1, -1);
+            SelectAction(CharacterClass.Enemy, 2, 1, 1);
         }
         
         /// <summary>현재 턴에서 사용될 행동을 지정합니다.</summary>
@@ -122,11 +139,15 @@ namespace TwitchIRCGame
         private void SelectAction(CharacterClass characterClass, int characterIndex, int actionIndex, int targetIndex = 0)
         {
             if (characterIndex < 0)
-                throw new System.Exception("Invalid character index: " + characterIndex);
+                throw new System.Exception($"Invalid character index: {characterIndex}");
             if (actionIndex < 0)
-                throw new System.Exception("Invalid action index: " + actionIndex);
+                throw new System.Exception($"Invalid action index: {actionIndex}");
             if (targetIndex < -1)
-                throw new System.Exception("Invalid target index: " + targetIndex);
+                throw new System.Exception($"Invalid target index: {targetIndex}");
+
+            List<Character> characters;
+            CharacterAction[] actionList;
+            string characterString;
             
             switch (characterClass)
             {
@@ -213,6 +234,7 @@ namespace TwitchIRCGame
         /// <summary>지정한 행동들을 실행합니다.</summary>
         private void StartActions()
         {
+            CurrentPhase = BattlePhase.FightPhase;
             if (summonerAction != null)
                 summonerAction.DoAction();
             
@@ -223,7 +245,18 @@ namespace TwitchIRCGame
                     if (servantActionList[i] == null) continue;
                     
                     if (servantActionList[i].ActionOrder == order)
-                        servantActionList[i].DoAction();
+                    {
+                        // 그로기에 빠진 사역마
+                        if (servants[i].IsGroggy)
+                        {
+                            //TODO 그로기 애니메이션(행동을 할 수 없음)
+                            continue;
+                        }
+                        else
+                        {
+                            servantActionList[i].DoAction();
+                        }
+                    }
                 }
                 for (int i = 0; i < maxEnemyNum; i++)
                 {
@@ -232,6 +265,7 @@ namespace TwitchIRCGame
                     if (enemyActionList[i].ActionOrder == order)
                         enemyActionList[i].DoAction();
                 }
+                
             }
 
             summonerAction = null;
@@ -243,12 +277,30 @@ namespace TwitchIRCGame
             {
                 enemyActionList[i] = null;
             }
+            
+            if (CheckClear()) StageClear();
         }
 
-        private void Mission()
+        private bool CheckClear()
         {
+            bool allEnemyDied = true;
+            foreach (Enemy enemy in enemies)
+            {
+                if (enemy.gameObject.activeSelf)
+                {
+                    allEnemyDied = false;
+                }
+            }
 
+            return allEnemyDied;
         }
+
+        private void StageClear()
+        {
+            // TODO: 씬 전환, 성장, 보상 등
+            Debug.Log("Stage Clear!");
+        }
+
     }
 }
 

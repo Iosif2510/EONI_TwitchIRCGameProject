@@ -9,7 +9,7 @@ using static TwitchIRCGame.Utils;
 
 namespace TwitchIRCGame
 {
-    public class Character : MonoBehaviour
+    public abstract class Character : MonoBehaviour
     {
         [SerializeField]
         protected string characterName;
@@ -29,6 +29,10 @@ namespace TwitchIRCGame
         /// <summary>치명타 발생 시의 대미지 배율입니다.</summary>
         [SerializeField]
         protected float basicCritDamageScale = 2f;
+        
+        /// <summary>사역마에게만 적용되는 빈사 상태입니다.</summary>
+        protected bool isGroggy;
+        public bool IsGroggy => isGroggy;
 
 
         [SerializeField]
@@ -67,6 +71,7 @@ namespace TwitchIRCGame
             actions = new List<CharacterAction>(3);
             health = maxHealth;
             level = 1;
+            isGroggy = false;
         }
 
         private void Start()
@@ -83,7 +88,7 @@ namespace TwitchIRCGame
 
             if (health < 0) {
                 health = 0;
-                //OnHealthZero();
+                OnHealthZero();
             }
 
             float displayedHealth = (float) health / (float) maxHealth;
@@ -156,7 +161,12 @@ namespace TwitchIRCGame
             ReturnAfterAction.Invoke();
             ReturnAfterAction.RemoveAllListeners();
         }
+        
+        public void RestoreHealth()
+        {
 
+        }
+        
         protected void TauntTarget(Character target)
         {
             if (target == null) return;
@@ -171,5 +181,12 @@ namespace TwitchIRCGame
             this.opponentTarget.Clear();
             this.opponentTarget.Add(originalTarget);
         }
+        
+        protected abstract void OnHealthZero();
+        public virtual void Die()
+        {
+
+        }
+
     }
 }

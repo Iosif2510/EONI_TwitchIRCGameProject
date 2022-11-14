@@ -34,6 +34,17 @@ namespace TwitchIRCGame
             }
             Debug.Log($"{characterName} taunted!");
         }
+        
+        protected override void OnHealthZero()
+        {
+            Die();
+        }
+
+        public override void Die()
+        {
+            base.Die();
+            gameObject.SetActive(false);
+        }
     }
 }
 
