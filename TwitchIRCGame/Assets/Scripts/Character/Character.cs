@@ -79,7 +79,7 @@ namespace TwitchIRCGame
             if (health < 0)
             {
                 health = 0; // TODO: 사망 처리 필요
-                Die();
+                OnHealthZero();
             }
             Debug.Log($"{characterName} got {finalDamage} damage!");
         }
@@ -148,6 +148,11 @@ namespace TwitchIRCGame
             ReturnAfterAction.RemoveAllListeners();
         }
 
+        public void RestoreHealth()
+        {
+
+        }
+
         protected void TauntTarget(Character target)
         {
             if (target == null) return;
@@ -163,6 +168,7 @@ namespace TwitchIRCGame
             this.opponentTarget.Add(originalTarget);
         }
 
+        protected abstract void OnHealthZero();
         public virtual void Die()
         {
 

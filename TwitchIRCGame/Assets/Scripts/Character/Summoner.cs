@@ -17,24 +17,29 @@ namespace TwitchIRCGame
         
         public override void Attack(bool typedAttack)
         {
-            base.Attack(typedAttack);
             foreach (var target in opponentTarget)
             {
                 //Servant Animation
                 Debug.Log($"{characterName} attacked {target.Name}!");
                 AttackTarget(target, typedAttack);
             }
+            base.Attack(typedAttack);   // 액션 이후 이벤트 발생(정상화 등)
         }
 
         public override void Taunt()
         {
-            base.Taunt();
             foreach (var enemy in GameManager.Battle.enemies)
             {
                 //Taunt Animation
                 TauntTarget(enemy);
             }
             Debug.Log($"{characterName} taunted!");
+            base.Taunt();
+        }
+
+        protected override void OnHealthZero()
+        {
+            Die();
         }
 
         public override void Die()

@@ -30,19 +30,19 @@ namespace TwitchIRCGame
         {
             if (GameManager.Battle.summoner.Actions.Count < actionIndex)
             {
-                Debug.Log("Action " + actionIndex + " is not in the slot");
+                Debug.Log($"Action {actionIndex} is not in the slot");
                 return;
             }
 
             if (selectedActionIndex != actionIndex - 1) // 선택
             {
                 selectedActionIndex = actionIndex - 1; // 인터페이스상 index는 1-indexed, 실제 구현된 index는 0-indexed
-                Debug.Log("Action " + actionIndex + " selected");
+                Debug.Log($"Action {actionIndex} selected");
             }
             else // 선택 해제
             {
                 selectedActionIndex = NOT_SELECTED;
-                Debug.Log("Action " + actionIndex + " deselected");
+                Debug.Log($"Action {actionIndex} deselected");
             }
         }
 
@@ -118,9 +118,6 @@ namespace TwitchIRCGame
                 return true;
             }
 
-            if (selectedTargetIndex == NOT_SELECTED)
-                return false;
-
             // 행동 선택
             CharacterAction selectedAction = GameManager.Battle.summoner.Actions[selectedActionIndex];
             GameManager.Battle.summonerAction = selectedAction;
@@ -128,7 +125,8 @@ namespace TwitchIRCGame
             // 대상 선택
             if (selectedAction.IsTargeted)
             {
-                if (selectedAction.IsTargetOpponent)
+                if (selectedTargetIndex == NOT_SELECTED) return false;      // 타겟 공격일때만 타겟을 결정
+                else if (selectedAction.IsTargetOpponent)
                 {
                     // 적군 선택
                     GameManager.Battle.summoner.SetSingleTarget(GameManager.Battle.enemies[selectedTargetIndex]);

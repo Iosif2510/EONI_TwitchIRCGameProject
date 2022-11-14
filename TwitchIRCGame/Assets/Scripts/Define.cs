@@ -25,7 +25,7 @@ namespace TwitchIRCGame
             Enemy
         }
 
-        public enum GameState
+        public enum GameScene
         {
             Main,
             InBattle

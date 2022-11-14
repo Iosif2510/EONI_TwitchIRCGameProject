@@ -22,8 +22,11 @@ namespace TwitchIRCGame
         //! 프로퍼티로만 접근할 것
         private static GameObject currentSceneManager;
 
-        private BattleManager battleManager;
         private UIManager uiManager;
+        private GameSceneManager sceneManager;
+
+        private BattleManager battleManager;
+        
 
         //모든 씬에서 사용하는 매니저 모음
         public static UIManager UI 
@@ -35,6 +38,18 @@ namespace TwitchIRCGame
                     Instance.uiManager = Instance.gameObject.GetComponent<UIManager>();
                 }
                 return Instance.uiManager;
+            }
+        }
+
+        public static GameSceneManager Scene
+        {
+            get
+            {
+                if (Instance.sceneManager == null)
+                {
+                    Instance.sceneManager = Instance.gameObject.GetComponent<GameSceneManager>();
+                }
+                return Instance.sceneManager;
             }
         }
 
@@ -55,22 +70,23 @@ namespace TwitchIRCGame
             get
             {
                 {
-                    if (Instance.battleManager == null)
+                    if (Scene.CurrentScene == GameScene.InBattle)
                     {
-                        Instance.battleManager = CurrentSceneManager.GetComponent<BattleManager>();
+                        if (Instance.battleManager == null)
+                        {
+                            Instance.battleManager = CurrentSceneManager.GetComponent<BattleManager>();
+                        }
+                        return Instance.battleManager;
                     }
-                    return Instance.battleManager;
+                    else
+                    {
+                        throw new System.NotImplementedException();
+                    }
                 }
             }
         }
 
-        [SerializeField]
-        private GameState currentState;
 
-        public GameState CurrentState
-        {
-            get { return currentState; }
-        }
 
         // nth player: playerTeam[playerNames[n]]
         public Summoner summoner;

@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace TwitchIRCGame
 {
+    //InBattle State에서만 사용... BattleManager Safe
     public class Enemy : Character
     {
         protected override void Awake()
@@ -33,6 +34,17 @@ namespace TwitchIRCGame
                 TauntTarget(servants);
             }
             Debug.Log($"{characterName} taunted!");
+        }
+
+        protected override void OnHealthZero()
+        {
+            Die();
+        }
+
+        public override void Die()
+        {
+            base.Die();
+            gameObject.SetActive(false);
         }
     }
 }

@@ -7,6 +7,23 @@ namespace TwitchIRCGame
 {
     public class BattleManager : MonoBehaviour
     {
+        public enum BattlePhase
+        {
+            SummonerSelectPhase,
+            WaitServantSelectPhase,
+            FightPhase,
+            CheckPhase,
+            BattleFinish
+        }
+
+        [SerializeField]
+        private BattlePhase currentPhase;
+        public BattlePhase CurrentPhase
+        {
+            get { return currentPhase; }
+            private set { currentPhase = value; }
+        }
+
         [SerializeField]
         private int maxServantNum = 3;
         [SerializeField]
@@ -43,6 +60,7 @@ namespace TwitchIRCGame
 
         private void InitBattle()
         {
+            CurrentPhase = BattlePhase.SummonerSelectPhase;
             //enemies = new List<Enemy>(maxTeamNum);
             summonerAction = null;
             servantActionList = new CharacterAction[maxServantNum];
@@ -112,7 +130,7 @@ namespace TwitchIRCGame
             /// 적 행동 지정
             SelectAction(CharacterClass.Enemy, 0, 1, 0);
             SelectAction(CharacterClass.Enemy, 1, 0, 0);
-            SelectAction(CharacterClass.Enemy, 2, 1, -1);
+            SelectAction(CharacterClass.Enemy, 2, 1, 1);
         }
         
         /// <summary>현재 턴에서 사용될 행동을 지정합니다.</summary>
@@ -131,20 +149,22 @@ namespace TwitchIRCGame
             switch (characterClass)
             {
                 case CharacterClass.Servant:
-                    /*
                     // 존재하지 않는 캐릭터 (?)
                     if (servants.Count <= characterIndex) {
-                        throw new Exception("Servant " + (characterIndex + 1) + "does not exist");
+                        throw new System.Exception($"Servant {characterIndex + 1} does not exist");
+                    }
+                    // 캐릭터 사망
+                    else if (servants[characterIndex].IsGroggy)
+                    {
+                        Debug.Log($"Servant {characterIndex + 1} is in groggy!");
                         return;
                     }
-                    */
-                    
+
                     // 존재하지 않는 행동
                     if (servants[characterIndex].Actions.Count <= actionIndex) {
                         servantActionList[characterIndex] = null;
                         // TODO: 오류 알림
                         Debug.Log("Action " + (actionIndex + 1) + " is not in the slot");
-                        return;
                     }
                     
                     // 존재하지 않는 대상
@@ -153,6 +173,11 @@ namespace TwitchIRCGame
                         servantActionList[characterIndex] = null;
                         // TODO: 오류 알림
                         Debug.Log("Enemy " + (targetIndex + 1) + " does not exist");
+                    }
+                    //대상 사망
+                    else if (!enemies[targetIndex].gameObject.activeSelf)
+                    {
+                        Debug.Log($"Enemy {enemies[targetIndex].Name} is dead!");
                         return;
                     }
                     
@@ -174,20 +199,22 @@ namespace TwitchIRCGame
                     }
                     break;
                 case CharacterClass.Enemy:
-                    /*
                     // 존재하지 않는 캐릭터 (?)
                     if (characterIndex < 0 || enemies.Count <= characterIndex) {
-                        throw new Exception("Enemy " + (characterIndex + 1) + "does not exist");
+                        throw new System.Exception("Enemy " + (characterIndex + 1) + "does not exist");
+                    }
+                    // 캐릭터 사망
+                    else if (enemies[characterIndex].gameObject.activeSelf == false)    
+                    {
+                        Debug.Log($"Enemy {characterIndex + 1} is dead!");
                         return;
                     }
-                    */
-                    
+
                     // 존재하지 않는 행동
                     if (enemies[characterIndex].Actions.Count <= actionIndex)
                     {
                         enemyActionList[characterIndex] = null;
                         throw new System.Exception("Enemy " + (characterIndex + 1) + " has selected an invalid action: Action " + (actionIndex + 1));
-                        return;
                     }
                     
                     // 존재하지 않는 대상
@@ -195,6 +222,11 @@ namespace TwitchIRCGame
                     {
                         enemyActionList[characterIndex] = null;
                         throw new System.Exception("Enemy " + (characterIndex + 1) + " has selected an invalid target: Target " + (targetIndex + 1));
+                    }
+                    // 대상 사망
+                    else if (servants[targetIndex].IsGroggy)
+                    {
+                        Debug.Log($"Servant {servants[targetIndex].Name} is in groggy!");
                         return;
                     }
                     
@@ -221,6 +253,7 @@ namespace TwitchIRCGame
         /// <summary>지정한 행동들을 실행합니다.</summary>
         private void StartActions()
         {
+            CurrentPhase = BattlePhase.FightPhase;
             if (summonerAction != null)
                 summonerAction.DoAction();
             
@@ -231,7 +264,18 @@ namespace TwitchIRCGame
                     if (servantActionList[i] == null) continue;
                     
                     if (servantActionList[i].ActionOrder == order)
-                        servantActionList[i].DoAction();
+                    {
+                        // 그로기에 빠진 사역마
+                        if (servants[i].IsGroggy)
+                        {
+                            //TODO 그로기 애니메이션(행동을 할 수 없음)
+                            continue;
+                        }
+                        else
+                        {
+                            servantActionList[i].DoAction();
+                        }
+                    }
                 }
                 for (int i = 0; i < maxEnemyNum; i++)
                 {
@@ -251,12 +295,30 @@ namespace TwitchIRCGame
             {
                 enemyActionList[i] = null;
             }
+
+            if (CheckClear()) StageClear();
         }
 
-        private void Mission()
+        private bool CheckClear()
         {
+            bool allEnemyDied = true;
+            foreach (Enemy enemy in enemies)
+            {
+                if (enemy.gameObject.activeSelf)
+                {
+                    allEnemyDied = false;
+                }
+            }
 
+            return allEnemyDied;
         }
+
+        private void StageClear()
+        {
+            //TODO 씬 전환, 성장, 보상 등
+            Debug.Log("Stage Clear!");
+        }
+
     }
 }
 
