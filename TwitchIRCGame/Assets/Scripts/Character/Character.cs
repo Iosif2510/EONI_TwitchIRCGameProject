@@ -38,6 +38,9 @@ namespace TwitchIRCGame
         
         protected List<CharacterAction> actions;
 
+        /// <summary>체력 바 오브젝트입니다. 체력 값을 수정할 때 반드시 함께 변경되어야 합니다.</summary>
+        protected GameObject healthBar;
+
         public string Name => characterName;
         public int Health => health;
         /// <summary>팀 진영 내에서의 위치를 의미합니다.</summary>
@@ -68,7 +71,8 @@ namespace TwitchIRCGame
 
         private void Start()
         {
-
+            GameObject healthBarObject = gameObject.transform.Find("HealthBar").gameObject;
+            healthBar = healthBarObject.transform.Find("HealthBarContent").gameObject;
         }
 
         public void Damage(CharacterType attackType, int damage)
@@ -76,8 +80,17 @@ namespace TwitchIRCGame
             float typeDamagePercent = TypeDamagePercent(attackType, this.characterType);
             int finalDamage = Mathf.FloorToInt(damage * (1 + typeDamagePercent));
             health -= finalDamage;
-            if (health < 0) health = 0; // TODO: 사망 처리 필요
+
+            if (health < 0) {
+                health = 0;
+                //OnHealthZero();
+            }
+
+            float displayedHealth = (float) health / (float) maxHealth;
+            healthBar.transform.localScale = new Vector3(displayedHealth, 1.0f, 1.0f);
+            
             Debug.Log($"{characterName} got {finalDamage} damage!");
+            Debug.Log($"{characterName}'s health: {displayedHealth}");
         }
 
         // 제안: 행동 슬롯을 배열로 설정하여 AddAction(action, slotNumber)으로 고치는 건 어떤지?
@@ -158,6 +171,5 @@ namespace TwitchIRCGame
             this.opponentTarget.Clear();
             this.opponentTarget.Add(originalTarget);
         }
-
     }
 }
