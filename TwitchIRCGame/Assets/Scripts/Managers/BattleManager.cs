@@ -168,8 +168,8 @@ namespace TwitchIRCGame
                         else
                         {
                             // 아군 선택
-                            if (targetIndex == -1) servants[characterIndex].SetSingleTarget(summoner);
-                            else servants[characterIndex].SetSingleTarget(servants[targetIndex]);
+                            if (targetIndex == -1) servants[characterIndex].SetSingleSupport(summoner);
+                            else servants[characterIndex].SetSingleSupport(servants[targetIndex]);
                         }
                     }
                     break;

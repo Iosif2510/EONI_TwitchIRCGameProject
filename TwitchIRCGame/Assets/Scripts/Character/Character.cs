@@ -21,8 +21,11 @@ namespace TwitchIRCGame
         [SerializeField]
         protected int maxHealth;
         protected int health;
+        protected int guard;
         [SerializeField]
         protected int basicDamage = 10;
+        protected int basicHealing = 5;
+        protected int basicGuarding = 5;
         /// <summary>치명타 발생 확률입니다.</summary>
         [SerializeField]
         protected float basicCritPercentage = .02f;
@@ -75,7 +78,9 @@ namespace TwitchIRCGame
         {
             float typeDamagePercent = TypeDamagePercent(attackType, this.characterType);
             int finalDamage = Mathf.FloorToInt(damage * (1 + typeDamagePercent));
-            health -= finalDamage;
+            health -= (finalDamage-guard); // 방어수치 반영
+            guard -= finalDamage;
+            if (guard < 0) guard = 0; // 방어수치는 0이하로 떨어지지 않음.TODO: 턴 끝날때마다 방어수치 초기화 필요
             if (health < 0) health = 0; // TODO: 사망 처리 필요
             Debug.Log($"{characterName} got {finalDamage} damage!");
         }
@@ -111,6 +116,12 @@ namespace TwitchIRCGame
         {
             this.opponentTarget.Clear();
             this.opponentTarget.Add(target);
+        }
+
+        public void SetSingleSupport(Character target)
+        {
+            this.friendlyTarget.Clear();
+            this.friendlyTarget.Add(target);
         }
 
         public virtual void Attack(bool typedAttack) 
@@ -158,6 +169,51 @@ namespace TwitchIRCGame
             this.opponentTarget.Clear();
             this.opponentTarget.Add(originalTarget);
         }
+        public void Healing(int heal)
+        {
+            health += heal;
+            //최대 체력 이상 회복 불가
+            if (health > maxHealth) health = maxHealth;
+        }
 
+        protected void HealingTarget(Character target)
+        {
+            if (target == null) return;
+            target.Healing(basicHealing);
+        }
+
+        public virtual void Heal()
+        {
+            ReturnAfterAction.Invoke();
+            ReturnAfterAction.RemoveAllListeners();
+        }
+
+        public void Guarding(int guards)
+        {
+            guard += guards;
+        }
+        protected void GuardingTarget(Character target)
+        {
+            if (target == null) return;
+            target.Guarding(basicGuarding);
+        }
+
+        public virtual void Guard()
+        {
+            ReturnAfterAction.Invoke();
+            ReturnAfterAction.RemoveAllListeners();
+        }
+
+        public virtual void AttackAll(bool typedAttack)
+        {
+            ReturnAfterAction.Invoke();
+            ReturnAfterAction.RemoveAllListeners();
+        }
+
+        public virtual void AllHeal()
+        {
+            ReturnAfterAction.Invoke();
+            ReturnAfterAction.RemoveAllListeners();
+        }
     }
 }

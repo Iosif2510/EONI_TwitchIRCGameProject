@@ -34,6 +34,12 @@ namespace TwitchIRCGame
             }
             Debug.Log($"{characterName} taunted!");
         }
+        public override void Guard()
+        {
+            base.Guard();
+            GuardingTarget(this);
+            Debug.Log($"{characterName} get guard!");
+        }
     }
 }
 

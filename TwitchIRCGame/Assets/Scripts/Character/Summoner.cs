@@ -36,6 +36,42 @@ namespace TwitchIRCGame
             }
             Debug.Log($"{characterName} taunted!");
         }
+
+        public override void Heal()
+        {
+            base.Heal();
+            foreach (var target in friendlyTarget)
+            {
+                Debug.Log($"{characterName} Healing {target.Name}!");
+                HealingTarget(target);
+            }
+        }
+        public override void Guard()
+        {
+            base.Guard();
+            GuardingTarget(this);
+            Debug.Log($"{characterName} get guard!");
+        }
+
+        public override void AttackAll(bool typedAttack)
+        {
+            base.AttackAll(typedAttack);
+            foreach (var target in GameManager.Battle.enemies)
+            {
+                Debug.Log($"{characterName} attacked {target.Name}!");
+                AttackTarget(target, typedAttack);
+            }
+        }
+
+        public override void AllHeal()
+        {
+            base.Heal();
+            foreach (var target in GameManager.Battle.servants)
+            {
+                Debug.Log($"{characterName} Healing {target.Name}!");
+                HealingTarget(target);
+            }
+        }
     }
 }
 
