@@ -167,6 +167,7 @@ namespace TwitchIRCGame
 
         }
         
+        protected void TauntTarget(Character target)
         {
             if (target == null) return;
             if (target.OpponentTarget.Count == 1)
@@ -181,12 +182,6 @@ namespace TwitchIRCGame
             this.opponentTarget.Add(originalTarget);
         }
         
-        protected abstract void OnHealthZero();
-        public virtual void Die()
-        {
-
-        }
-
         protected abstract void OnHealthZero();
         public virtual void Die()
         {

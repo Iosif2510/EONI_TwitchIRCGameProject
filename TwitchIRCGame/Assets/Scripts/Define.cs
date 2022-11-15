@@ -31,12 +31,6 @@ namespace TwitchIRCGame
             InBattle
         }
 
-        public enum GameScene
-        {
-            Main,
-            InBattle
-        }
-
         // 행동 순서 결정에 사용되는 상수
         // ORDER_MAX 값은 for문에 사용되므로 새로운 행동 순서를 추가할 때마다 증가시켜 줄 것
         public const int ORDER_BEFORE_ATTACK = 0;

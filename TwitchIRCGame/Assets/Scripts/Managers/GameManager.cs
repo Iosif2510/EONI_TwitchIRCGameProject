@@ -141,31 +141,6 @@ namespace TwitchIRCGame
             }
             return deleteID;
         }
-
-        public void GameOver()
-        {
-            Debug.Log("Game Over!");
-        }
-
-        public void CreateServant(string newID)
-        {
-            servantIDs.Add(newID);
-            //newServant = Instantiate()
-            //servantTeam.Add(newID, )
-        }
-
-        public string ServantDelete(Servant servant)
-        {
-            string deleteID = servant.ChatterID;
-            if (servantIDs.Contains(deleteID))
-            {
-                //servantTeam[deleteID].
-                servantIDs.Remove(deleteID);
-                servantTeam.Remove(deleteID);
-            }
-            return deleteID;
-        }
-
         
     }
 
