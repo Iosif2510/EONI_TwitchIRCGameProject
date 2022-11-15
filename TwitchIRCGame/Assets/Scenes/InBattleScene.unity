@@ -193,10 +193,14 @@ PrefabInstance:
     - target: {fileID: 1858358941330334049, guid: 0065992ebcf943c46b567fc7f715dbbc, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1145988222}
+      objectReference: {fileID: 8641451862475836785}
     - target: {fileID: 1858358941330334049, guid: 0065992ebcf943c46b567fc7f715dbbc, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: SetSummonerTarget
+      objectReference: {fileID: 0}
+    - target: {fileID: 1858358941330334049, guid: 0065992ebcf943c46b567fc7f715dbbc, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: TwitchIRCGame.BattleUI, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 1858358941330334049, guid: 0065992ebcf943c46b567fc7f715dbbc, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument
@@ -544,10 +548,14 @@ PrefabInstance:
     - target: {fileID: 1858358941330334049, guid: 0065992ebcf943c46b567fc7f715dbbc, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1145988222}
+      objectReference: {fileID: 8641451862475836785}
     - target: {fileID: 1858358941330334049, guid: 0065992ebcf943c46b567fc7f715dbbc, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: SetSummonerTarget
+      objectReference: {fileID: 0}
+    - target: {fileID: 1858358941330334049, guid: 0065992ebcf943c46b567fc7f715dbbc, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: TwitchIRCGame.BattleUI, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 1858358941330334049, guid: 0065992ebcf943c46b567fc7f715dbbc, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument
@@ -600,10 +608,14 @@ PrefabInstance:
     - target: {fileID: 4906615783424397616, guid: 75069d97f26d5f14185cf00a4558dc3c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1145988222}
+      objectReference: {fileID: 8641451862475836785}
     - target: {fileID: 4906615783424397616, guid: 75069d97f26d5f14185cf00a4558dc3c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: SetSummonerTarget
+      objectReference: {fileID: 0}
+    - target: {fileID: 4906615783424397616, guid: 75069d97f26d5f14185cf00a4558dc3c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: TwitchIRCGame.BattleUI, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 4906615783424397616, guid: 75069d97f26d5f14185cf00a4558dc3c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument
@@ -907,10 +919,14 @@ PrefabInstance:
     - target: {fileID: 4906615783424397616, guid: 75069d97f26d5f14185cf00a4558dc3c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1145988222}
+      objectReference: {fileID: 8641451862475836785}
     - target: {fileID: 4906615783424397616, guid: 75069d97f26d5f14185cf00a4558dc3c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: SetSummonerTarget
+      objectReference: {fileID: 0}
+    - target: {fileID: 4906615783424397616, guid: 75069d97f26d5f14185cf00a4558dc3c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: TwitchIRCGame.BattleUI, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 4906615783424397616, guid: 75069d97f26d5f14185cf00a4558dc3c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument
@@ -1131,15 +1147,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 702223658835467128, guid: 134435056fa5b5f4a9bc2e982967ce5a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 0.00000084771057
       objectReference: {fileID: 0}
     - target: {fileID: 702223658835467128, guid: 134435056fa5b5f4a9bc2e982967ce5a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.00000010596382
       objectReference: {fileID: 0}
     - target: {fileID: 702223658835467128, guid: 134435056fa5b5f4a9bc2e982967ce5a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 0.0000067816845
       objectReference: {fileID: 0}
     - target: {fileID: 702223658835467128, guid: 134435056fa5b5f4a9bc2e982967ce5a, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1176,10 +1192,14 @@ PrefabInstance:
     - target: {fileID: 1326822057863548735, guid: 134435056fa5b5f4a9bc2e982967ce5a, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1145988218}
+      objectReference: {fileID: 8641451862475836785}
     - target: {fileID: 1326822057863548735, guid: 134435056fa5b5f4a9bc2e982967ce5a, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: 
+      value: SetSummonerTarget
+      objectReference: {fileID: 0}
+    - target: {fileID: 1326822057863548735, guid: 134435056fa5b5f4a9bc2e982967ce5a, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: TwitchIRCGame.BattleUI, Assembly-CSharp
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 134435056fa5b5f4a9bc2e982967ce5a, type: 3}
@@ -1260,10 +1280,14 @@ PrefabInstance:
     - target: {fileID: 1858358941330334049, guid: 0065992ebcf943c46b567fc7f715dbbc, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1145988222}
+      objectReference: {fileID: 8641451862475836785}
     - target: {fileID: 1858358941330334049, guid: 0065992ebcf943c46b567fc7f715dbbc, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: SetSummonerTarget
+      objectReference: {fileID: 0}
+    - target: {fileID: 1858358941330334049, guid: 0065992ebcf943c46b567fc7f715dbbc, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: TwitchIRCGame.BattleUI, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 1858358941330334049, guid: 0065992ebcf943c46b567fc7f715dbbc, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument
@@ -1316,10 +1340,14 @@ PrefabInstance:
     - target: {fileID: 4906615783424397616, guid: 75069d97f26d5f14185cf00a4558dc3c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1145988222}
+      objectReference: {fileID: 8641451862475836785}
     - target: {fileID: 4906615783424397616, guid: 75069d97f26d5f14185cf00a4558dc3c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: SetSummonerTarget
+      objectReference: {fileID: 0}
+    - target: {fileID: 4906615783424397616, guid: 75069d97f26d5f14185cf00a4558dc3c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: TwitchIRCGame.BattleUI, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 4906615783424397616, guid: 75069d97f26d5f14185cf00a4558dc3c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument
@@ -1489,19 +1517,51 @@ PrefabInstance:
     - target: {fileID: 8641451861800617727, guid: 8b195d2b7bed04343a5fc23931d0acc8, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1145988222}
+      objectReference: {fileID: 8641451862475836785}
+    - target: {fileID: 8641451861800617727, guid: 8b195d2b7bed04343a5fc23931d0acc8, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ToggleSummonerAction
+      objectReference: {fileID: 0}
+    - target: {fileID: 8641451861800617727, guid: 8b195d2b7bed04343a5fc23931d0acc8, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: TwitchIRCGame.BattleUI, Assembly-CSharp
+      objectReference: {fileID: 0}
     - target: {fileID: 8641451861983158964, guid: 8b195d2b7bed04343a5fc23931d0acc8, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1145988222}
+      objectReference: {fileID: 8641451862475836785}
+    - target: {fileID: 8641451861983158964, guid: 8b195d2b7bed04343a5fc23931d0acc8, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ToggleSummonerAction
+      objectReference: {fileID: 0}
+    - target: {fileID: 8641451861983158964, guid: 8b195d2b7bed04343a5fc23931d0acc8, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: TwitchIRCGame.BattleUI, Assembly-CSharp
+      objectReference: {fileID: 0}
     - target: {fileID: 8641451862609909669, guid: 8b195d2b7bed04343a5fc23931d0acc8, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1145988222}
+      objectReference: {fileID: 8641451862475836785}
+    - target: {fileID: 8641451862609909669, guid: 8b195d2b7bed04343a5fc23931d0acc8, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: EndTurn
+      objectReference: {fileID: 0}
+    - target: {fileID: 8641451862609909669, guid: 8b195d2b7bed04343a5fc23931d0acc8, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: TwitchIRCGame.BattleUI, Assembly-CSharp
+      objectReference: {fileID: 0}
     - target: {fileID: 8641451863332539501, guid: 8b195d2b7bed04343a5fc23931d0acc8, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1145988222}
+      objectReference: {fileID: 8641451862475836785}
+    - target: {fileID: 8641451863332539501, guid: 8b195d2b7bed04343a5fc23931d0acc8, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ToggleSummonerAction
+      objectReference: {fileID: 0}
+    - target: {fileID: 8641451863332539501, guid: 8b195d2b7bed04343a5fc23931d0acc8, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: TwitchIRCGame.BattleUI, Assembly-CSharp
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8b195d2b7bed04343a5fc23931d0acc8, type: 3}
 --- !u!224 &8641451862475836783 stripped
@@ -1509,3 +1569,20 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 2237389779470403816, guid: 8b195d2b7bed04343a5fc23931d0acc8, type: 3}
   m_PrefabInstance: {fileID: 8641451862475836782}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &8641451862475836784 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3249474164722414409, guid: 8b195d2b7bed04343a5fc23931d0acc8, type: 3}
+  m_PrefabInstance: {fileID: 8641451862475836782}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &8641451862475836785
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8641451862475836784}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b18794866a08134478f404c2313b13d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
