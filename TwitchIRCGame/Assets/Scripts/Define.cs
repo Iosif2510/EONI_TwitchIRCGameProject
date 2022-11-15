@@ -24,6 +24,12 @@ namespace TwitchIRCGame
             Servant,
             Enemy
         }
+        
+        public enum GameScene
+        {
+            Main,
+            InBattle
+        }
 
         public enum GameScene
         {

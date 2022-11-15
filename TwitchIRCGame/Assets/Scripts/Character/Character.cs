@@ -29,6 +29,10 @@ namespace TwitchIRCGame
         /// <summary>치명타 발생 시의 대미지 배율입니다.</summary>
         [SerializeField]
         protected float basicCritDamageScale = 2f;
+        
+        /// <summary>사역마에게만 적용되는 빈사 상태입니다.</summary>
+        protected bool isGroggy;
+        public bool IsGroggy => isGroggy;
 
 
         [SerializeField]
@@ -37,6 +41,9 @@ namespace TwitchIRCGame
         protected List<Character> friendlyTarget;
         
         protected List<CharacterAction> actions;
+
+        /// <summary>체력 바 오브젝트입니다. 체력 값을 수정할 때 반드시 함께 변경되어야 합니다.</summary>
+        protected GameObject healthBar;
 
         public string Name => characterName;
         public int Health => health;
@@ -64,11 +71,13 @@ namespace TwitchIRCGame
             actions = new List<CharacterAction>(3);
             health = maxHealth;
             level = 1;
+            isGroggy = false;
         }
 
         private void Start()
         {
-
+            GameObject healthBarObject = gameObject.transform.Find("HealthBar").gameObject;
+            healthBar = healthBarObject.transform.Find("HealthBarContent").gameObject;
         }
 
         public void Damage(CharacterType attackType, int damage)
@@ -76,12 +85,17 @@ namespace TwitchIRCGame
             float typeDamagePercent = TypeDamagePercent(attackType, this.characterType);
             int finalDamage = Mathf.FloorToInt(damage * (1 + typeDamagePercent));
             health -= finalDamage;
-            if (health < 0)
-            {
-                health = 0; // TODO: 사망 처리 필요
+
+            if (health < 0) {
+                health = 0;
                 OnHealthZero();
             }
+
+            float displayedHealth = (float) health / (float) maxHealth;
+            healthBar.transform.localScale = new Vector3(displayedHealth, 1.0f, 1.0f);
+            
             Debug.Log($"{characterName} got {finalDamage} damage!");
+            Debug.Log($"{characterName}'s health: {displayedHealth}");
         }
 
         // 제안: 행동 슬롯을 배열로 설정하여 AddAction(action, slotNumber)으로 고치는 건 어떤지?
@@ -147,13 +161,12 @@ namespace TwitchIRCGame
             ReturnAfterAction.Invoke();
             ReturnAfterAction.RemoveAllListeners();
         }
-
+        
         public void RestoreHealth()
         {
 
         }
-
-        protected void TauntTarget(Character target)
+        
         {
             if (target == null) return;
             if (target.OpponentTarget.Count == 1)
@@ -166,6 +179,12 @@ namespace TwitchIRCGame
         {
             this.opponentTarget.Clear();
             this.opponentTarget.Add(originalTarget);
+        }
+        
+        protected abstract void OnHealthZero();
+        public virtual void Die()
+        {
+
         }
 
         protected abstract void OnHealthZero();

@@ -8,10 +8,7 @@ namespace TwitchIRCGame
     {
         protected string chatterID;
         public string ChatterID => chatterID;
-
-        protected bool isGroggy;
-        public bool IsGroggy => isGroggy;
-
+        
         protected override void Awake()
         {
             base.Awake();
@@ -49,10 +46,10 @@ namespace TwitchIRCGame
 
         public void Groggy()
         {
-            // ¹èÆ² ½ºÅ×ÀÌÆ®¿¡¼­ HP°¡ 0ÀÌ µÇ¸é ±×·Î±â »óÅÂ°¡ µÊ
-            // ¹èÆ² ½ºÅ×ÀÌÆ® ³¡³ª±â Àü±îÁö ±×·Î±â°¡ Ç®¸®Áö ¾ÊÀ¸¸é »ç¸Á
+            // ë°°í‹€ ìŠ¤í…Œì´íŠ¸ì—ì„œ HPê°€ 0ì´ ë˜ë©´ ê·¸ë¡œê¸° ìƒíƒœê°€ ë¨
+            // ë°°í‹€ ìŠ¤í…Œì´íŠ¸ ëë‚˜ê¸° ì „ê¹Œì§€ ê·¸ë¡œê¸°ê°€ í’€ë¦¬ì§€ ì•Šìœ¼ë©´ ì‚¬ë§
             isGroggy = true;
-            transform.localScale *= .8f;        // ÀÓ½Ã Ç¥Çö
+            transform.localScale *= .8f;        // ì„ì‹œ í‘œí˜„
         }
 
         public void RecoverGroggy()
@@ -68,8 +65,7 @@ namespace TwitchIRCGame
             GameManager.Instance.ServantDelete(this);
             gameObject.SetActive(false);
         }
-
-
+        
     }
 }
 

@@ -19,16 +19,14 @@ namespace TwitchIRCGame
             }
         }
 
-        //! ÇÁ·ÎÆÛÆ¼·Î¸¸ Á¢±ÙÇÒ °Í
+        //! í”„ë¡œí¼í‹°ë¡œë§Œ ì ‘ê·¼í•  ê²ƒ
         private static GameObject currentSceneManager;
-
         private UIManager uiManager;
         private GameSceneManager sceneManager;
 
         private BattleManager battleManager;
-        
 
-        //¸ğµç ¾À¿¡¼­ »ç¿ëÇÏ´Â ¸Å´ÏÀú ¸ğÀ½
+        //ëª¨ë“  ì”¬ì—ì„œ ì‚¬ìš©í•˜ëŠ” ë§¤ë‹ˆì € ëª¨ìŒ
         public static UIManager UI 
         {
             get
@@ -53,7 +51,7 @@ namespace TwitchIRCGame
             }
         }
 
-        //ÇöÀç ¾À¿¡¼­¸¸ »ç¿ëÇÏ´Â ¸Å´ÏÀú ¸ğÀ½
+        //í˜„ì¬ ì”¬ì—ì„œë§Œ ì‚¬ìš©í•˜ëŠ” ë§¤ë‹ˆì € ëª¨ìŒ
         public static GameObject CurrentSceneManager
         {
             get
@@ -118,6 +116,30 @@ namespace TwitchIRCGame
         {
             servantIDs = new List<string>(4);
             servantTeam = new Dictionary<string, Servant>(4);
+        }
+        
+        public void GameOver()
+        {
+            Debug.Log("Game Over!");
+        }
+
+        public void CreateServant(string newID)
+        {
+            servantIDs.Add(newID);
+            //newServant = Instantiate()
+            //servantTeam.Add(newID, )
+        }
+
+        public string ServantDelete(Servant servant)
+        {
+            string deleteID = servant.ChatterID;
+            if (servantIDs.Contains(deleteID))
+            {
+                //servantTeam[deleteID].
+                servantIDs.Remove(deleteID);
+                servantTeam.Remove(deleteID);
+            }
+            return deleteID;
         }
 
         public void GameOver()

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace TwitchIRCGame
 {
-    //InBattle State¿¡¼­¸¸ »ç¿ë... BattleManager Safe
+    //InBattle StateÂ¿Â¡Â¼Â­Â¸Â¸ Â»Ã§Â¿Ã«... BattleManager Safe
     public class Enemy : Character
     {
         protected override void Awake()

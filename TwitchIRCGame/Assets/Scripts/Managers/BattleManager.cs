@@ -23,7 +23,7 @@ namespace TwitchIRCGame
             get { return currentPhase; }
             private set { currentPhase = value; }
         }
-
+        
         [SerializeField]
         private int maxServantNum = 3;
         [SerializeField]
@@ -34,9 +34,9 @@ namespace TwitchIRCGame
         [SerializeField]
         public Summoner summoner;      // 임시 에디터 직렬화
         [SerializeField]
-        public List<Servant> servants;
+        public List<Character> servants;
         [SerializeField]
-        public List<Enemy> enemies;
+        public List<Character> enemies;
 
         public CharacterAction summonerAction;
         private CharacterAction[] servantActionList;
@@ -47,17 +47,16 @@ namespace TwitchIRCGame
             //InitServants();
             InitBattle();
         }
-
+        
         private void InitServants()
         {
-            servants = new List<Servant>(maxServantNum);
+            servants = new List<Character>(maxServantNum);
             for (int i = 0; i < GameManager.Instance.servantIDs.Count; i++)
             {
                 servants.Add(GameManager.Instance.servantTeam[GameManager.Instance.servantIDs[i]]);
             }
         }
-
-
+        
         private void InitBattle()
         {
             CurrentPhase = BattlePhase.SummonerSelectPhase;
@@ -140,113 +139,95 @@ namespace TwitchIRCGame
         private void SelectAction(CharacterClass characterClass, int characterIndex, int actionIndex, int targetIndex = 0)
         {
             if (characterIndex < 0)
-                throw new System.Exception("Invalid character index: " + characterIndex);
+                throw new System.Exception($"Invalid character index: {characterIndex}");
             if (actionIndex < 0)
-                throw new System.Exception("Invalid action index: " + actionIndex);
+                throw new System.Exception($"Invalid action index: {actionIndex}");
             if (targetIndex < -1)
-                throw new System.Exception("Invalid target index: " + targetIndex);
+                throw new System.Exception($"Invalid target index: {targetIndex}");
+
+            List<Character> characters;
+            CharacterAction[] actionList;
+            string characterString;
             
             switch (characterClass)
             {
                 case CharacterClass.Servant:
-                    // 존재하지 않는 캐릭터 (?)
-                    if (servants.Count <= characterIndex) {
-                        throw new System.Exception($"Servant {characterIndex + 1} does not exist");
-                    }
-                    // 캐릭터 사망
-                    else if (servants[characterIndex].IsGroggy)
-                    {
-                        Debug.Log($"Servant {characterIndex + 1} is in groggy!");
-                        return;
-                    }
-
-                    // 존재하지 않는 행동
-                    if (servants[characterIndex].Actions.Count <= actionIndex) {
-                        servantActionList[characterIndex] = null;
-                        // TODO: 오류 알림
-                        Debug.Log("Action " + (actionIndex + 1) + " is not in the slot");
-                    }
-                    
-                    // 존재하지 않는 대상
-                    if (targetIndex == -1 || enemies.Count <= targetIndex)
-                    {
-                        servantActionList[characterIndex] = null;
-                        // TODO: 오류 알림
-                        Debug.Log("Enemy " + (targetIndex + 1) + " does not exist");
-                    }
-                    //대상 사망
-                    else if (!enemies[targetIndex].gameObject.activeSelf)
-                    {
-                        Debug.Log($"Enemy {enemies[targetIndex].Name} is dead!");
-                        return;
-                    }
-                    
-                    // 행동 선택
-                    servantActionList[characterIndex] = servants[characterIndex].Actions[actionIndex];
-                    if (servants[characterIndex].Actions[actionIndex].IsTargeted)
-                    {
-                        if (servants[characterIndex].Actions[actionIndex].IsTargetOpponent)
-                        {
-                            // 적군 선택
-                            servants[characterIndex].SetSingleTarget(enemies[targetIndex]);
-                        }
-                        else
-                        {
-                            // 아군 선택
-                            if (targetIndex == -1) servants[characterIndex].SetSingleTarget(summoner);
-                            else servants[characterIndex].SetSingleTarget(servants[targetIndex]);
-                        }
-                    }
+                    characters = servants;
+                    actionList = servantActionList;
+                    characterString = "Servant";
                     break;
                 case CharacterClass.Enemy:
-                    // 존재하지 않는 캐릭터 (?)
-                    if (characterIndex < 0 || enemies.Count <= characterIndex) {
-                        throw new System.Exception("Enemy " + (characterIndex + 1) + "does not exist");
-                    }
-                    // 캐릭터 사망
-                    else if (enemies[characterIndex].gameObject.activeSelf == false)    
-                    {
-                        Debug.Log($"Enemy {characterIndex + 1} is dead!");
-                        return;
-                    }
-
-                    // 존재하지 않는 행동
-                    if (enemies[characterIndex].Actions.Count <= actionIndex)
-                    {
-                        enemyActionList[characterIndex] = null;
-                        throw new System.Exception("Enemy " + (characterIndex + 1) + " has selected an invalid action: Action " + (actionIndex + 1));
-                    }
-                    
-                    // 존재하지 않는 대상
-                    if (servants.Count <= targetIndex)
-                    {
-                        enemyActionList[characterIndex] = null;
-                        throw new System.Exception("Enemy " + (characterIndex + 1) + " has selected an invalid target: Target " + (targetIndex + 1));
-                    }
-                    // 대상 사망
-                    else if (servants[targetIndex].IsGroggy)
-                    {
-                        Debug.Log($"Servant {servants[targetIndex].Name} is in groggy!");
-                        return;
-                    }
-                    
-                    // 행동 선택
-                    enemyActionList[characterIndex] = enemies[characterIndex].Actions[actionIndex];
-                    if (enemies[characterIndex].Actions[actionIndex].IsTargeted)
-                    {
-                        if (enemies[characterIndex].Actions[actionIndex].IsTargetOpponent)
-                        {
-                            if (targetIndex == -1) enemies[characterIndex].SetSingleTarget(summoner);
-                            else enemies[characterIndex].SetSingleTarget(servants[targetIndex]);
-                        }
-                        else
-                        {
-                            enemies[characterIndex].SetSingleTarget(enemies[targetIndex]);
-                        }
-                    }
+                    characters = enemies;
+                    actionList = enemyActionList;
+                    characterString = "Enemy";
                     break;
                 default:
                     throw new System.Exception("Summoner action should be selected by UI buttons");
+            }
+            
+            // 존재하지 않는 캐릭터
+            if (characters.Count <= characterIndex)
+            {
+                throw new System.Exception($"{characterString} {characterIndex + 1} does not exist.");
+            }
+            
+            // TODO: 다음과 같은 상황에서 사용자에게 오류 알림
+            // 캐릭터 빈사
+            else if (characters[characterIndex].IsGroggy)
+            {
+                Debug.Log($"{characterString} {characterIndex + 1} is in groggy!");
+            }
+
+            // 존재하지 않는 행동
+            else if (characters[characterIndex].Actions.Count <= actionIndex)
+            {
+                if (characterClass == CharacterClass.Enemy)
+                {
+                    throw new System.Exception($"Enemy {(characterIndex + 1)} has selected an invalid action: Action {(actionIndex + 1)}");
+                }
+                Debug.Log($"Action {(actionIndex + 1)} is not in the slot!");
+            }
+            
+            else
+            {
+                actionList[characterIndex] = characters[characterIndex].Actions[actionIndex]; // 행동 선택
+                if (actionList[characterIndex].IsTargeted)
+                {
+                    Character target;
+                    // 이 값이 true이면 대상은 적 진영, false이면 대상은 아군 진영임
+                    bool isTargetEnemy = (characterClass == CharacterClass.Servant) ==
+                                         (actionList[characterIndex].IsTargetOpponent);
+                    
+                    // TODO: 다음과 같은 상황에서 사용자에게 오류 알림
+                    // 존재하지 않는 대상
+                    if (isTargetEnemy && (targetIndex == -1 || enemies.Count <= targetIndex) ||
+                        !isTargetEnemy && (targetIndex != -1 && servants.Count <= targetIndex))
+                    {
+                        if (characterClass == CharacterClass.Enemy)
+                        {
+                            throw new System.Exception($"Enemy {(characterIndex + 1)} has selected an invalid target.");                                                
+                        }
+                        Debug.Log($"Target does not exist!");
+                        return; // 강제 종료
+                    }
+                    
+                    if (isTargetEnemy)
+                        target = enemies[targetIndex]; 
+                    else if (targetIndex != -1)
+                        target = servants[targetIndex];
+                    else
+                        target = summoner;
+                    
+                    // TODO: 다음과 같은 상황에서 사용자에게 오류 알림
+                    // 대상 사망
+                    if (targetIndex != -1 && !target.gameObject.activeSelf)
+                    {
+                        Debug.Log($"Target {target.Name} is dead!");
+                        return; // 강제 종료
+                    }
+                    
+                    characters[characterIndex].SetSingleTarget(target); // 대상 선택
+                }
             }
         } 
 
@@ -284,6 +265,7 @@ namespace TwitchIRCGame
                     if (enemyActionList[i].ActionOrder == order)
                         enemyActionList[i].DoAction();
                 }
+                
             }
 
             summonerAction = null;
@@ -315,7 +297,7 @@ namespace TwitchIRCGame
 
         private void StageClear()
         {
-            //TODO 씬 전환, 성장, 보상 등
+            // TODO: 씬 전환, 성장, 보상 등
             Debug.Log("Stage Clear!");
         }
 

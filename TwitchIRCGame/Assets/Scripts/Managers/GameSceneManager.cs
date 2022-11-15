@@ -40,5 +40,3 @@ namespace TwitchIRCGame
         }
     }
 }
-
-

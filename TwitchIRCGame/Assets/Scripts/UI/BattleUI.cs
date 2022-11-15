@@ -34,12 +34,12 @@ namespace TwitchIRCGame
                 return;
             }
 
-            if (selectedActionIndex != actionIndex - 1) // ¼±ÅÃ
+            if (selectedActionIndex != actionIndex - 1) // ì„ íƒ
             {
-                selectedActionIndex = actionIndex - 1; // ÀÎÅÍÆäÀÌ½º»ó index´Â 1-indexed, ½ÇÁ¦ ±¸ÇöµÈ index´Â 0-indexed
+                selectedActionIndex = actionIndex - 1; // ì¸í„°í˜ì´ìŠ¤ìƒ indexëŠ” 1-indexed, ì‹¤ì œ êµ¬í˜„ëœ indexëŠ” 0-indexed
                 Debug.Log($"Action {actionIndex} selected");
             }
-            else // ¼±ÅÃ ÇØÁ¦
+            else // ì„ íƒ í•´ì œ
             {
                 selectedActionIndex = NOT_SELECTED;
                 Debug.Log($"Action {actionIndex} deselected");
@@ -47,9 +47,9 @@ namespace TwitchIRCGame
         }
 
         /// <param name="targetIndex">
-        /// ¾ç¼öÀÌ¸é ¾Æ±º (1, 2, 3 -> »ç¿ª¸¶ 1, 2, 3),
-        /// À½¼öÀÌ¸é Àû±º (-1, -2, -3 -> Àû 1, 2, 3),
-        /// 0ÀÌ¸é ¼ÒÈ¯»ç ÀÚ½ÅÀ» ÀÇ¹ÌÇÕ´Ï´Ù.
+        /// ì–‘ìˆ˜ì´ë©´ ì•„êµ° (1, 2, 3 -> ì‚¬ì—­ë§ˆ 1, 2, 3),
+        /// ìŒìˆ˜ì´ë©´ ì êµ° (-1, -2, -3 -> ì  1, 2, 3),
+        /// 0ì´ë©´ ì†Œí™˜ì‚¬ ìì‹ ì„ ì˜ë¯¸í•©ë‹ˆë‹¤.
         /// </param>
         public void SetSummonerTarget(int targetIndex)
         {
@@ -62,23 +62,23 @@ namespace TwitchIRCGame
             bool isRequiredTargetEnemy = selectedAction.IsTargetOpponent;
 
             bool isInputTargetAlive = true;
-            /* ÇöÀç ´Ü°è¿¡¼­ enemies¿Í servants°¡ ºó ¸®½ºÆ®¶ó¼­ Àá½Ã ²¨µÒ
+            /* í˜„ì¬ ë‹¨ê³„ì—ì„œ enemiesì™€ servantsê°€ ë¹ˆ ë¦¬ìŠ¤íŠ¸ë¼ì„œ ì ì‹œ êº¼ë‘ 
             if (isInputTargetEnemy)
                 isInputTargetAlive = GameManager.Battle.enemies.Count < -targetIndex;
             else if (targetIndex != SUMMONER)
                 isInputTargetAlive = GameManager.Battle.servants.Count < targetIndex;
             */
 
-            // ´ë»óÀÌ ¾ø°Å³ª ÀüÃ¼°¡ ´ë»óÀÎ Çàµ¿ÀÏ °æ¿ì ¹«È¿
+            // ëŒ€ìƒì´ ì—†ê±°ë‚˜ ì „ì²´ê°€ ëŒ€ìƒì¸ í–‰ë™ì¼ ê²½ìš° ë¬´íš¨
             if (isTargetless)
                 return;
 
-            // Àß¸øµÈ ´ë»óÀ» ¼±ÅÃÇÑ °æ¿ì ¹«È¿
+            // ì˜ëª»ëœ ëŒ€ìƒì„ ì„ íƒí•œ ê²½ìš° ë¬´íš¨
             if (isInputTargetEnemy != isRequiredTargetEnemy || !isInputTargetAlive)
                 return;
 
-            // ÀÎÅÍÆäÀÌ½º»ó index´Â 1-indexed, ½ÇÁ¦ ±¸ÇöµÈ index´Â 0-indexed
-            // ¼ÒÈ¯»ç´Â -1·Î Ç¥ÇöµÊ
+            // ì¸í„°í˜ì´ìŠ¤ìƒ indexëŠ” 1-indexed, ì‹¤ì œ êµ¬í˜„ëœ indexëŠ” 0-indexed
+            // ì†Œí™˜ì‚¬ëŠ” -1ë¡œ í‘œí˜„ë¨
             selectedTargetIndex = (isInputTargetEnemy ? -targetIndex : targetIndex) - 1;
 
             if (isInputTargetEnemy)
@@ -89,14 +89,14 @@ namespace TwitchIRCGame
                 Debug.Log("Target: Servant " + targetIndex);
         }
 
-        public void EndTurn() // ÅÏ Á¾·á ¹öÆ°
+        public void EndTurn()
         {
             if (SelectAction())
             {
                 Debug.Log("Turn ended");
                 GameManager.Battle.EndTurn();
 
-                // ÃÊ±âÈ­
+                // ì´ˆê¸°í™”
                 selectedActionIndex = NOT_SELECTED;
                 selectedTargetIndex = NOT_SELECTED;
             }
@@ -107,8 +107,8 @@ namespace TwitchIRCGame
         }
 
         /// <returns>
-        /// Çàµ¿Àº ¼±ÅÃÇß´Âµ¥ ´ë»óÀÌ Á¦´ë·Î ¼±ÅÃµÇÁö ¾ÊÀº °æ¿ì false¸¦ ¹İÈ¯ÇÕ´Ï´Ù.
-        /// ±× ¿Ü¿¡´Â true¸¦ ¹İÈ¯ÇÕ´Ï´Ù.
+        /// í–‰ë™ì€ ì„ íƒí–ˆëŠ”ë° ëŒ€ìƒì´ ì œëŒ€ë¡œ ì„ íƒë˜ì§€ ì•Šì€ ê²½ìš° falseë¥¼ ë°˜í™˜í•©ë‹ˆë‹¤.
+        /// ê·¸ ì™¸ì—ëŠ” trueë¥¼ ë°˜í™˜í•©ë‹ˆë‹¤.
         /// </returns>
         private bool SelectAction()
         {
@@ -118,22 +118,22 @@ namespace TwitchIRCGame
                 return true;
             }
 
-            // Çàµ¿ ¼±ÅÃ
+            // í–‰ë™ ì„ íƒ
             CharacterAction selectedAction = GameManager.Battle.summoner.Actions[selectedActionIndex];
             GameManager.Battle.summonerAction = selectedAction;
 
-            // ´ë»ó ¼±ÅÃ
+            // ëŒ€ìƒ ì„ íƒ
             if (selectedAction.IsTargeted)
             {
-                if (selectedTargetIndex == NOT_SELECTED) return false;      // Å¸°Ù °ø°İÀÏ¶§¸¸ Å¸°ÙÀ» °áÁ¤
+                if (selectedTargetIndex == NOT_SELECTED) return false;      // íƒ€ê²Ÿ ê³µê²©ì¼ë•Œë§Œ íƒ€ê²Ÿì„ ê²°ì •
                 else if (selectedAction.IsTargetOpponent)
                 {
-                    // Àû±º ¼±ÅÃ
+                    // ì êµ° ì„ íƒ
                     GameManager.Battle.summoner.SetSingleTarget(GameManager.Battle.enemies[selectedTargetIndex]);
                 }
                 else
                 {
-                    // ¾Æ±º ¼±ÅÃ
+                    // ì•„êµ° ì„ íƒ
                     if (selectedTargetIndex == SUMMONER)
                         GameManager.Battle.summoner.SetSingleTarget(GameManager.Battle.summoner);
                     else
