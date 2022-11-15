@@ -82,11 +82,11 @@ namespace TwitchIRCGame
             selectedTargetIndex = (isInputTargetEnemy ? -targetIndex : targetIndex) - 1;
 
             if (isInputTargetEnemy)
-                Debug.Log("Target: Enemy " + (-targetIndex));
+                Debug.Log($"Target: Enemy {-targetIndex}");
             else if (selectedTargetIndex == SUMMONER)
-                Debug.Log("Target: Summoner");
+                Debug.Log($"Target: Summoner");
             else
-                Debug.Log("Target: Servant " + targetIndex);
+                Debug.Log($"Target: Servant {targetIndex}");
         }
 
         public void EndTurn()

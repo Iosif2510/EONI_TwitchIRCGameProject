@@ -43,6 +43,7 @@ namespace TwitchIRCGame
         protected List<CharacterAction> actions;
 
         /// <summary>체력 바 오브젝트입니다. 체력 값을 수정할 때 반드시 함께 변경되어야 합니다.</summary>
+        [SerializeField]
         protected GameObject healthBar;
 
         public string Name => characterName;
@@ -76,8 +77,6 @@ namespace TwitchIRCGame
 
         private void Start()
         {
-            GameObject healthBarObject = gameObject.transform.Find("HealthBar").gameObject;
-            healthBar = healthBarObject.transform.Find("HealthBarContent").gameObject;
         }
 
         public void Damage(CharacterType attackType, int damage)

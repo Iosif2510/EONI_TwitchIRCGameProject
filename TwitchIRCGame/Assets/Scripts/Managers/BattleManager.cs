@@ -59,8 +59,9 @@ namespace TwitchIRCGame
         
         private void InitBattle()
         {
+			//enemies = new List<Character>(maxEnemyNum);
+
             CurrentPhase = BattlePhase.SummonerSelectPhase;
-            //enemies = new List<Enemy>(maxTeamNum);
             summonerAction = null;
             servantActionList = new CharacterAction[maxServantNum];
             for (int i = 0; i < maxServantNum; i++)
