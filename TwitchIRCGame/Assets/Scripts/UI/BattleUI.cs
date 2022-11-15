@@ -89,7 +89,7 @@ namespace TwitchIRCGame
                 Debug.Log("Target: Servant " + targetIndex);
         }
 
-        public void EndTurn() // 턴 종료 버튼
+        public void EndTurn()
         {
             if (SelectAction())
             {

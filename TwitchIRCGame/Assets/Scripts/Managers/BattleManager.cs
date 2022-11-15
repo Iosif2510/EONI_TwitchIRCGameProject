@@ -56,7 +56,7 @@ namespace TwitchIRCGame
                 servants.Add(GameManager.Instance.servantTeam[GameManager.Instance.servantIDs[i]]);
             }
         }
-
+        
         private void InitBattle()
         {
             CurrentPhase = BattlePhase.SummonerSelectPhase;
@@ -277,7 +277,7 @@ namespace TwitchIRCGame
             {
                 enemyActionList[i] = null;
             }
-            
+
             if (CheckClear()) StageClear();
         }
 
