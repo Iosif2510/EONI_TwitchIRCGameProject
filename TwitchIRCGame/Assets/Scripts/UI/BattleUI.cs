@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 namespace TwitchIRCGame
 {
@@ -14,10 +15,26 @@ namespace TwitchIRCGame
         private const int SUMMONER = -1;
         private const int NOT_SELECTED = -2;
 
+        [SerializeField]
+        private List<TMP_Text> actionNameTextObjects;
+
         // Start is called before the first frame update
         void Start()
         {
-
+            int numAllies = 1;//GameManager.Battle.servants.Count + 1;
+            for (int i = 0; i < numAllies; i++)
+            {
+                List<CharacterAction> actions;
+                if (i == 0)
+                    actions = GameManager.Battle.summoner.Actions;
+                else
+                    actions = GameManager.Battle.servants[i-1].Actions;
+                
+                for (int j = 0; j < actions.Count; j++)
+                {
+                    actionNameTextObjects[i*3 + j].text = actions[j].ActionName;
+                }
+            }
         }
 
         // Update is called once per frame
