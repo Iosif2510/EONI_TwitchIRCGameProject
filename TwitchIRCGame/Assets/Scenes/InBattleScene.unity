@@ -571,6 +571,22 @@ PrefabInstance:
       propertyPath: characterType
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 8010755354027664099, guid: 0065992ebcf943c46b567fc7f715dbbc, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1856234763}
+    - target: {fileID: 8010755354027664099, guid: 0065992ebcf943c46b567fc7f715dbbc, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SetSummonerTarget
+      objectReference: {fileID: 0}
+    - target: {fileID: 8010755354027664099, guid: 0065992ebcf943c46b567fc7f715dbbc, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: TwitchIRCGame.BattleUI, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 8010755354027664099, guid: 0065992ebcf943c46b567fc7f715dbbc, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument
+      value: -3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0065992ebcf943c46b567fc7f715dbbc, type: 3}
 --- !u!114 &797543253 stripped

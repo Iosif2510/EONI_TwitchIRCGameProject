@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using static TwitchIRCGame.Define;
 using static TwitchIRCGame.Utils;
+using TMPro;
 
 namespace TwitchIRCGame
 {
@@ -45,6 +46,9 @@ namespace TwitchIRCGame
         /// <summary>체력 바 오브젝트입니다. 체력 값을 수정할 때 반드시 함께 변경되어야 합니다.</summary>
         [SerializeField]
         protected GameObject healthBar;
+        
+        [SerializeField]
+        protected TMP_Text levelTextObject;
 
         public string Name => characterName;
         public int Health => health;
@@ -73,6 +77,7 @@ namespace TwitchIRCGame
             health = maxHealth;
             level = 1;
             isGroggy = false;
+            levelTextObject.text = $"Level: {level}";
         }
 
         private void Start()
@@ -186,6 +191,5 @@ namespace TwitchIRCGame
         {
 
         }
-
     }
 }
