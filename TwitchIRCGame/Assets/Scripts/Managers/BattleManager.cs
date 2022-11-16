@@ -34,9 +34,9 @@ namespace TwitchIRCGame
         [SerializeField]
         public Summoner summoner;      // 임시 에디터 직렬화
         [SerializeField]
-        public List<Character> servants;
+        public List<Servant> servants;
         [SerializeField]
-        public List<Character> enemies;
+        public List<Enemy> enemies;
 
         public CharacterAction summonerAction;
         private CharacterAction[] servantActionList;
@@ -50,7 +50,7 @@ namespace TwitchIRCGame
         
         private void InitServants()
         {
-            servants = new List<Character>(maxServantNum);
+            servants = new List<Servant>(maxServantNum);
             for (int i = 0; i < GameManager.Instance.servantIDs.Count; i++)
             {
                 servants.Add(GameManager.Instance.servantTeam[GameManager.Instance.servantIDs[i]]);
@@ -59,9 +59,8 @@ namespace TwitchIRCGame
         
         private void InitBattle()
         {
-			//enemies = new List<Character>(maxEnemyNum);
-
-            CurrentPhase = BattlePhase.SummonerSelectPhase;
+            //enemies = new List<Enemy>(maxEnemyNum);
+            
             summonerAction = null;
             servantActionList = new CharacterAction[maxServantNum];
             for (int i = 0; i < maxServantNum; i++)
@@ -77,6 +76,13 @@ namespace TwitchIRCGame
 
         private void Start()
         {
+            // 선택 페이즈로 변경
+            CurrentPhase = BattlePhase.SummonerSelectPhase;
+            for (int i = 0; i < enemies.Count; i++)
+            {
+                enemies[i].SetPositionTextDisplay(true);
+            }
+            
             // BattleManager에서 구현할 부분이 아니므로, 임시로 쓰고 나중에 다른 씬에서 구현
             // 아군 행동 설정
             summoner.AddAction(new TauntAction());
@@ -123,21 +129,23 @@ namespace TwitchIRCGame
             Debug.Log("Test Scenario");            
             // 소환사 행동 지정은 버튼으로 선택(UIManager)
             // 사역마 행동 지정, 행동을 선택하지 않은 경우 ActionList에 null
-            SelectAction(CharacterClass.Servant, 0, 0, 0);
-            SelectAction(CharacterClass.Servant, 1, 1, 1);
-            SelectAction(CharacterClass.Servant, 2, 1, 2);
+            SelectAction<Servant>(servants, 0, 0);
+            SelectAction<Servant>(servants, 1, 1, 1);
+            SelectAction<Servant>(servants, 2, 1, 2);
 
             /// 적 행동 지정
-            SelectAction(CharacterClass.Enemy, 0, 1, 0);
-            SelectAction(CharacterClass.Enemy, 1, 0, 0);
-            SelectAction(CharacterClass.Enemy, 2, 1, 1);
+            SelectAction<Enemy>(enemies, 0, 1, 0);
+            SelectAction<Enemy>(enemies, 1, 0);
+            SelectAction<Enemy>(enemies, 2, 1, -1);
         }
         
         /// <summary>현재 턴에서 사용될 행동을 지정합니다.</summary>
+        /// <param name="characters">해당 캐릭터가 포함된 캐릭터 리스트</param>
         /// <param name="characterIndex">캐릭터 리스트에서 해당 캐릭터의 인덱스</param>
         /// <param name="actionIndex">행동 슬롯에서 해당 행동의 인덱스</param>
         /// <param name="targetIndex">대상 캐릭터의 인덱스 (-1이면 사역마를 의미)</param>
-        private void SelectAction(CharacterClass characterClass, int characterIndex, int actionIndex, int targetIndex = 0)
+        private void SelectAction<T>(List<T> characters, int characterIndex, int actionIndex, int targetIndex = 0)
+        where T : Character
         {
             if (characterIndex < 0)
                 throw new System.Exception($"Invalid character index: {characterIndex}");
@@ -146,24 +154,22 @@ namespace TwitchIRCGame
             if (targetIndex < -1)
                 throw new System.Exception($"Invalid target index: {targetIndex}");
 
-            List<Character> characters;
             CharacterAction[] actionList;
             string characterString;
-            
-            switch (characterClass)
+
+            if (typeof(T) == typeof(Servant))
             {
-                case CharacterClass.Servant:
-                    characters = servants;
-                    actionList = servantActionList;
-                    characterString = "Servant";
-                    break;
-                case CharacterClass.Enemy:
-                    characters = enemies;
-                    actionList = enemyActionList;
-                    characterString = "Enemy";
-                    break;
-                default:
-                    throw new System.Exception("Summoner action should be selected by UI buttons");
+                actionList = servantActionList;
+                characterString = "Servant";
+            }
+            else if (typeof(T) == typeof(Enemy))
+            {
+                actionList = enemyActionList;
+                characterString = "Enemy";
+            }
+            else
+            {
+                throw new System.Exception("Summoner action should be selected by UI buttons");
             }
             
             // 존재하지 않는 캐릭터
@@ -174,7 +180,7 @@ namespace TwitchIRCGame
             
             // TODO: 다음과 같은 상황에서 사용자에게 오류 알림
             // 캐릭터 빈사
-            else if (characters[characterIndex].IsGroggy)
+            if (characters[characterIndex].IsGroggy)
             {
                 Debug.Log($"{characterString} {characterIndex + 1} is in groggy!");
             }
@@ -182,7 +188,7 @@ namespace TwitchIRCGame
             // 존재하지 않는 행동
             else if (characters[characterIndex].Actions.Count <= actionIndex)
             {
-                if (characterClass == CharacterClass.Enemy)
+                if (typeof(T) == typeof(Enemy))
                 {
                     throw new System.Exception($"Enemy {(characterIndex + 1)} has selected an invalid action: Action {(actionIndex + 1)}");
                 }
@@ -196,7 +202,7 @@ namespace TwitchIRCGame
                 {
                     Character target;
                     // 이 값이 true이면 대상은 적 진영, false이면 대상은 아군 진영임
-                    bool isTargetEnemy = (characterClass == CharacterClass.Servant) ==
+                    bool isTargetEnemy = (typeof(T) == typeof(Servant)) ==
                                          (actionList[characterIndex].IsTargetOpponent);
                     
                     // TODO: 다음과 같은 상황에서 사용자에게 오류 알림
@@ -204,7 +210,7 @@ namespace TwitchIRCGame
                     if (isTargetEnemy && (targetIndex == -1 || enemies.Count <= targetIndex) ||
                         !isTargetEnemy && (targetIndex != -1 && servants.Count <= targetIndex))
                     {
-                        if (characterClass == CharacterClass.Enemy)
+                        if (typeof(T) == typeof(Enemy))
                         {
                             throw new System.Exception($"Enemy {(characterIndex + 1)} has selected an invalid target.");                                                
                         }
@@ -235,7 +241,9 @@ namespace TwitchIRCGame
         /// <summary>지정한 행동들을 실행합니다.</summary>
         private void StartActions()
         {
+            // 전투 페이즈로 변경
             CurrentPhase = BattlePhase.FightPhase;
+            
             if (summonerAction != null)
                 summonerAction.DoAction();
             
@@ -280,6 +288,9 @@ namespace TwitchIRCGame
             }
 
             if (CheckClear()) StageClear();
+            
+            // 선택 페이즈로 변경
+            CurrentPhase = BattlePhase.SummonerSelectPhase;
         }
 
         private bool CheckClear()
