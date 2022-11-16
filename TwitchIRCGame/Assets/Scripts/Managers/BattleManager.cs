@@ -79,10 +79,8 @@ namespace TwitchIRCGame
             // 선택 페이즈로 변경
             CurrentPhase = BattlePhase.SummonerSelectPhase;
             for (int i = 0; i < enemies.Count; i++)
-            {
                 enemies[i].SetPositionTextDisplay(true);
-            }
-            
+
             // BattleManager에서 구현할 부분이 아니므로, 임시로 쓰고 나중에 다른 씬에서 구현
             // 아군 행동 설정
             summoner.AddAction(new TauntAction());
@@ -243,6 +241,8 @@ namespace TwitchIRCGame
         {
             // 전투 페이즈로 변경
             CurrentPhase = BattlePhase.FightPhase;
+            for (int i = 0; i < enemies.Count; i++)
+                enemies[i].SetPositionTextDisplay(false);
             
             if (summonerAction != null)
                 summonerAction.DoAction();
@@ -291,6 +291,8 @@ namespace TwitchIRCGame
             
             // 선택 페이즈로 변경
             CurrentPhase = BattlePhase.SummonerSelectPhase;
+            for (int i = 0; i < enemies.Count; i++)
+                enemies[i].SetPositionTextDisplay(true);
         }
 
         private bool CheckClear()
