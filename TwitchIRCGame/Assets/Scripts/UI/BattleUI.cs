@@ -51,6 +51,10 @@ namespace TwitchIRCGame
                 return;
             }
 
+            // 기존 행동 선택 해제 (하얀색)
+            if (selectedActionIndex != NOT_SELECTED)
+                actionNameTextObjects[selectedActionIndex].color = Color.white;
+
             if (selectedActionIndex != actionIndex - 1) // 선택
             {
                 selectedActionIndex = actionIndex - 1; // 인터페이스상 index는 1-indexed, 실제 구현된 index는 0-indexed
@@ -61,6 +65,10 @@ namespace TwitchIRCGame
                 selectedActionIndex = NOT_SELECTED;
                 Debug.Log($"Action {actionIndex} deselected");
             }
+            
+            // 기존 행동 선택 (빨간색)
+            if (selectedActionIndex != NOT_SELECTED)
+                actionNameTextObjects[selectedActionIndex].color = Color.red;
         }
 
         /// <param name="targetIndex">
@@ -114,6 +122,8 @@ namespace TwitchIRCGame
                 GameManager.Battle.EndTurn();
 
                 // 초기화
+                if (selectedActionIndex != NOT_SELECTED)
+                    actionNameTextObjects[selectedActionIndex].color = Color.white;
                 selectedActionIndex = NOT_SELECTED;
                 selectedTargetIndex = NOT_SELECTED;
             }
@@ -157,7 +167,7 @@ namespace TwitchIRCGame
                         GameManager.Battle.summoner.SetSingleTarget(GameManager.Battle.servants[selectedTargetIndex]);
                 }
             }
-
+            
             return true;
         }
     }
