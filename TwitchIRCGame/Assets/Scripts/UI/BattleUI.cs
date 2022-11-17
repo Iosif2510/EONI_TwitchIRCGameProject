@@ -21,7 +21,7 @@ namespace TwitchIRCGame
         // Start is called before the first frame update
         void Start()
         {
-            int numAllies = 1;//GameManager.Battle.servants.Count + 1;
+            int numAllies = GameManager.Battle.servants.Count + 1;
             for (int i = 0; i < numAllies; i++)
             {
                 List<CharacterAction> actions;
