@@ -159,6 +159,7 @@ MonoBehaviour:
   place: 0
   healthBar: {fileID: 1597911235949565600}
   levelTextObject: {fileID: 4433657999534125162}
+  targetTextObject: {fileID: 4431378805498436406}
   positionTextObject: {fileID: 9011819968410275713}
 --- !u!1 &1421710111563928883
 GameObject:
@@ -481,6 +482,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 3686066868169655805, guid: 264bc240c12ab51458f08f294f00ddb8, type: 3}
   m_PrefabInstance: {fileID: 2669334427585729373}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &4431378805498436406 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1762044415496030315, guid: 264bc240c12ab51458f08f294f00ddb8, type: 3}
+  m_PrefabInstance: {fileID: 2669334427585729373}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &4433657999534125162 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1769041577490719543, guid: 264bc240c12ab51458f08f294f00ddb8, type: 3}

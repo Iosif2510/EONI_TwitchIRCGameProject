@@ -40,6 +40,8 @@ namespace TwitchIRCGame
         protected int place;
         protected List<Character> opponentTarget;
         protected List<Character> friendlyTarget;
+        protected const string TARGET_NONE = "No target";
+        protected const string TARGET_MULTIPLE = "Multiple target";
         
         protected List<CharacterAction> actions;
 
@@ -49,6 +51,8 @@ namespace TwitchIRCGame
         
         [SerializeField]
         protected TMP_Text levelTextObject;
+        [SerializeField]
+        protected TMP_Text targetTextObject;
 
         public string Name => characterName;
         public int Health => health;
@@ -78,6 +82,7 @@ namespace TwitchIRCGame
             level = 1;
             isGroggy = false;
             levelTextObject.text = $"Level: {level}";
+            targetTextObject.text = TARGET_NONE;
         }
 
         private void Start()
@@ -122,17 +127,22 @@ namespace TwitchIRCGame
         public void ClearTarget()
         {
             this.opponentTarget.Clear();
+            targetTextObject.text = TARGET_NONE;
         }
 
         public void AddTarget(Character target)
         {
             this.opponentTarget.Add(target);
+            if (this.opponentTarget.Count == 1)
+                targetTextObject.text = this.opponentTarget[0].Name;
+            else
+                targetTextObject.text = TARGET_MULTIPLE;
         }
 
         public void SetSingleTarget(Character target)
         {
-            this.opponentTarget.Clear();
-            this.opponentTarget.Add(target);
+            ClearTarget();
+            AddTarget(target);
         }
 
         public virtual void Attack(bool typedAttack) 

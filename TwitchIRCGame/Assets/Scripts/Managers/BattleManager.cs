@@ -99,6 +99,8 @@ namespace TwitchIRCGame
             enemies[1].AddAction(new TypedAttack());
             enemies[2].AddAction(new TauntAction());
             enemies[2].AddAction(new TypedAttack());
+            
+            TestScenario();
         }
         
         /*
@@ -109,9 +111,9 @@ namespace TwitchIRCGame
         */
 
         public void EndTurn()
-        {   
-            TestScenario();
+        {
             StartActions();
+            TestScenario();
         }
 
         private void ActionChoiceTime()
@@ -249,7 +251,7 @@ namespace TwitchIRCGame
             
             for (int order = 0; order < ORDER_MAX; order++)
             {
-                for (int i = 0; i < maxServantNum; i++)
+                for (int i = 0; i < servants.Count; i++)
                 {
                     if (servantActionList[i] == null) continue;
                     
@@ -267,7 +269,7 @@ namespace TwitchIRCGame
                         }
                     }
                 }
-                for (int i = 0; i < maxEnemyNum; i++)
+                for (int i = 0; i < enemies.Count; i++)
                 {
                     if (enemyActionList[i] == null) continue;
                     
@@ -278,13 +280,16 @@ namespace TwitchIRCGame
             }
 
             summonerAction = null;
-            for (int i = 0; i < maxServantNum; i++)
+            summoner.ClearTarget();
+            for (int i = 0; i < servants.Count; i++)
             {
                 servantActionList[i] = null;
+                servants[i].ClearTarget();
             }
-            for (int i = 0; i < maxEnemyNum; i++)
+            for (int i = 0; i < enemies.Count; i++)
             {
                 enemyActionList[i] = null;
+                enemies[i].ClearTarget();
             }
 
             if (CheckClear()) StageClear();
