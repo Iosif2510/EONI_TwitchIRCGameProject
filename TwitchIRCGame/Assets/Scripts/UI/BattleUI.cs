@@ -17,6 +17,8 @@ namespace TwitchIRCGame
 
         [SerializeField]
         private List<TMP_Text> actionNameTextObjects;
+        [SerializeField]
+        private List<TMP_Text> characterNameTextObjects;
 
         // Start is called before the first frame update
         void Start()
@@ -26,10 +28,16 @@ namespace TwitchIRCGame
             {
                 List<CharacterAction> actions;
                 if (i == 0)
+                {
                     actions = GameManager.Battle.summoner.Actions;
+                    characterNameTextObjects[i].text = GameManager.Battle.summoner.Name;
+                }
                 else
+                {
                     actions = GameManager.Battle.servants[i-1].Actions;
-                
+                    characterNameTextObjects[i].text = GameManager.Battle.servants[i-1].Name;                    
+                }
+
                 for (int j = 0; j < actions.Count; j++)
                 {
                     actionNameTextObjects[i*3 + j].text = actions[j].ActionName;
