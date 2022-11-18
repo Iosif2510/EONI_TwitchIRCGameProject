@@ -6,11 +6,30 @@ namespace TwitchIRCGame
 {
     public class Servant : Character
     {
-        protected string chatterID;
-        public string ChatterID => chatterID;
+        private ChatterData chatterData;
+
+        public string ChatterID => Chatter.ChatterID;
 
         protected bool isGroggy;
         public bool IsGroggy => isGroggy;
+
+        public ChatterData Chatter
+        {
+            get 
+            {
+                if (chatterData == null)
+                {
+                    throw new System.NotImplementedException();
+                }
+                return chatterData; 
+            }
+        }
+
+        public override void SetCharacterData(ChatterData chatterData)
+        {
+            this.chatterData = chatterData;
+            this.characterData = GameManager.Data.servantTeamData[chatterData];
+        }
 
         protected override void Awake()
         {
@@ -25,7 +44,7 @@ namespace TwitchIRCGame
             foreach (var target in opponentTarget)
             {
                 //Servant Animation
-                Debug.Log($"{characterName} attacked {target.Name}!");
+                Debug.Log($"{Name} attacked {target.Name}!");
                 AttackTarget(target, typedAttack);
             }
             
@@ -39,7 +58,7 @@ namespace TwitchIRCGame
                 //Taunt Animation
                 TauntTarget(enemy);
             }
-            Debug.Log($"{characterName} taunted!");
+            Debug.Log($"{Name} taunted!");
         }
 
         protected override void OnHealthZero()
@@ -65,7 +84,7 @@ namespace TwitchIRCGame
         {
             base.Die();
             //TODO die effect
-            GameManager.Instance.ServantDelete(this);
+            GameManager.Data.ServantDataDelete(chatterData);
             gameObject.SetActive(false);
         }
 

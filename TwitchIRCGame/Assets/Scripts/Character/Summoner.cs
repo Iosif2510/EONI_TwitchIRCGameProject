@@ -6,7 +6,7 @@ namespace TwitchIRCGame
 {
     public class Summoner : Character
     {
-        protected string chatterID;
+        protected ChatterData chatterData;
 
         protected override void Awake()
         {
@@ -14,13 +14,19 @@ namespace TwitchIRCGame
             opponentTarget = new List<Character>(GameManager.Battle.MaxEnemyNum);
             friendlyTarget = new List<Character>(GameManager.Battle.MaxServantNum);
         }
-        
+
+        public override void SetCharacterData(ChatterData chatterData)
+        {
+            this.chatterData = GameManager.Data.summonerData.chatterData;
+            this.characterData = GameManager.Data.summonerData.characterData;
+        }
+
         public override void Attack(bool typedAttack)
         {
             foreach (var target in opponentTarget)
             {
                 //Servant Animation
-                Debug.Log($"{characterName} attacked {target.Name}!");
+                Debug.Log($"{Name} attacked {target.Name}!");
                 AttackTarget(target, typedAttack);
             }
             base.Attack(typedAttack);   // 액션 이후 이벤트 발생(정상화 등)
@@ -33,7 +39,7 @@ namespace TwitchIRCGame
                 //Taunt Animation
                 TauntTarget(enemy);
             }
-            Debug.Log($"{characterName} taunted!");
+            Debug.Log($"{Name} taunted!");
             base.Taunt();
         }
 

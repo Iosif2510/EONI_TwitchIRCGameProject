@@ -32,6 +32,13 @@ namespace TwitchIRCGame
         public int MaxEnemyNum => maxEnemyNum;
 
         [SerializeField]
+        private Summoner summonerPrefab;
+        [SerializeField]
+        private Servant servantPrefab;
+        [SerializeField]
+        private Enemy enemyPrefab;
+
+        [SerializeField]
         public Summoner summoner;      // 임시 에디터 직렬화
         [SerializeField]
         public List<Servant> servants;
@@ -51,10 +58,17 @@ namespace TwitchIRCGame
         private void InitServants()
         {
             servants = new List<Servant>(maxServantNum);
-            for (int i = 0; i < GameManager.Instance.servantIDs.Count; i++)
+            for (int i = 0; i < GameManager.Data.servantChatterDatas.Count; i++)
             {
-                servants.Add(GameManager.Instance.servantTeam[GameManager.Instance.servantIDs[i]]);
+                var newServant = Instantiate(servantPrefab);
+                newServant.SetCharacterData(GameManager.Data.servantChatterDatas[i]);
+                servants.Add(newServant);
             }
+        }
+
+        private void InitEnemies()
+        {
+            enemies = new List<Enemy>(maxEnemyNum);
         }
 
 

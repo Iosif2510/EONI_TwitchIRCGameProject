@@ -28,6 +28,7 @@ namespace TwitchIRCGame
 
         public void ToggleSummonerAction(int actionIndex)
         {
+            Debug.Log(GameManager.Battle.summoner);
             if (GameManager.Battle.summoner.Actions.Count < actionIndex)
             {
                 Debug.Log($"Action {actionIndex} is not in the slot");

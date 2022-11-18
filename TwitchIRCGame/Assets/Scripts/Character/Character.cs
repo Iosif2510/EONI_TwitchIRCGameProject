@@ -11,24 +11,26 @@ namespace TwitchIRCGame
 {
     public abstract class Character : MonoBehaviour
     {
-        [SerializeField]
-        protected string characterName;
-        [SerializeField]
-        protected int level = 1;
+        protected CharacterData characterData;
 
-        [SerializeField]
-        protected CharacterType characterType;
-        [SerializeField]
-        protected int maxHealth;
-        protected int health;
-        [SerializeField]
-        protected int basicDamage = 10;
-        /// <summary>치명타 발생 확률입니다.</summary>
-        [SerializeField]
-        protected float basicCritPercentage = .02f;
-        /// <summary>치명타 발생 시의 대미지 배율입니다.</summary>
-        [SerializeField]
-        protected float basicCritDamageScale = 2f;
+        //[SerializeField]
+        //protected string characterName;
+        //[SerializeField]
+        //protected int level = 1;
+
+        //[SerializeField]
+        //protected CharacterType characterType;
+        //[SerializeField]
+        //protected int maxHealth;
+        //protected int health;
+        //[SerializeField]
+        //protected int basicDamage = 10;
+        ///// <summary>치명타 발생 확률입니다.</summary>
+        //[SerializeField]
+        //protected float basicCritPercentage = .02f;
+        ///// <summary>치명타 발생 시의 대미지 배율입니다.</summary>
+        //[SerializeField]
+        //protected float basicCritDamageScale = 2f;
 
 
         [SerializeField]
@@ -38,21 +40,53 @@ namespace TwitchIRCGame
         
         protected List<CharacterAction> actions;
 
-        public string Name => characterName;
-        public int Health => health;
+        public CharacterData Data
+        {
+            get
+            {
+                return characterData;
+            }
+            protected set
+            {
+                characterData = value;
+            }
+        }
+
+        public abstract void SetCharacterData(ChatterData chatterData);
+
+        public string Name => Data.characterName;
+        public CharacterType Type => Data.characterType;
+
+        public int Health
+        {
+            get { return Data.health; }
+            private set
+            {
+                Data.health = value;
+            }
+        }
         /// <summary>팀 진영 내에서의 위치를 의미합니다.</summary>
-        public int Place => place;
+        public int Place
+        {
+            get { return Data.place; }
+            private set
+            {
+                Data.place = value;
+            }
+        }
+
+
         public List<Character> OpponentTarget => opponentTarget;
         /// <summary>도발, 디버프 등으로 변동된 수치가 한 턴 후에 원상 복귀되는 이벤트입니다.</summary>
         protected UnityEvent ReturnAfterAction = new UnityEvent();
 
         public int Level
         {
-            get { return level; }
+            get { return Data.level; }
             set
             {
-                if (value <= 0) level = 1;
-                else level = value;
+                if (value <= 0) Data.level = 1;
+                else Data.level = value;
             }
         }
 
@@ -62,8 +96,6 @@ namespace TwitchIRCGame
         protected virtual void Awake()
         {
             actions = new List<CharacterAction>(3);
-            health = maxHealth;
-            level = 1;
         }
 
         private void Start()
@@ -73,15 +105,15 @@ namespace TwitchIRCGame
 
         public void Damage(CharacterType attackType, int damage)
         {
-            float typeDamagePercent = TypeDamagePercent(attackType, this.characterType);
+            float typeDamagePercent = TypeDamagePercent(attackType, this.Type);
             int finalDamage = Mathf.FloorToInt(damage * (1 + typeDamagePercent));
-            health -= finalDamage;
-            if (health < 0)
+            Health -= finalDamage;
+            if (Health < 0)
             {
-                health = 0; // TODO: 사망 처리 필요
+                Health = 0; // TODO: 사망 처리 필요
                 OnHealthZero();
             }
-            Debug.Log($"{characterName} got {finalDamage} damage!");
+            Debug.Log($"{Name} got {finalDamage} damage!");
         }
 
         // 제안: 행동 슬롯을 배열로 설정하여 AddAction(action, slotNumber)으로 고치는 건 어떤지?
@@ -125,7 +157,7 @@ namespace TwitchIRCGame
 
         protected void AttackTarget(Character target, bool typedAttack)
         {
-            AttackTarget(target, typedAttack, basicDamage, basicCritPercentage, basicCritDamageScale);
+            AttackTarget(target, typedAttack, Data.basicDamage, Data.basicCritPercentage, Data.basicCritDamageScale);
         }
 
         protected void AttackTarget(Character target, bool typedAttack, int damage, float critPercentage, float critScale)
@@ -133,7 +165,7 @@ namespace TwitchIRCGame
             if (target == null) return;
             int finalDamage = damage;
             if (Random.Range(0, 100) < critPercentage * 100) finalDamage = (int)(finalDamage * critScale);
-            target.Damage(typedAttack ? characterType : CharacterType.None, finalDamage);
+            target.Damage(typedAttack ? Type : CharacterType.None, finalDamage);
         }
 
         protected void Taunted(Character target)

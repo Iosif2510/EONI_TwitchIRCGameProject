@@ -13,14 +13,21 @@ namespace TwitchIRCGame
             opponentTarget = new List<Character>(GameManager.Battle.MaxServantNum);
             friendlyTarget = new List<Character>(GameManager.Battle.MaxEnemyNum);
         }
-        
+
+        public override void SetCharacterData(ChatterData chatterData)
+        {
+            //TODO: Datamanager에서 정의된 적 데이터에서 받아올 것
+            //TEMP
+            characterData = new CharacterData(Define.CharacterClass.Enemy, 0, "Enemy");
+        }
+
         public override void Attack(bool typedAttack)
         {
             base.Attack(typedAttack);
             foreach (var target in opponentTarget)
             {
                 //Servant Animation
-                Debug.Log($"{characterName} attacked {target.Name}!");
+                Debug.Log($"{Name} attacked {target.Name}!");
                 AttackTarget(target, typedAttack);
             }
         }
@@ -33,7 +40,7 @@ namespace TwitchIRCGame
                 //Taunt Animation
                 TauntTarget(servants);
             }
-            Debug.Log($"{characterName} taunted!");
+            Debug.Log($"{Name} taunted!");
         }
 
         protected override void OnHealthZero()

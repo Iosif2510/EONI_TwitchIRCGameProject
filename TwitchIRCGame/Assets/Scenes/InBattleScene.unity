@@ -391,6 +391,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: TestServant (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 5389171628962775037, guid: b7b7bfd6915fad14bb4af948f03ceeae, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5389171628962775038, guid: b7b7bfd6915fad14bb4af948f03ceeae, type: 3}
       propertyPath: characterName
       value: P3
@@ -800,6 +804,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: TestServant (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 5389171628962775037, guid: b7b7bfd6915fad14bb4af948f03ceeae, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5389171628962775038, guid: b7b7bfd6915fad14bb4af948f03ceeae, type: 3}
       propertyPath: characterName
       value: P2
@@ -982,6 +990,9 @@ MonoBehaviour:
   currentPhase: 0
   maxServantNum: 3
   maxEnemyNum: 4
+  summonerPrefab: {fileID: 7355425854547823104, guid: d5e0544e9a0c3034e9cb4d0860c8e949, type: 3}
+  servantPrefab: {fileID: 5389171628962775038, guid: b7b7bfd6915fad14bb4af948f03ceeae, type: 3}
+  enemyPrefab: {fileID: 8786362819030846062, guid: 8fd00cd456c11da488fcf9edb52c028a, type: 3}
   summoner: {fileID: 20407219}
   servants:
   - {fileID: 2096606286}
@@ -1045,6 +1056,10 @@ PrefabInstance:
     - target: {fileID: 8786362819030846061, guid: 8fd00cd456c11da488fcf9edb52c028a, type: 3}
       propertyPath: m_Name
       value: TestEnemy (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8786362819030846061, guid: 8fd00cd456c11da488fcf9edb52c028a, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8786362819030846062, guid: 8fd00cd456c11da488fcf9edb52c028a, type: 3}
       propertyPath: characterName
@@ -1178,8 +1193,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b18224faf5acf7f4eaa2ff479f7b64df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  summoner: {fileID: 20407219}
-  servantIDs: []
 --- !u!4 &1353169671
 Transform:
   m_ObjectHideFlags: 0
@@ -1479,6 +1492,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: TestEnemy (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 8786362819030846061, guid: 8fd00cd456c11da488fcf9edb52c028a, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8786362819030846062, guid: 8fd00cd456c11da488fcf9edb52c028a, type: 3}
       propertyPath: characterName
       value: E2
@@ -1663,6 +1680,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: TestServant
       objectReference: {fileID: 0}
+    - target: {fileID: 5389171628962775037, guid: b7b7bfd6915fad14bb4af948f03ceeae, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b7b7bfd6915fad14bb4af948f03ceeae, type: 3}
 --- !u!1001 &7355425854567705011
@@ -1776,6 +1797,10 @@ PrefabInstance:
     - target: {fileID: 8786362819030846061, guid: 8fd00cd456c11da488fcf9edb52c028a, type: 3}
       propertyPath: m_Name
       value: TestEnemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 8786362819030846061, guid: 8fd00cd456c11da488fcf9edb52c028a, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8fd00cd456c11da488fcf9edb52c028a, type: 3}

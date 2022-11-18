@@ -24,6 +24,7 @@ namespace TwitchIRCGame
 
         private UIManager uiManager;
         private GameSceneManager sceneManager;
+        private DataManager dataManager;
 
         private BattleManager battleManager;
         
@@ -50,6 +51,18 @@ namespace TwitchIRCGame
                     Instance.sceneManager = Instance.gameObject.GetComponent<GameSceneManager>();
                 }
                 return Instance.sceneManager;
+            }
+        }
+
+        public static DataManager Data
+        {
+            get
+            {
+                if (Instance.dataManager == null)
+                {
+                    Instance.dataManager = Instance.gameObject.GetComponent<DataManager>();
+                }
+                return Instance.dataManager;
             }
         }
 
@@ -86,16 +99,14 @@ namespace TwitchIRCGame
             }
         }
 
-
-
-        // nth player: playerTeam[playerNames[n]]
-        public Summoner summoner;
-        public List<string> servantIDs;
-        public Dictionary<string, Servant> servantTeam;
+        //// nth player: playerTeam[playerNames[n]]
+        //public Summoner summoner;
+        //public List<string> servantIDs;
+        //public Dictionary<string, Servant> servantTeam;
 
         private void Awake()
         {
-            DataInit();
+            //DataInit();
         }
 
         private static void SingletonInit()
@@ -114,35 +125,35 @@ namespace TwitchIRCGame
             }
         }
 
-        private void DataInit()
-        {
-            servantIDs = new List<string>(4);
-            servantTeam = new Dictionary<string, Servant>(4);
-        }
+        //private void DataInit()
+        //{
+        //    servantIDs = new List<string>(4);
+        //    servantTeam = new Dictionary<string, Servant>(4);
+        //}
 
         public void GameOver()
         {
             Debug.Log("Game Over!");
         }
 
-        public void CreateServant(string newID)
-        {
-            servantIDs.Add(newID);
-            //newServant = Instantiate()
-            //servantTeam.Add(newID, )
-        }
+        //public void CreateServant(string newID)
+        //{
+        //    servantIDs.Add(newID);
+        //    //newServant = Instantiate()
+        //    //servantTeam.Add(newID, )
+        //}
 
-        public string ServantDelete(Servant servant)
-        {
-            string deleteID = servant.ChatterID;
-            if (servantIDs.Contains(deleteID))
-            {
-                //servantTeam[deleteID].
-                servantIDs.Remove(deleteID);
-                servantTeam.Remove(deleteID);
-            }
-            return deleteID;
-        }
+        //public string ServantDelete(Servant servant)
+        //{
+        //    string deleteID = servant.ChatterID;
+        //    if (servantIDs.Contains(deleteID))
+        //    {
+        //        //servantTeam[deleteID].
+        //        servantIDs.Remove(deleteID);
+        //        servantTeam.Remove(deleteID);
+        //    }
+        //    return deleteID;
+        //}
 
         
     }
