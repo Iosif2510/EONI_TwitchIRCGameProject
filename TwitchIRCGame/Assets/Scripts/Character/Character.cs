@@ -113,10 +113,16 @@ namespace TwitchIRCGame
             this.opponentTarget.Add(target);
         }
 
-        public virtual void Attack(bool typedAttack) 
+        public void Attack(bool typedAttack) 
         {
             ReturnAfterAction.Invoke();
             ReturnAfterAction.RemoveAllListeners();
+            foreach (var target in opponentTarget)
+            {
+                //Servant Animation
+                Debug.Log($"{characterName} attacked {target.Name}!");
+                AttackTarget(target, typedAttack);
+            }
         }
 
         protected void AttackTarget(Character target, bool typedAttack)
@@ -138,10 +144,27 @@ namespace TwitchIRCGame
             SetSingleTarget(target);
         }
 
-        public virtual void Taunt() 
+        public void Taunt() 
         {
             ReturnAfterAction.Invoke();
             ReturnAfterAction.RemoveAllListeners();
+            if (this.GetType() == typeof(Enemy))
+            {
+                foreach (var opponent in GameManager.Battle.servants)
+                {
+                    //Taunt Animation
+                    TauntTarget(opponent);
+                }
+            }
+            else
+            {
+                foreach (var opponent in GameManager.Battle.enemies)
+                {
+                    //Taunt Animation
+                    TauntTarget(opponent);
+                }
+            }
+            Debug.Log($"{characterName} taunted!");
         }
 
         protected void TauntTarget(Character target)
