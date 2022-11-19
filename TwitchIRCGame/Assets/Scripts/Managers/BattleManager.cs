@@ -157,12 +157,12 @@ namespace TwitchIRCGame
             CharacterAction[] actionList;
             string characterString;
 
-            if (typeof(T) == typeof(Servant))
+            if (T is Servant)
             {
                 actionList = servantActionList;
                 characterString = "Servant";
             }
-            else if (typeof(T) == typeof(Enemy))
+            else if (T is Enemy)
             {
                 actionList = enemyActionList;
                 characterString = "Enemy";
@@ -188,7 +188,7 @@ namespace TwitchIRCGame
             // 존재하지 않는 행동
             else if (characters[characterIndex].Actions.Count <= actionIndex)
             {
-                if (typeof(T) == typeof(Enemy))
+                if (T is Enemy)
                 {
                     throw new System.Exception($"Enemy {(characterIndex + 1)} has selected an invalid action: Action {(actionIndex + 1)}");
                 }
@@ -202,7 +202,7 @@ namespace TwitchIRCGame
                 {
                     Character target;
                     // 이 값이 true이면 대상은 적 진영, false이면 대상은 아군 진영임
-                    bool isTargetEnemy = (typeof(T) == typeof(Servant)) ==
+                    bool isTargetEnemy = (T is Servant) ==
                                          (actionList[characterIndex].IsTargetOpponent);
                     
                     // TODO: 다음과 같은 상황에서 사용자에게 오류 알림
@@ -210,7 +210,7 @@ namespace TwitchIRCGame
                     if (isTargetEnemy && (targetIndex == -1 || enemies.Count <= targetIndex) ||
                         !isTargetEnemy && (targetIndex != -1 && servants.Count <= targetIndex))
                     {
-                        if (typeof(T) == typeof(Enemy))
+                        if (T is Enemy)
                         {
                             throw new System.Exception($"Enemy {(characterIndex + 1)} has selected an invalid target.");                                                
                         }
