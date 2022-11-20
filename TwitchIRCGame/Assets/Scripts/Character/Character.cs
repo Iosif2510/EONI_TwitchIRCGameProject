@@ -13,26 +13,6 @@ namespace TwitchIRCGame
     {
         protected CharacterData characterData;
 
-        //[SerializeField]
-        //protected string characterName;
-        //[SerializeField]
-        //protected int level = 1;
-
-        //[SerializeField]
-        //protected CharacterType characterType;
-        //[SerializeField]
-        //protected int maxHealth;
-        //protected int health;
-        //[SerializeField]
-        //protected int basicDamage = 10;
-        ///// <summary>치명타 발생 확률입니다.</summary>
-        //[SerializeField]
-        //protected float basicCritPercentage = .02f;
-        ///// <summary>치명타 발생 시의 대미지 배율입니다.</summary>
-        //[SerializeField]
-        //protected float basicCritDamageScale = 2f;
-
-
         [SerializeField]
         protected int place;
         protected List<Character> opponentTarget;

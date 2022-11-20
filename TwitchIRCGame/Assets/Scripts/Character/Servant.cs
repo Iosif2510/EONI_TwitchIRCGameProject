@@ -10,6 +10,8 @@ namespace TwitchIRCGame
 
         public string ChatterID => Chatter.ChatterID;
 
+        // Note: BattleManager.SelectAction()에서 제네릭 클래스 <T>를 사용해 중복을 줄이려면
+        //       이 필드는 부모 클래스인 Character로 가야 함.
         protected bool isGroggy;
         public bool IsGroggy => isGroggy;
 

@@ -99,11 +99,6 @@ namespace TwitchIRCGame
             }
         }
 
-        //// nth player: playerTeam[playerNames[n]]
-        //public Summoner summoner;
-        //public List<string> servantIDs;
-        //public Dictionary<string, Servant> servantTeam;
-
         private void Awake()
         {
             //DataInit();

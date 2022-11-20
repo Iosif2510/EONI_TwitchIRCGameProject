@@ -10,7 +10,7 @@ namespace TwitchIRCGame
 {
     public class DataManager : MonoBehaviour
     {
-        // nth player: playerTeam[playerNames[n]]
+        // (to-be-updated) nth servant: servantTeam[servantIDs[n]]
         [Obsolete]
         public Summoner summoner;
         public List<string> servantIDs;
