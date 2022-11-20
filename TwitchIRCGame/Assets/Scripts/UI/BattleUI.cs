@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 namespace TwitchIRCGame
 {
@@ -14,10 +15,34 @@ namespace TwitchIRCGame
         private const int SUMMONER = -1;
         private const int NOT_SELECTED = -2;
 
+        [SerializeField]
+        private List<TMP_Text> actionNameTextObjects;
+        [SerializeField]
+        private List<TMP_Text> characterNameTextObjects;
+
         // Start is called before the first frame update
         void Start()
         {
+            int numAllies = GameManager.Battle.servants.Count + 1;
+            for (int i = 0; i < numAllies; i++)
+            {
+                List<CharacterAction> actions;
+                if (i == 0)
+                {
+                    actions = GameManager.Battle.summoner.Actions;
+                    characterNameTextObjects[i].text = GameManager.Battle.summoner.Name;
+                }
+                else
+                {
+                    actions = GameManager.Battle.servants[i-1].Actions;
+                    characterNameTextObjects[i].text = GameManager.Battle.servants[i-1].Name;                    
+                }
 
+                for (int j = 0; j < actions.Count; j++)
+                {
+                    actionNameTextObjects[i*3 + j].text = actions[j].ActionName;
+                }
+            }
         }
 
         // Update is called once per frame
@@ -34,22 +59,33 @@ namespace TwitchIRCGame
                 return;
             }
 
-            if (selectedActionIndex != actionIndex - 1) // ¼±ÅÃ
+            // ê¸°ì¡´ í–‰ë™ ì„ íƒ í•´ì œ í‘œì‹œ (í•˜ì–€ìƒ‰)
+            if (selectedActionIndex != NOT_SELECTED)
+                actionNameTextObjects[selectedActionIndex].color = Color.white;
+
+            // í–‰ë™ ì§€ì •
+            if (selectedActionIndex != actionIndex - 1) // ì„ íƒ
             {
-                selectedActionIndex = actionIndex - 1; // ÀÎÅÍÆäÀÌ½º»ó index´Â 1-indexed, ½ÇÁ¦ ±¸ÇöµÈ index´Â 0-indexed
+                selectedActionIndex = actionIndex - 1; // ì¸í„°í˜ì´ìŠ¤ìƒ indexëŠ” 1-indexed, ì‹¤ì œ êµ¬í˜„ëœ indexëŠ” 0-indexed
+                GameManager.Battle.summonerAction = GameManager.Battle.summoner.Actions[selectedActionIndex];
                 Debug.Log($"Action {actionIndex} selected");
             }
-            else // ¼±ÅÃ ÇØÁ¦
+            else // ì„ íƒ í•´ì œ
             {
                 selectedActionIndex = NOT_SELECTED;
+                GameManager.Battle.summonerAction = null;
                 Debug.Log($"Action {actionIndex} deselected");
             }
+            
+            // ê¸°ì¡´ í–‰ë™ ì„ íƒ í‘œì‹œ (ë¹¨ê°„ìƒ‰)
+            if (selectedActionIndex != NOT_SELECTED)
+                actionNameTextObjects[selectedActionIndex].color = Color.red;
         }
 
         /// <param name="targetIndex">
-        /// ¾ç¼öÀÌ¸é ¾Æ±º (1, 2, 3 -> »ç¿ª¸¶ 1, 2, 3),
-        /// À½¼öÀÌ¸é Àû±º (-1, -2, -3 -> Àû 1, 2, 3),
-        /// 0ÀÌ¸é ¼ÒÈ¯»ç ÀÚ½ÅÀ» ÀÇ¹ÌÇÕ´Ï´Ù.
+        /// ì–‘ìˆ˜ì´ë©´ ì•„êµ° (1, 2, 3 -> ì‚¬ì—­ë§ˆ 1, 2, 3),
+        /// ìŒìˆ˜ì´ë©´ ì êµ° (-1, -2, -3 -> ì  1, 2, 3),
+        /// 0ì´ë©´ ì†Œí™˜ì‚¬ ìì‹ ì„ ì˜ë¯¸í•©ë‹ˆë‹¤.
         /// </param>
         public void SetSummonerTarget(int targetIndex)
         {
@@ -61,87 +97,61 @@ namespace TwitchIRCGame
             bool isInputTargetEnemy = targetIndex < 0;
             bool isRequiredTargetEnemy = selectedAction.IsTargetOpponent;
 
-            bool isInputTargetAlive = true;
-            /* ÇöÀç ´Ü°è¿¡¼­ enemies¿Í servants°¡ ºó ¸®½ºÆ®¶ó¼­ Àá½Ã ²¨µÒ
+            bool doesInputTargetExist = true;
             if (isInputTargetEnemy)
-                isInputTargetAlive = GameManager.Battle.enemies.Count < -targetIndex;
+                doesInputTargetExist = GameManager.Battle.enemies.Count >= -targetIndex;
             else if (targetIndex != SUMMONER)
-                isInputTargetAlive = GameManager.Battle.servants.Count < targetIndex;
-            */
+                doesInputTargetExist = GameManager.Battle.servants.Count >= targetIndex;
 
-            // ´ë»óÀÌ ¾ø°Å³ª ÀüÃ¼°¡ ´ë»óÀÎ Çàµ¿ÀÏ °æ¿ì ¹«È¿
+            // ëŒ€ìƒì´ ì—†ê±°ë‚˜ ì „ì²´ê°€ ëŒ€ìƒì¸ í–‰ë™ì¼ ê²½ìš° ë¬´íš¨
             if (isTargetless)
                 return;
 
-            // Àß¸øµÈ ´ë»óÀ» ¼±ÅÃÇÑ °æ¿ì ¹«È¿
-            if (isInputTargetEnemy != isRequiredTargetEnemy || !isInputTargetAlive)
+            // ì˜ëª»ëœ ëŒ€ìƒì„ ì„ íƒí•œ ê²½ìš° ë¬´íš¨
+            if (isInputTargetEnemy != isRequiredTargetEnemy || !doesInputTargetExist)
                 return;
 
-            // ÀÎÅÍÆäÀÌ½º»ó index´Â 1-indexed, ½ÇÁ¦ ±¸ÇöµÈ index´Â 0-indexed
-            // ¼ÒÈ¯»ç´Â -1·Î Ç¥ÇöµÊ
+            // ì¸í„°í˜ì´ìŠ¤ìƒ indexëŠ” 1-indexed, ì‹¤ì œ êµ¬í˜„ëœ indexëŠ” 0-indexed
+            // ì†Œí™˜ì‚¬ëŠ” -1ë¡œ í‘œí˜„ë¨
             selectedTargetIndex = (isInputTargetEnemy ? -targetIndex : targetIndex) - 1;
-
+            
+            // ëŒ€ìƒ ì§€ì •
             if (isInputTargetEnemy)
-                Debug.Log("Target: Enemy " + (-targetIndex));
+            {
+                GameManager.Battle.summoner.SetSingleTarget(GameManager.Battle.enemies[selectedTargetIndex]);
+                Debug.Log($"Target: Enemy {-targetIndex}");
+            }
             else if (selectedTargetIndex == SUMMONER)
-                Debug.Log("Target: Summoner");
+            {
+                GameManager.Battle.summoner.SetSingleTarget(GameManager.Battle.summoner);
+                Debug.Log($"Target: Summoner");
+            }
             else
-                Debug.Log("Target: Servant " + targetIndex);
+            {
+                GameManager.Battle.summoner.SetSingleTarget(GameManager.Battle.servants[selectedTargetIndex]);
+                Debug.Log($"Target: Servant {targetIndex}");                
+            }
         }
 
-        public void EndTurn() // ÅÏ Á¾·á ¹öÆ°
+        public void EndTurn()
         {
-            if (SelectAction())
+            bool isActionTargeted = GameManager.Battle.summonerAction.IsTargeted;
+            bool isTargetSelected = selectedTargetIndex != NOT_SELECTED; 
+            if (isActionTargeted && !isTargetSelected)
+            {
+                Debug.Log("Turn not ended; please select the target");
+            }
+            else
             {
                 Debug.Log("Turn ended");
                 GameManager.Battle.EndTurn();
 
-                // ÃÊ±âÈ­
+                // ì´ˆê¸°í™”
+                if (selectedActionIndex != NOT_SELECTED)
+                    actionNameTextObjects[selectedActionIndex].color = Color.white;
                 selectedActionIndex = NOT_SELECTED;
                 selectedTargetIndex = NOT_SELECTED;
             }
-            else
-            {
-                Debug.Log("Turn not ended; please select the target");
-            }
-        }
-
-        /// <returns>
-        /// Çàµ¿Àº ¼±ÅÃÇß´Âµ¥ ´ë»óÀÌ Á¦´ë·Î ¼±ÅÃµÇÁö ¾ÊÀº °æ¿ì false¸¦ ¹İÈ¯ÇÕ´Ï´Ù.
-        /// ±× ¿Ü¿¡´Â true¸¦ ¹İÈ¯ÇÕ´Ï´Ù.
-        /// </returns>
-        private bool SelectAction()
-        {
-            if (selectedActionIndex == NOT_SELECTED)
-            {
-                GameManager.Battle.summonerAction = null;
-                return true;
-            }
-
-            // Çàµ¿ ¼±ÅÃ
-            CharacterAction selectedAction = GameManager.Battle.summoner.Actions[selectedActionIndex];
-            GameManager.Battle.summonerAction = selectedAction;
-
-            // ´ë»ó ¼±ÅÃ
-            if (selectedAction.IsTargeted)
-            {
-                if (selectedTargetIndex == NOT_SELECTED) return false;      // Å¸°Ù °ø°İÀÏ¶§¸¸ Å¸°ÙÀ» °áÁ¤
-                else if (selectedAction.IsTargetOpponent)
-                {
-                    // Àû±º ¼±ÅÃ
-                    GameManager.Battle.summoner.SetSingleTarget(GameManager.Battle.enemies[selectedTargetIndex]);
-                }
-                else
-                {
-                    // ¾Æ±º ¼±ÅÃ
-                    if (selectedTargetIndex == SUMMONER)
-                        GameManager.Battle.summoner.SetSingleTarget(GameManager.Battle.summoner);
-                    else
-                        GameManager.Battle.summoner.SetSingleTarget(GameManager.Battle.servants[selectedTargetIndex]);
-                }
-            }
-
-            return true;
         }
     }
 

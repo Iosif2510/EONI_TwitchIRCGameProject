@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using static TwitchIRCGame.Define;
 using static TwitchIRCGame.Utils;
+using TMPro;
 
 namespace TwitchIRCGame
 {
@@ -29,14 +30,29 @@ namespace TwitchIRCGame
         /// <summary>치명타 발생 시의 대미지 배율입니다.</summary>
         [SerializeField]
         protected float basicCritDamageScale = 2f;
+        
+        /// <summary>사역마에게만 적용되는 빈사 상태입니다.</summary>
+        protected bool isGroggy;
+        public bool IsGroggy => isGroggy;
 
 
         [SerializeField]
         protected int place;
         protected List<Character> opponentTarget;
         protected List<Character> friendlyTarget;
+        protected const string TARGET_NONE = "No target";
+        protected const string TARGET_MULTIPLE = "Multiple target";
         
         protected List<CharacterAction> actions;
+
+        /// <summary>체력 바 오브젝트입니다. 체력 값을 수정할 때 반드시 함께 변경되어야 합니다.</summary>
+        [SerializeField]
+        protected GameObject healthBar;
+        
+        [SerializeField]
+        protected TMP_Text levelTextObject;
+        [SerializeField]
+        protected TMP_Text targetTextObject;
 
         public string Name => characterName;
         public int Health => health;
@@ -64,11 +80,13 @@ namespace TwitchIRCGame
             actions = new List<CharacterAction>(3);
             health = maxHealth;
             level = 1;
+            isGroggy = false;
+            levelTextObject.text = $"Level: {level}";
+            targetTextObject.text = TARGET_NONE;
         }
 
         private void Start()
         {
-
         }
 
         public void Damage(CharacterType attackType, int damage)
@@ -76,12 +94,17 @@ namespace TwitchIRCGame
             float typeDamagePercent = TypeDamagePercent(attackType, this.characterType);
             int finalDamage = Mathf.FloorToInt(damage * (1 + typeDamagePercent));
             health -= finalDamage;
-            if (health < 0)
-            {
-                health = 0; // TODO: 사망 처리 필요
+
+            if (health < 0) {
+                health = 0;
                 OnHealthZero();
             }
+
+            float displayedHealth = (float) health / (float) maxHealth;
+            healthBar.transform.localScale = new Vector3(displayedHealth, 1.0f, 1.0f);
+            
             Debug.Log($"{characterName} got {finalDamage} damage!");
+            Debug.Log($"{characterName}'s health: {displayedHealth}");
         }
 
         // 제안: 행동 슬롯을 배열로 설정하여 AddAction(action, slotNumber)으로 고치는 건 어떤지?
@@ -104,17 +127,22 @@ namespace TwitchIRCGame
         public void ClearTarget()
         {
             this.opponentTarget.Clear();
+            targetTextObject.text = TARGET_NONE;
         }
 
         public void AddTarget(Character target)
         {
             this.opponentTarget.Add(target);
+            if (this.opponentTarget.Count == 1)
+                targetTextObject.text = this.opponentTarget[0].Name;
+            else
+                targetTextObject.text = TARGET_MULTIPLE;
         }
 
         public void SetSingleTarget(Character target)
         {
-            this.opponentTarget.Clear();
-            this.opponentTarget.Add(target);
+            ClearTarget();
+            AddTarget(target);
         }
 
         public virtual void Attack(bool typedAttack) 
@@ -147,12 +175,12 @@ namespace TwitchIRCGame
             ReturnAfterAction.Invoke();
             ReturnAfterAction.RemoveAllListeners();
         }
-
+        
         public void RestoreHealth()
         {
 
         }
-
+        
         protected void TauntTarget(Character target)
         {
             if (target == null) return;
@@ -167,12 +195,11 @@ namespace TwitchIRCGame
             this.opponentTarget.Clear();
             this.opponentTarget.Add(originalTarget);
         }
-
+        
         protected abstract void OnHealthZero();
         public virtual void Die()
         {
 
         }
-
     }
 }

@@ -23,7 +23,8 @@ namespace TwitchIRCGame
                 Debug.Log($"{characterName} attacked {target.Name}!");
                 AttackTarget(target, typedAttack);
             }
-            base.Attack(typedAttack);   // ¾×¼Ç ÀÌÈÄ ÀÌº¥Æ® ¹ß»ı(Á¤»óÈ­ µî)
+            
+            base.Attack(typedAttack);   // ì•¡ì…˜ ì´í›„ ì´ë²¤íŠ¸ ë°œìƒ(ì •ìƒí™” ë“±)
         }
 
         public override void Taunt()
@@ -36,7 +37,7 @@ namespace TwitchIRCGame
             Debug.Log($"{characterName} taunted!");
             base.Taunt();
         }
-
+        
         protected override void OnHealthZero()
         {
             Die();

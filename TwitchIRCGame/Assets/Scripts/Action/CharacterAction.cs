@@ -10,14 +10,14 @@ namespace TwitchIRCGame
 {
     public abstract class CharacterAction
     {
-        protected string actionName;
+        //protected string actionName;
+        //protected string actionDescription;
         protected UnityEvent actionEvent = new UnityEvent();
-        protected string actionDescription;
 
         public Character user;
 
-        public string ActionName => actionName;
-        public string Description => actionDescription;
+        public abstract string ActionName { get; }
+        public abstract string Description { get; }
 
         /// <summary>
         /// 해당 행동의 대상 범위를 의미합니다.
