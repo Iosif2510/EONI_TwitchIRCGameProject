@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using static TwitchIRCGame.Define;
 using static TwitchIRCGame.Utils;
+using static UnityEngine.GraphicsBuffer;
 
 namespace TwitchIRCGame
 {
@@ -264,6 +265,7 @@ namespace TwitchIRCGame
         public virtual void Guard()
         {
             GuardingTarget(this);
+            Debug.Log($"{characterName} Get Guard!");
             ReturnAfterAction.Invoke();
             ReturnAfterAction.RemoveAllListeners();
         }
