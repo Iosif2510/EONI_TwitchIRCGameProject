@@ -21,8 +21,12 @@ namespace TwitchIRCGame
         [SerializeField]
         protected int maxHealth;
         protected int health;
+        protected int Guardpoint;
         [SerializeField]
         protected int basicDamage = 10;
+        protected int basicHealing = 5;
+        protected int basicGuarding = 5;
+        protected int basicBuff = 2;
         /// <summary>치명타 발생 확률입니다.</summary>
         [SerializeField]
         protected float basicCritPercentage = .02f;
@@ -75,7 +79,16 @@ namespace TwitchIRCGame
         {
             float typeDamagePercent = TypeDamagePercent(attackType, this.characterType);
             int finalDamage = Mathf.FloorToInt(damage * (1 + typeDamagePercent));
-            health -= finalDamage;
+            finalDamage -= Guardpoint;
+            if(finalDamage > 0)
+            {
+                health -= finalDamage;
+                Guardpoint = 0;
+            }
+            else
+            {
+                Guardpoint -= finalDamage;
+            }
             if (health < 0) health = 0; // TODO: 사망 처리 필요
             Debug.Log($"{characterName} got {finalDamage} damage!");
         }
@@ -113,16 +126,34 @@ namespace TwitchIRCGame
             this.opponentTarget.Add(target);
         }
 
+        public void SetSingleSupport(Character target)
+        {
+            this.friendlyTarget.Clear();
+            this.friendlyTarget.Add(target);
+        }
+
         public void Attack(bool typedAttack) 
         {
-            ReturnAfterAction.Invoke();
-            ReturnAfterAction.RemoveAllListeners();
             foreach (var target in opponentTarget)
             {
                 //Servant Animation
                 Debug.Log($"{characterName} attacked {target.Name}!");
                 AttackTarget(target, typedAttack);
             }
+            ReturnAfterAction.Invoke();
+            ReturnAfterAction.RemoveAllListeners();
+        }
+
+        public void AttackAll(bool typedAttack)
+        {
+            foreach (var target in GameManager.Battle.servants)
+            {
+                //Servant Animation
+                Debug.Log($"{characterName} attacked {target.Name}!");
+                AttackTarget(target, typedAttack);
+            }
+            ReturnAfterAction.Invoke();
+            ReturnAfterAction.RemoveAllListeners();
         }
 
         protected void AttackTarget(Character target, bool typedAttack)
@@ -146,8 +177,6 @@ namespace TwitchIRCGame
 
         public void Taunt() 
         {
-            ReturnAfterAction.Invoke();
-            ReturnAfterAction.RemoveAllListeners();
             if (this.GetType() == typeof(Enemy))
             {
                 foreach (var opponent in GameManager.Battle.servants)
@@ -164,6 +193,8 @@ namespace TwitchIRCGame
                     TauntTarget(opponent);
                 }
             }
+            ReturnAfterAction.Invoke();
+            ReturnAfterAction.RemoveAllListeners();
             Debug.Log($"{characterName} taunted!");
         }
 
@@ -182,5 +213,86 @@ namespace TwitchIRCGame
             this.opponentTarget.Add(originalTarget);
         }
 
+        public void Healing(int heal)
+        {
+            health += heal;
+            //최대 체력 이상 회복 불가
+            if (health > maxHealth) health = maxHealth;
+        }
+
+        protected void HealingTarget(Character target)
+        {
+            if (target == null) return;
+            target.Healing(basicHealing);
+        }
+
+        public virtual void Heal()
+        {
+            foreach (var target in friendlyTarget)
+            {
+                Debug.Log($"{characterName} Healing {target.Name}!");
+                HealingTarget(target);
+            }
+            ReturnAfterAction.Invoke();
+            ReturnAfterAction.RemoveAllListeners();
+        }
+
+        public virtual void AllHeal()
+        {
+            foreach (var target in GameManager.Battle.servants)
+            {
+                Debug.Log($"{characterName} Healing {target.Name}!");
+                HealingTarget(target);
+            }
+            ReturnAfterAction.Invoke();
+            ReturnAfterAction.RemoveAllListeners();
+        }
+        public void Guarding(int guards)
+        {
+            Guardpoint += guards;
+        }
+        protected void GuardingTarget(Character target)
+        {
+            if (target == null) return;
+            target.Guarding(basicGuarding);
+        }
+
+        public virtual void Guardreset()
+        {
+            Guardpoint = 0;
+        }
+        public virtual void Guard()
+        {
+            GuardingTarget(this);
+            ReturnAfterAction.Invoke();
+            ReturnAfterAction.RemoveAllListeners();
+        }
+
+        public virtual void Buff()
+        {
+            foreach (var target in friendlyTarget)
+            {
+                Debug.Log($"{characterName} Buff {target.Name}!");
+                BuffTarget(target);
+            }
+            ReturnAfterAction.Invoke();
+            ReturnAfterAction.RemoveAllListeners();
+        }
+
+        protected void BuffTarget(Character target)
+        {
+            if (target == null) return;
+            target.BuffDamage(basicBuff);
+        }
+
+        public void BuffDamage(int buff)
+        {
+            basicDamage += buff;
+        }
+
+        public void resetBuff(int buff)
+        {
+            basicDamage -= buff;
+        }
     }
 }

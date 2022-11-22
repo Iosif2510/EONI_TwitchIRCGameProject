@@ -7,21 +7,21 @@ using static TwitchIRCGame.Define;
 
 namespace TwitchIRCGame
 {
-    public class Guard : CharacterAction
+    public class TargetBuff : CharacterAction
     {
-        public override bool IsTargeted => false;
+        public override bool IsTargeted => true;
         public override bool IsTargetOpponent => false;
         public override int ActionOrder => ORDER_BEFORE_ATTACK;
 
         public override void SetUser(Character user)
         {
             base.SetUser(user);
-            SetGuard();
-        }
-        private void SetGuard()
-        {
-            actionEvent.AddListener(user.Guard);
-        }
+            SetBuff();
 
+        }
+        private void SetBuff()
+        {
+            actionEvent.AddListener(user.Buff);
+        }
     }
 }

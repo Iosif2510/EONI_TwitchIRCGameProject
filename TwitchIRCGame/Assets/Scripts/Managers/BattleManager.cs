@@ -209,7 +209,7 @@ namespace TwitchIRCGame
                         }
                         else
                         {
-                            enemies[characterIndex].SetSingleTarget(enemies[targetIndex]);
+                            enemies[characterIndex].SetSingleSupport(enemies[targetIndex]);
                         }
                     }
                     break;
