@@ -134,7 +134,7 @@ namespace TwitchIRCGame
         public void DeleteAction(CharacterAction action)
         {
             actions.Remove(action);
-        }
+        }        
 
         public void ClearTarget()
         {

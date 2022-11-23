@@ -9,6 +9,9 @@ namespace TwitchIRCGame
 {
     public class Guard : CharacterAction
     {
+        public override string ActionName => "Guard";
+        public override string Description => "Guard";
+
         public override bool IsTargeted => false;
         public override bool IsTargetOpponent => false;
         public override int ActionOrder => ORDER_BEFORE_ATTACK;

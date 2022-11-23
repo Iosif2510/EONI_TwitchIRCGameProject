@@ -83,60 +83,90 @@ namespace TwitchIRCGame
 
             // BattleManager에서 구현할 부분이 아니므로, 임시로 쓰고 나중에 다른 씬에서 구현
             // 아군 행동 설정
+            /*
+            summoner.AddAction(new NonTypeAttackAll());
+            summoner.AddAction(new TargetBuff());
+            summoner.AddAction(new TargetHealing());
+            summoner.AddAction(new AllHealing());
+            */
+
             summoner.AddAction(new TauntAction());
+            summoner.AddAction(new TypedAttack());
             summoner.AddAction(new NonTypeAttack());
+
             servants[0].AddAction(new TauntAction());
             servants[0].AddAction(new NonTypeAttack());
+
             servants[1].AddAction(new TauntAction());
             servants[1].AddAction(new TypedAttack());
-            servants[2].AddAction(new TauntAction());
+
+            servants[2].AddAction(new NonTypeAttack());
             servants[2].AddAction(new TypedAttack());
 
             // 적군 행동 설정
             enemies[0].AddAction(new TauntAction());
             enemies[0].AddAction(new NonTypeAttack());
+
             enemies[1].AddAction(new TauntAction());
             enemies[1].AddAction(new TypedAttack());
-            enemies[2].AddAction(new TauntAction());
+
+            enemies[2].AddAction(new NonTypeAttack());
             enemies[2].AddAction(new TypedAttack());
             
             TestScenario();
         }
         
-        /*
-        private void Update()
-        {
-            ActionChoiceTime();
-        }
-        */
 
         public void EndTurn()
         {
             StartActions();
-            TestScenario();
+            TestScenario();                     
         }
 
-        private void ActionChoiceTime()
-        {
-            // summoner는 클릭을 통해서 행동과 대상 선택            
 
-            // servant는 채팅을 통해서 행동과 대상 선택
-            // Twitch chat 연동 기능 필요            
-            // 해당 사역마가 선택 완료 시에 이를 나타내는 interface 필요
-        }
         private void TestScenario()
         {
-            Debug.Log("Test Scenario");            
+            Debug.Log("Test Scenario");
+            /*
             // 소환사 행동 지정은 버튼으로 선택(UIManager)
             // 사역마 행동 지정, 행동을 선택하지 않은 경우 ActionList에 null
-            SelectAction<Servant>(servants, 0, 0);
+            SelectAction<Servant>(servants, 0, 1, 1);
             SelectAction<Servant>(servants, 1, 1, 1);
-            SelectAction<Servant>(servants, 2, 1, 2);
+            SelectAction<Servant>(servants, 2, 1, 1);
+            
+            /// 적 행동 지정
+            for (int i = 0; i < enemies.Count; i++)
+            {
+                System.Random rand = new System.Random();
+                int randAct = rand.Next(enemies[i].Actions.Count); //0,1 중 하나 선택                
+                int randTarget = 0; // 1. 대상공격인 경우 대상을 랜덤으로 선택, 2. 공격이 아닌 경우 대상 없음
+                if (enemies[i].Actions[randAct].IsTargeted)
+                {
+                    randTarget = rand.Next(-1, servants.Count); // 소환사, 사역마 중 하나 선택
+                }
+                SelectAction<Enemy>(enemies, i, randAct, randTarget);
+                Debug.Log($"{i}th enemy, act: {randAct},target: {randTarget}");
+            }           
+            */
 
             /// 적 행동 지정
-            SelectAction<Enemy>(enemies, 0, 1, 0);
-            SelectAction<Enemy>(enemies, 1, 0);
-            SelectAction<Enemy>(enemies, 2, 1, -1);
+            for (int i = 0; i < servants.Count; i++)
+            {
+                System.Random rand = new System.Random();
+                int randAct = rand.Next(servants[i].Actions.Count); //0,1 중 하나 선택                
+                int randTarget = 0; // 1. 대상공격인 경우 대상을 랜덤으로 선택, 2. 공격이 아닌 경우 대상 없음
+                if (servants[i].Actions[randAct].IsTargeted)
+                {
+                    randTarget = rand.Next(0, enemies.Count); // 소환사, 사역마 중 하나 선택
+                }
+                SelectAction<Servant>(servants, i, randAct, randTarget);
+                Debug.Log($"{i}th servant, act: {randAct},target: {randTarget}");
+            }
+            
+
+            SelectAction<Enemy>(enemies, 0, 1, 1);
+            SelectAction<Enemy>(enemies, 1, 1, 1);
+            SelectAction<Enemy>(enemies, 2, 1, 1);
         }
         
         /// <summary>현재 턴에서 사용될 행동을 지정합니다.</summary>

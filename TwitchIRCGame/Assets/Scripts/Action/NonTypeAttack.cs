@@ -11,6 +11,7 @@ namespace TwitchIRCGame
     {
         public override string ActionName => "Non-type Attack";
         public override string Description => "Non-type Attack";
+
         public override bool IsTargeted => true;
         public override bool IsTargetOpponent => true;
         public override int ActionOrder => ORDER_ATTACK;

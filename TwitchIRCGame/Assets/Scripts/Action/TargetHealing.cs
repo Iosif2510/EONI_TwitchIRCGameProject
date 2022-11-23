@@ -9,6 +9,9 @@ namespace TwitchIRCGame
 {
     public class TargetHealing : CharacterAction
     {
+        public override string ActionName => "Target Healing";
+        public override string Description => "Target Healing";
+
         public override bool IsTargeted => true;
         public override bool IsTargetOpponent => false;
         public override int ActionOrder => ORDER_BEFORE_ATTACK;
