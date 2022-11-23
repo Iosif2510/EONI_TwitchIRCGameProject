@@ -135,7 +135,8 @@ namespace TwitchIRCGame
 
         public void EndTurn()
         {
-            bool isActionTargeted = GameManager.Battle.summonerAction.IsTargeted;
+            bool isActionSelected = selectedActionIndex != NOT_SELECTED;
+            bool isActionTargeted = isActionSelected && GameManager.Battle.summonerAction.IsTargeted;
             bool isTargetSelected = selectedTargetIndex != NOT_SELECTED; 
             if (isActionTargeted && !isTargetSelected)
             {

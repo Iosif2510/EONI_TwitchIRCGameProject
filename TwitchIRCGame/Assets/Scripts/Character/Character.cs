@@ -116,7 +116,7 @@ namespace TwitchIRCGame
             float displayedHealth = (float) health / (float) maxHealth;
             healthBar.transform.localScale = new Vector3(displayedHealth, 1.0f, 1.0f);
             Debug.Log($"{characterName} got {finalDamage} damage!");
-            Debug.Log($"{characterName}'s health: {displayedHealth}");
+            Debug.Log($"{characterName}'s health: {health}/{maxHealth}");
         }
 
         // 제안: 행동 슬롯을 배열로 설정하여 AddAction(action, slotNumber)으로 고치는 건 어떤지?
