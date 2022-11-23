@@ -13,6 +13,9 @@ namespace TwitchIRCGame
         public override bool IsTargetOpponent => true;
         public override int ActionOrder => ORDER_BEFORE_ATTACK;
 
+        public override string ActionName => throw new NotImplementedException();
+        public override string Description => throw new NotImplementedException();
+
         public override void SetUser(Character user)
         {
             base.SetUser(user);

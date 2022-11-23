@@ -24,7 +24,7 @@ namespace TwitchIRCGame
         // Start is called before the first frame update
         void Awake()
         {
-            GetComponentInChildren<Canvas>().worldCamera = UIManager.Instance.mainCamera;
+            GetComponentInChildren<Canvas>().worldCamera = GameManager.UI.mainCamera;
             nameTextUI = GetComponentInChildren<TextMeshProUGUI>();
         }
 

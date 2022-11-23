@@ -14,6 +14,17 @@ namespace TwitchIRCGame
             opponentTarget = new List<Character>(GameManager.Battle.MaxEnemyNum);
             friendlyTarget = new List<Character>(GameManager.Battle.MaxServantNum);
         }
+        
+        protected override void OnHealthZero()
+        {
+            Die();
+        }
+
+        public override void Die()
+        {
+            base.Die();
+            GameManager.Instance.GameOver();
+        }
     }
 }
 

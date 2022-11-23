@@ -9,6 +9,8 @@ namespace TwitchIRCGame
 {
     public class TypedAttack : CharacterAction
     {
+        public override string ActionName => "Typed Attack";
+        public override string Description => "Typed Attack";
         public override bool IsTargeted => true;
         public override bool IsTargetOpponent => true;
         public override int ActionOrder => ORDER_ATTACK;
