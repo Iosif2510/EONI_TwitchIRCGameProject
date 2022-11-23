@@ -157,12 +157,12 @@ namespace TwitchIRCGame
             CharacterAction[] actionList;
             string characterString;
 
-            if (T is Servant)
+            if (typeof(T) == typeof(Servant))
             {
                 actionList = servantActionList;
                 characterString = "Servant";
             }
-            else if (T is Enemy)
+            else if (typeof(T) == typeof(Enemy))
             {
                 actionList = enemyActionList;
                 characterString = "Enemy";
@@ -188,7 +188,7 @@ namespace TwitchIRCGame
             // 존재하지 않는 행동
             else if (characters[characterIndex].Actions.Count <= actionIndex)
             {
-                if (T is Enemy)
+                if (typeof(T) == typeof(Enemy))
                 {
                     throw new System.Exception($"Enemy {(characterIndex + 1)} has selected an invalid action: Action {(actionIndex + 1)}");
                 }
@@ -202,7 +202,7 @@ namespace TwitchIRCGame
                 {
                     Character target;
                     // 이 값이 true이면 대상은 적 진영, false이면 대상은 아군 진영임
-                    bool isTargetEnemy = (T is Servant) ==
+                    bool isTargetEnemy = (typeof(T) == typeof(Servant)) ==
                                          (actionList[characterIndex].IsTargetOpponent);
                     
                     // TODO: 다음과 같은 상황에서 사용자에게 오류 알림
@@ -210,7 +210,7 @@ namespace TwitchIRCGame
                     if (isTargetEnemy && (targetIndex == -1 || enemies.Count <= targetIndex) ||
                         !isTargetEnemy && (targetIndex != -1 && servants.Count <= targetIndex))
                     {
-                        if (T is Enemy)
+                        if (typeof(T) == typeof(Enemy))
                         {
                             throw new System.Exception($"Enemy {(characterIndex + 1)} has selected an invalid target.");                                                
                         }
@@ -222,13 +222,15 @@ namespace TwitchIRCGame
                     if (isTargetEnemy)
                     {
                         // 적군 선택
-                        servants[characterIndex].SetSingleTarget(enemies[targetIndex]);
+                        target = enemies[targetIndex];
+                        servants[characterIndex].SetSingleTarget(target);
                     }   
                     else
                     {
-                            // 아군 선택
-                        if (targetIndex == -1) servants[characterIndex].SetSingleSupport(summoner);
-                        else servants[characterIndex].SetSingleSupport(servants[targetIndex]);
+                        // 아군 선택
+                        if (targetIndex == -1) target = summoner;
+                        else target = servants[targetIndex];
+                        servants[characterIndex].SetSingleSupport(target);
                     }
                     
                     // TODO: 다음과 같은 상황에서 사용자에게 오류 알림

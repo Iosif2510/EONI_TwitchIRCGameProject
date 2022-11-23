@@ -16,8 +16,8 @@ namespace TwitchIRCGame
 
         public Character user;
 
-        public abstract string ActionName { get; }
-        public abstract string Description { get; }
+        public virtual string ActionName { get; }
+        public virtual string Description { get; }
 
         /// <summary>
         /// 해당 행동의 대상 범위를 의미합니다.
