@@ -227,7 +227,7 @@ namespace TwitchIRCGame
                     }   
                     else
                     {
-                        // 소환사 진
+                        // 소환사 진영
                         if (targetIndex == -1) target = summoner;
                         else target = servants[targetIndex];
                     }
