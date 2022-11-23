@@ -10,8 +10,6 @@ namespace TwitchIRCGame
 {
     public abstract class CharacterAction
     {
-        //protected string actionName;
-        //protected string actionDescription;
         protected UnityEvent actionEvent = new UnityEvent();
 
         public Character user;
