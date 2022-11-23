@@ -7,6 +7,7 @@ using UnityEngine.Events;
 using static TwitchIRCGame.Define;
 using static TwitchIRCGame.Utils;
 using TMPro;
+using static UnityEngine.GraphicsBuffer;
 
 namespace TwitchIRCGame
 {
@@ -22,8 +23,12 @@ namespace TwitchIRCGame
         [SerializeField]
         protected int maxHealth;
         protected int health;
+        protected int Guardpoint;
         [SerializeField]
         protected int basicDamage = 10;
+        protected int basicHealing = 5;
+        protected int basicGuarding = 5;
+        protected int basicBuff = 2;
         /// <summary>치명타 발생 확률입니다.</summary>
         [SerializeField]
         protected float basicCritPercentage = .02f;
@@ -93,8 +98,16 @@ namespace TwitchIRCGame
         {
             float typeDamagePercent = TypeDamagePercent(attackType, this.characterType);
             int finalDamage = Mathf.FloorToInt(damage * (1 + typeDamagePercent));
-            health -= finalDamage;
-
+            finalDamage -= Guardpoint;
+            if(finalDamage > 0)
+            {
+                health -= finalDamage;
+                Guardpoint = 0;
+            }
+            else
+            {
+                Guardpoint -= finalDamage;
+            }
             if (health < 0) {
                 health = 0;
                 OnHealthZero();
@@ -102,7 +115,6 @@ namespace TwitchIRCGame
 
             float displayedHealth = (float) health / (float) maxHealth;
             healthBar.transform.localScale = new Vector3(displayedHealth, 1.0f, 1.0f);
-            
             Debug.Log($"{characterName} got {finalDamage} damage!");
             Debug.Log($"{characterName}'s health: {displayedHealth}");
         }
@@ -145,8 +157,32 @@ namespace TwitchIRCGame
             AddTarget(target);
         }
 
-        public virtual void Attack(bool typedAttack) 
+        public void SetSingleSupport(Character target)
         {
+            this.friendlyTarget.Clear();
+            this.friendlyTarget.Add(target);
+        }
+
+        public void Attack(bool typedAttack) 
+        {
+            foreach (var target in opponentTarget)
+            {
+                //Servant Animation
+                Debug.Log($"{characterName} attacked {target.Name}!");
+                AttackTarget(target, typedAttack);
+            }
+            ReturnAfterAction.Invoke();
+            ReturnAfterAction.RemoveAllListeners();
+        }
+
+        public void AttackAll(bool typedAttack)
+        {
+            foreach (var target in GameManager.Battle.servants)
+            {
+                //Servant Animation
+                Debug.Log($"{characterName} attacked {target.Name}!");
+                AttackTarget(target, typedAttack);
+            }
             ReturnAfterAction.Invoke();
             ReturnAfterAction.RemoveAllListeners();
         }
@@ -170,10 +206,27 @@ namespace TwitchIRCGame
             SetSingleTarget(target);
         }
 
-        public virtual void Taunt() 
+        public void Taunt() 
         {
+            if (this.GetType() == typeof(Enemy))
+            {
+                foreach (var opponent in GameManager.Battle.servants)
+                {
+                    //Taunt Animation
+                    TauntTarget(opponent);
+                }
+            }
+            else
+            {
+                foreach (var opponent in GameManager.Battle.enemies)
+                {
+                    //Taunt Animation
+                    TauntTarget(opponent);
+                }
+            }
             ReturnAfterAction.Invoke();
             ReturnAfterAction.RemoveAllListeners();
+            Debug.Log($"{characterName} taunted!");
         }
         
         public void RestoreHealth()
@@ -200,6 +253,88 @@ namespace TwitchIRCGame
         public virtual void Die()
         {
 
+        }
+        public void Healing(int heal)
+        {
+            health += heal;
+            //최대 체력 이상 회복 불가
+            if (health > maxHealth) health = maxHealth;
+        }
+
+        protected void HealingTarget(Character target)
+        {
+            if (target == null) return;
+            target.Healing(basicHealing);
+        }
+
+        public virtual void Heal()
+        {
+            foreach (var target in friendlyTarget)
+            {
+                Debug.Log($"{characterName} Healing {target.Name}!");
+                HealingTarget(target);
+            }
+            ReturnAfterAction.Invoke();
+            ReturnAfterAction.RemoveAllListeners();
+        }
+
+        public virtual void AllHeal()
+        {
+            foreach (var target in GameManager.Battle.servants)
+            {
+                Debug.Log($"{characterName} Healing {target.Name}!");
+                HealingTarget(target);
+            }
+            ReturnAfterAction.Invoke();
+            ReturnAfterAction.RemoveAllListeners();
+        }
+        public void Guarding(int guards)
+        {
+            Guardpoint += guards;
+        }
+        protected void GuardingTarget(Character target)
+        {
+            if (target == null) return;
+            target.Guarding(basicGuarding);
+        }
+
+        public virtual void Guardreset()
+        {
+            Guardpoint = 0;
+        }
+        public virtual void Guard()
+        {
+            GuardingTarget(this);
+            Debug.Log($"{characterName} Get Guard!");
+            ReturnAfterAction.Invoke();
+            ReturnAfterAction.RemoveAllListeners();
+        }
+
+        public virtual void Buff()
+        {
+            foreach (var target in friendlyTarget)
+            {
+                Debug.Log($"{characterName} Buff {target.Name}!");
+                BuffTarget(target);
+            }
+            ReturnAfterAction.Invoke();
+            ReturnAfterAction.RemoveAllListeners();
+        }
+
+        protected void BuffTarget(Character target)
+        {
+            if (target == null) return;
+            target.BuffDamage(basicBuff);
+        }
+
+        public void BuffDamage(int buff)
+        {
+            basicDamage += buff;
+        }
+
+        public void resetBuff(int buff)
+        {
+            basicDamage -= buff;
         }
     }
 }

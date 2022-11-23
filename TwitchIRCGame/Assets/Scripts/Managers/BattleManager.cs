@@ -216,14 +216,20 @@ namespace TwitchIRCGame
                         }
                         Debug.Log($"Target does not exist!");
                         return; // 강제 종료
+
                     }
                     
                     if (isTargetEnemy)
-                        target = enemies[targetIndex]; 
-                    else if (targetIndex != -1)
-                        target = servants[targetIndex];
+                    {
+                        // 적군 선택
+                        servants[characterIndex].SetSingleTarget(enemies[targetIndex]);
+                    }   
                     else
-                        target = summoner;
+                    {
+                            // 아군 선택
+                        if (targetIndex == -1) servants[characterIndex].SetSingleSupport(summoner);
+                        else servants[characterIndex].SetSingleSupport(servants[targetIndex]);
+                    }
                     
                     // TODO: 다음과 같은 상황에서 사용자에게 오류 알림
                     // 대상 사망
@@ -232,8 +238,7 @@ namespace TwitchIRCGame
                         Debug.Log($"Target {target.Name} is dead!");
                         return; // 강제 종료
                     }
-                    
-                    characters[characterIndex].SetSingleTarget(target); // 대상 선택
+
                 }
             }
         } 
