@@ -21,28 +21,6 @@ namespace TwitchIRCGame
             this.characterData = GameManager.Data.summonerData.characterData;
         }
 
-        public override void Attack(bool typedAttack)
-        {
-            foreach (var target in opponentTarget)
-            {
-                //Servant Animation
-                Debug.Log($"{Name} attacked {target.Name}!");
-                AttackTarget(target, typedAttack);
-            }
-            base.Attack(typedAttack);   // 액션 이후 이벤트 발생(정상화 등)
-        }
-
-        public override void Taunt()
-        {
-            foreach (var enemy in GameManager.Battle.enemies)
-            {
-                //Taunt Animation
-                TauntTarget(enemy);
-            }
-            Debug.Log($"{Name} taunted!");
-            base.Taunt();
-        }
-
         protected override void OnHealthZero()
         {
             Die();
