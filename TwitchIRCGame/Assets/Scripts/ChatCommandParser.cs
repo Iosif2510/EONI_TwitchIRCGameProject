@@ -86,7 +86,8 @@ namespace TwitchIRCGame
                         case "!attack":
                             if (message.Length == 2 && int.Parse(message[1]) >= 1 && int.Parse(message[1]) <= 4)
                             {
-                                Debug.Log($"{chatter.tags.displayName} attacks {message[1]}!");
+                                // µð¹ö±ë Çò°¥·Á¼­ ±æ°Ô ¾¸
+                                Debug.Log($"{chatter.tags.displayName} selects attack {message[1]} action");
                                 GameManager.Battle.SelectAction<Servant>(GameManager.Battle.servants, GameManager.Instance.servantIDs.IndexOf(chatter.tags.userId), 1, int.Parse(message[1]) - 1);
                             }
                             else
@@ -95,13 +96,12 @@ namespace TwitchIRCGame
                             }
                             break;
                         case "!taunt":
-                            Debug.Log($"{chatter.tags.displayName} taunts!");
+                            Debug.Log($"{chatter.tags.displayName} selects taunt action");
                             GameManager.Battle.SelectAction<Servant>(GameManager.Battle.servants, GameManager.Instance.servantIDs.IndexOf(chatter.tags.userId), 0);
                             break;
                         case "!leave":
                             Debug.Log($"{chatter.tags.displayName} leaves");
                             //GameManager.Instance.ServantDelete(chatter.tags.userId);
-                            GameManager.Battle.servants[GameManager.Instance.servantIDs.Count].Name = chatter.tags.displayName;
                             break;
                     }
                 }
