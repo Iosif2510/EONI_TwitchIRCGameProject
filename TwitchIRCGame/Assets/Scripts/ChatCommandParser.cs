@@ -11,11 +11,8 @@ namespace TwitchIRCGame
         [SerializeField]
         private TwitchIRC twitchIRC;
 
-        //[SerializeField]
-        //private BattleManager battleManager = gameManager.Battle;
         // 게임 매니저로 서번트 생성
         // 배틀 매니저로 커맨드 생성
-
 
         private void Awake()
         {
@@ -37,25 +34,40 @@ namespace TwitchIRCGame
                 {
                     switch (message[0])
                     {
-                        case "!attack":
+                        case "!a":
+                            Debug.Log($"{chatter.tags.displayName} selects a action");
+                            GameManager.Battle.SelectAction<Servant>(GameManager.Battle.servants, GameManager.Instance.servantIDs.IndexOf(chatter.tags.userId), 0);
+                            break;
+                        case "!b":
                             if (message.Length == 2 && int.Parse(message[1]) >= 1 && int.Parse(message[1]) <= 4)
                             {
                                 // 디버깅 헷갈려서 길게 씀
-                                Debug.Log($"{chatter.tags.displayName} selects attack {message[1]} action");
+                                Debug.Log($"{chatter.tags.displayName} selects b {message[1]} action");
                                 GameManager.Battle.SelectAction<Servant>(GameManager.Battle.servants, GameManager.Instance.servantIDs.IndexOf(chatter.tags.userId), 1, int.Parse(message[1]) - 1);
                             }
                             else
                             {
-                                Debug.Log("Invalid command. Require target");
+                                Debug.Log("Require target");
                             }
                             break;
-                        case "!taunt":
-                            Debug.Log($"{chatter.tags.displayName} selects taunt action");
-                            GameManager.Battle.SelectAction<Servant>(GameManager.Battle.servants, GameManager.Instance.servantIDs.IndexOf(chatter.tags.userId), 0);
+                        case "!c":
+                            if (message.Length == 2 && int.Parse(message[1]) >= 1 && int.Parse(message[1]) <= 4)
+                            {
+                                // 디버깅 헷갈려서 길게 씀
+                                Debug.Log($"{chatter.tags.displayName} selects c {message[1]} action");
+                                GameManager.Battle.SelectAction<Servant>(GameManager.Battle.servants, GameManager.Instance.servantIDs.IndexOf(chatter.tags.userId), 2, int.Parse(message[1]) - 1);
+                            }
+                            else
+                            {
+                                Debug.Log("Require target");
+                            }
                             break;
                         case "!leave":
                             Debug.Log($"{chatter.tags.displayName} leaves");
                             //GameManager.Instance.ServantDelete(chatter.tags.userId);
+                            break;
+                        default:
+                            Debug.Log("Invalid command");
                             break;
                     }
                 }
