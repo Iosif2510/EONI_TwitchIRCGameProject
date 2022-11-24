@@ -84,25 +84,28 @@ namespace TwitchIRCGame
             // BattleManager에서 구현할 부분이 아니므로, 임시로 쓰고 나중에 다른 씬에서 구현
             // 아군 행동 설정
             
-            summoner.AddAction(new NonTypeAttackAll());
-            //summoner.AddAction(new TargetBuff());
-            //summoner.AddAction(new TargetHealing());
-            // summoner.AddAction(new AllHealing());
+            //summoner.AddAction(new NonTypeAttackAll());
+            summoner.AddAction(new TargetBuff());
+            summoner.AddAction(new TargetHealing());
+            summoner.AddAction(new AllHealing());
             
             
             //summoner.AddAction(new TauntAction());
-            summoner.AddAction(new TypedAttack());
-            summoner.AddAction(new NonTypeAttack());
+            //summoner.AddAction(new TypedAttack());
+            // summoner.AddAction(new NonTypeAttack());
             
 
             servants[0].AddAction(new TauntAction());
             servants[0].AddAction(new NonTypeAttack());
+            servants[0].AddAction(new Guard());
 
             servants[1].AddAction(new TauntAction());
             servants[1].AddAction(new TypedAttack());
+            servants[1].AddAction(new Guard());
 
             servants[2].AddAction(new NonTypeAttack());
             servants[2].AddAction(new TypedAttack());
+            servants[2].AddAction(new Guard());
 
             // 적군 행동 설정
             enemies[0].AddAction(new TauntAction());
@@ -131,9 +134,9 @@ namespace TwitchIRCGame
             
             // 소환사 행동 지정은 버튼으로 선택(UIManager)
             // 사역마 행동 지정, 행동을 선택하지 않은 경우 ActionList에 null
-            SelectAction<Servant>(servants, 0, 1, 1);
-            SelectAction<Servant>(servants, 1, 1, 1);
-            SelectAction<Servant>(servants, 2, 1, 1);
+            SelectAction<Servant>(servants, 0, 2, 1);
+            SelectAction<Servant>(servants, 1, 2, 1);
+            SelectAction<Servant>(servants, 2, 2, 1);
             
             /// 적 행동 지정
             for (int i = 0; i < enemies.Count; i++)
@@ -146,7 +149,7 @@ namespace TwitchIRCGame
                     randTarget = rand.Next(-1, servants.Count); // 소환사, 사역마 중 하나 선택
                 }
                 SelectAction<Enemy>(enemies, i, randAct, randTarget);
-                Debug.Log($"{i}th enemy, act: {randAct},target: {randTarget}");
+                Debug.Log($"{i+1}th enemy, act: {randAct},target: {randTarget}");
             }          
             
         }
@@ -253,10 +256,9 @@ namespace TwitchIRCGame
                     }
 
                     // 실제로 대상 지정
-                    if (isTargetOpponent)
-                        characters[characterIndex].SetSingleTarget(target);
-                    else
-                        characters[characterIndex].SetSingleSupport(target);
+
+                    characters[characterIndex].SetSingleTarget(target);
+
                 }
             }
         } 

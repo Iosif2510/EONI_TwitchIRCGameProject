@@ -23,6 +23,7 @@ namespace TwitchIRCGame
         [SerializeField]
         protected int maxHealth;
         protected int health;
+        [SerializeField]
         protected int Guardpoint;
         [SerializeField]
         protected int basicDamage = 10;
@@ -44,7 +45,6 @@ namespace TwitchIRCGame
         [SerializeField]
         protected int place;
         protected List<Character> opponentTarget;
-        protected List<Character> friendlyTarget;
         protected const string TARGET_NONE = "No target";
         protected const string TARGET_MULTIPLE = "Multiple target";
         
@@ -108,14 +108,18 @@ namespace TwitchIRCGame
             {
                 Guardpoint -= finalDamage;
             }
-            if (health < 0) {
+            if (health <= 0) {
                 health = 0;
                 OnHealthZero();
             }
-
-            float displayedHealth = (float) health / (float) maxHealth;
-            healthBar.transform.localScale = new Vector3(displayedHealth, 1.0f, 1.0f);
             Debug.Log($"{characterName} got {finalDamage} damage!");
+            UpdateHealth(health);
+        }
+
+        protected void UpdateHealth(int newhealth)
+        {
+            float displayedHealth = (float) newhealth / (float)maxHealth;
+            healthBar.transform.localScale = new Vector3(displayedHealth, 1.0f, 1.0f);
             Debug.Log($"{characterName}'s health: {health}/{maxHealth}");
         }
 
@@ -155,12 +159,6 @@ namespace TwitchIRCGame
         {
             ClearTarget();
             AddTarget(target);
-        }
-
-        public void SetSingleSupport(Character target)
-        {
-            this.friendlyTarget.Clear();
-            this.friendlyTarget.Add(target);
         }
 
         public void Attack(bool typedAttack) 
@@ -204,6 +202,7 @@ namespace TwitchIRCGame
         {
             //ReturnAfterAction.AddListener(() => ReturnTaunt(opponentTarget[0]));
             SetSingleTarget(target);
+            Debug.Log($"{target} taunted!");
         }
 
         public void Taunt() 
@@ -226,7 +225,7 @@ namespace TwitchIRCGame
             }
             ReturnAfterAction.Invoke();
             ReturnAfterAction.RemoveAllListeners();
-            Debug.Log($"{characterName} taunted!");
+            Debug.Log($"{characterName} taunt!");
         }
         
         public void RestoreHealth()
@@ -259,6 +258,8 @@ namespace TwitchIRCGame
             health += heal;
             //최대 체력 이상 회복 불가
             if (health > maxHealth) health = maxHealth;
+            Debug.Log($"{characterName} got {heal} healing!");
+            UpdateHealth(health);
         }
 
         protected void HealingTarget(Character target)
@@ -269,7 +270,7 @@ namespace TwitchIRCGame
 
         public virtual void Heal()
         {
-            foreach (var target in friendlyTarget)
+            foreach (var target in opponentTarget)
             {
                 Debug.Log($"{characterName} Healing {target.Name}!");
                 HealingTarget(target);
@@ -312,7 +313,7 @@ namespace TwitchIRCGame
 
         public virtual void Buff()
         {
-            foreach (var target in friendlyTarget)
+            foreach (var target in opponentTarget)
             {
                 Debug.Log($"{characterName} Buff {target.Name}!");
                 BuffTarget(target);
@@ -332,9 +333,10 @@ namespace TwitchIRCGame
             basicDamage += buff;
         }
 
-        public void resetBuff(int buff)
+        public void resetBuff()
         {
-            basicDamage -= buff;
+            Debug.Log($"Reset Buff!");
+            basicDamage -= basicBuff;
         }
     }
 }
