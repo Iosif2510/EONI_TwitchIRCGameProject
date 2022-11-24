@@ -266,7 +266,10 @@ namespace TwitchIRCGame
                     // 실제로 대상 지정
 
                     characters[characterIndex].SetSingleTarget(target);
-
+                }
+                else
+                {
+                    characters[characterIndex].ClearTarget();
                 }
             }
         } 
