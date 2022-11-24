@@ -202,10 +202,11 @@ namespace TwitchIRCGame
                 if (actionList[characterIndex].IsTargeted)
                 {
                     Character target;
-                    // 이 값이 true이면 대상은 적 진영, false이면 대상은 아군 진영임
-                    bool isTargetEnemy = (typeof(T) == typeof(Servant)) ==
-                                         (actionList[characterIndex].IsTargetOpponent);
-                    
+                    // 이 값이 true이면 대상은 해당 캐릭터의 적임
+                    bool isTargetOpponent = actionList[characterIndex].IsTargetOpponent;
+                    // 이 값이 true이면 대상은 적 진영, false이면 대상은 소환사 진영임
+                    bool isTargetEnemy = (typeof(T) == typeof(Servant)) == isTargetOpponent;
+
                     // TODO: 다음과 같은 상황에서 사용자에게 오류 알림
                     // 존재하지 않는 대상
                     if (isTargetEnemy && (targetIndex == -1 || enemies.Count <= targetIndex) ||
@@ -222,16 +223,14 @@ namespace TwitchIRCGame
                     
                     if (isTargetEnemy)
                     {
-                        // 적군 선택
+                        // 적 진영
                         target = enemies[targetIndex];
-                        servants[characterIndex].SetSingleTarget(target);
                     }   
                     else
                     {
-                        // 아군 선택
+                        // 소환사 진
                         if (targetIndex == -1) target = summoner;
                         else target = servants[targetIndex];
-                        servants[characterIndex].SetSingleSupport(target);
                     }
                     
                     // TODO: 다음과 같은 상황에서 사용자에게 오류 알림
@@ -242,6 +241,11 @@ namespace TwitchIRCGame
                         return; // 강제 종료
                     }
 
+                    // 실제로 대상 지정
+                    if (isTargetOpponent)
+                        characters[characterIndex].SetSingleTarget(target);
+                    else
+                        characters[characterIndex].SetSingleSupport(target);
                 }
             }
         } 
@@ -280,9 +284,11 @@ namespace TwitchIRCGame
                 for (int i = 0; i < enemies.Count; i++)
                 {
                     if (enemyActionList[i] == null) continue;
-                    
+
                     if (enemyActionList[i].ActionOrder == order)
+                    {
                         enemyActionList[i].DoAction();
+                    }
                 }
                 
             }
