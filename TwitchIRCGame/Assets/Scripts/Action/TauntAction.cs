@@ -10,7 +10,7 @@ namespace TwitchIRCGame
     public class TauntAction : CharacterAction
     {
         public override string ActionName => "Taunt";
-        public override string Description => "Taunt";
+        public override string Description => "Force all enemies to target you.";
         public override bool IsTargeted => false;
         public override bool IsTargetOpponent => false;
         public override int ActionOrder => ORDER_BEFORE_ATTACK;

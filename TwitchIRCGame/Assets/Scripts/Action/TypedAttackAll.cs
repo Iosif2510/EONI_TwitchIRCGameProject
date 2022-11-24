@@ -10,7 +10,7 @@ namespace TwitchIRCGame
     public class TypedAttackAll : CharacterAction
     {
         public override string ActionName => "Magical Attack: All";
-        public override string Description => "Typed Attack All";
+        public override string Description => "Make an elemental attack on all enemies.";
         public override bool IsTargeted => false;
         public override bool IsTargetOpponent => true;
         public override int ActionOrder => ORDER_BEFORE_ATTACK;

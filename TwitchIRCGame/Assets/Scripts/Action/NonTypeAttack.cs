@@ -10,7 +10,7 @@ namespace TwitchIRCGame
     public class NonTypeAttack : CharacterAction
     {
         public override string ActionName => "Physical Attack";
-        public override string Description => "Non-typed Attack";
+        public override string Description => "Make a non-type attack on a target enemy.";
 
         public override bool IsTargeted => true;
         public override bool IsTargetOpponent => true;
