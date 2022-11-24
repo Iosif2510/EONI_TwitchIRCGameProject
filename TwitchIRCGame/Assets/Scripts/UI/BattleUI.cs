@@ -102,7 +102,10 @@ namespace TwitchIRCGame
 
             // 대상이 없거나 전체가 대상인 행동일 경우 무효
             if (isTargetless)
+            {
+                GameManager.Battle.summoner.ClearTarget();
                 return;
+            }
 
             // 잘못된 대상을 선택한 경우 무효
             if (isInputTargetEnemy != isRequiredTargetEnemy || !doesInputTargetExist)
