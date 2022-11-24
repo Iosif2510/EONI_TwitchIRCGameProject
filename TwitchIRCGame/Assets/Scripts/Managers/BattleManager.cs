@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static TwitchIRCGame.Define;
+using TMPro;
 
 namespace TwitchIRCGame
 {
@@ -41,6 +42,10 @@ namespace TwitchIRCGame
         public CharacterAction summonerAction;
         private CharacterAction[] servantActionList;
         private CharacterAction[] enemyActionList;
+
+        // 임시; 행동 이펙트/애니메이션 구현 후 삭제할 것
+        [SerializeField]
+        private TMP_Text actionLogObject;
         
         private void Awake()
         {
@@ -121,9 +126,6 @@ namespace TwitchIRCGame
             CurrentPhase = BattlePhase.FightPhase;
             for (int i = 0; i < enemies.Count; i++)
                 enemies[i].SetPositionTextDisplay(false);
-            
-            if (summonerAction != null)
-                summonerAction.DoAction();
 
             yield return StartActions();
             
@@ -277,6 +279,22 @@ namespace TwitchIRCGame
         /// <summary>지정한 행동들을 실행합니다.</summary>
         private IEnumerator StartActions()
         {
+            if (summonerAction != null)
+            {
+                summonerAction.DoAction();
+                if (summonerAction.IsTargeted)
+                {
+                    actionLogObject.text =
+                        $"{summoner.Name} performed {summonerAction.ActionName} to {summoner.Targets[0].Name}";
+                }
+                else
+                {
+                    actionLogObject.text =
+                        $"{summoner.Name} performed {summonerAction.ActionName}";
+                }
+                yield return new WaitForSeconds(2);
+            }
+            
             for (int order = 0; order < ORDER_MAX; order++)
             {
                 for (int i = 0; i < servants.Count; i++)
@@ -294,6 +312,16 @@ namespace TwitchIRCGame
                         else
                         {
                             servantActionList[i].DoAction();
+                            if (servantActionList[i].IsTargeted)
+                            {
+                                actionLogObject.text =
+                                    $"{servants[i].Name} performed {servantActionList[i].ActionName} to {servants[i].Targets[0].Name}";
+                            }
+                            else
+                            {
+                                actionLogObject.text =
+                                    $"{servants[i].Name} performed {servantActionList[i].ActionName}";
+                            }
                             yield return new WaitForSeconds(2);
                         }
                     }
@@ -305,6 +333,17 @@ namespace TwitchIRCGame
                     if (enemyActionList[i].ActionOrder == order)
                     {
                         enemyActionList[i].DoAction();
+                        if (enemyActionList[i].IsTargeted)
+                        {
+                            actionLogObject.text =
+                                $"{enemies[i].Name} performed {enemyActionList[i].ActionName} to {enemies[i].Targets[0].Name}";
+                        }
+                        else
+                        {
+                            actionLogObject.text =
+                                $"{enemies[i].Name} performed {enemyActionList[i].ActionName}";
+                        }
+                                
                         yield return new WaitForSeconds(2);
                     }
                 }
@@ -323,6 +362,7 @@ namespace TwitchIRCGame
                 enemyActionList[i] = null;
                 enemies[i].ClearTarget();
             }
+            actionLogObject.text = "";
         }
 
         private bool CheckClear()
