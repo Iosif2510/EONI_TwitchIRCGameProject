@@ -9,8 +9,8 @@ namespace TwitchIRCGame
 {
     public class TargetBuff : CharacterAction
     {
-        public override string ActionName => "Target Buff";
-        public override string Description => "Target Buff";
+        public override string ActionName => "Inspire";
+        public override string Description => "Buff Target";
 
         public override bool IsTargeted => true;
         public override bool IsTargetOpponent => false;

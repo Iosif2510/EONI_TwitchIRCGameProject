@@ -9,7 +9,7 @@ namespace TwitchIRCGame
 {
     public class TypedAttackAll : CharacterAction
     {
-        public override string ActionName => "Typed Attack All";
+        public override string ActionName => "Magical Attack: All";
         public override string Description => "Typed Attack All";
         public override bool IsTargeted => false;
         public override bool IsTargetOpponent => true;
