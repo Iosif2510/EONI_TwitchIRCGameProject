@@ -117,8 +117,24 @@ namespace TwitchIRCGame
 
         public void EndTurn()
         {
+            // 전투 페이즈로 변경
+            CurrentPhase = BattlePhase.FightPhase;
+            for (int i = 0; i < enemies.Count; i++)
+                enemies[i].SetPositionTextDisplay(false);
+            
+            if (summonerAction != null)
+                summonerAction.DoAction();
+            
             StartActions();
-            TestScenario();                     
+            
+            if (CheckClear()) StageClear();
+            
+            // 선택 페이즈로 변경
+            CurrentPhase = BattlePhase.SummonerSelectPhase;
+            for (int i = 0; i < enemies.Count; i++)
+                enemies[i].SetPositionTextDisplay(true);
+            
+            TestScenario();
         }
 
 
@@ -257,14 +273,6 @@ namespace TwitchIRCGame
         /// <summary>지정한 행동들을 실행합니다.</summary>
         private void StartActions()
         {
-            // 전투 페이즈로 변경
-            CurrentPhase = BattlePhase.FightPhase;
-            for (int i = 0; i < enemies.Count; i++)
-                enemies[i].SetPositionTextDisplay(false);
-            
-            if (summonerAction != null)
-                summonerAction.DoAction();
-            
             for (int order = 0; order < ORDER_MAX; order++)
             {
                 for (int i = 0; i < servants.Count; i++)
@@ -309,13 +317,6 @@ namespace TwitchIRCGame
                 enemyActionList[i] = null;
                 enemies[i].ClearTarget();
             }
-
-            if (CheckClear()) StageClear();
-            
-            // 선택 페이즈로 변경
-            CurrentPhase = BattlePhase.SummonerSelectPhase;
-            for (int i = 0; i < enemies.Count; i++)
-                enemies[i].SetPositionTextDisplay(true);
         }
 
         private bool CheckClear()
