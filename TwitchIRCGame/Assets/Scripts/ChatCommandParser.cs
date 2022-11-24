@@ -35,31 +35,42 @@ namespace TwitchIRCGame
                     switch (message[0])
                     {
                         case "!a":
-                            Debug.Log($"{chatter.tags.displayName} selects a action");
-                            GameManager.Battle.SelectAction<Servant>(GameManager.Battle.servants, GameManager.Instance.servantIDs.IndexOf(chatter.tags.userId), 0);
-                            break;
-                        case "!b":
-                            if (message.Length == 2 && int.Parse(message[1]) >= 1 && int.Parse(message[1]) <= 4)
+                            if (message.Length == 2)
                             {
                                 // µð¹ö±ë Çò°¥·Á¼­ ±æ°Ô ¾¸
-                                Debug.Log($"{chatter.tags.displayName} selects b {message[1]} action");
+                                Debug.Log($"{chatter.tags.displayName} selects a to {message[1]} action");
+                                GameManager.Battle.SelectAction<Servant>(GameManager.Battle.servants, GameManager.Instance.servantIDs.IndexOf(chatter.tags.userId), 0, int.Parse(message[1]) - 1);
+                            }
+                            else
+                            {
+                                Debug.Log($"{chatter.tags.displayName} selects a action");
+                                GameManager.Battle.SelectAction<Servant>(GameManager.Battle.servants, GameManager.Instance.servantIDs.IndexOf(chatter.tags.userId), 0);
+                            }
+                            break;
+                        case "!b":
+                            if (message.Length == 2)
+                            {
+                                // µð¹ö±ë Çò°¥·Á¼­ ±æ°Ô ¾¸
+                                Debug.Log($"{chatter.tags.displayName} selects b to {message[1]} action");
                                 GameManager.Battle.SelectAction<Servant>(GameManager.Battle.servants, GameManager.Instance.servantIDs.IndexOf(chatter.tags.userId), 1, int.Parse(message[1]) - 1);
                             }
                             else
                             {
-                                Debug.Log("Require target");
+                                Debug.Log($"{chatter.tags.displayName} selects b action");
+                                GameManager.Battle.SelectAction<Servant>(GameManager.Battle.servants, GameManager.Instance.servantIDs.IndexOf(chatter.tags.userId), 1);
                             }
                             break;
                         case "!c":
-                            if (message.Length == 2 && int.Parse(message[1]) >= 1 && int.Parse(message[1]) <= 4)
+                            if (message.Length == 2)
                             {
                                 // µð¹ö±ë Çò°¥·Á¼­ ±æ°Ô ¾¸
-                                Debug.Log($"{chatter.tags.displayName} selects c {message[1]} action");
+                                Debug.Log($"{chatter.tags.displayName} selects c to {message[1]} action");
                                 GameManager.Battle.SelectAction<Servant>(GameManager.Battle.servants, GameManager.Instance.servantIDs.IndexOf(chatter.tags.userId), 2, int.Parse(message[1]) - 1);
                             }
                             else
                             {
-                                Debug.Log("Require target");
+                                Debug.Log($"{chatter.tags.displayName} selects c action");
+                                GameManager.Battle.SelectAction<Servant>(GameManager.Battle.servants, GameManager.Instance.servantIDs.IndexOf(chatter.tags.userId), 2);
                             }
                             break;
                         case "!leave":
