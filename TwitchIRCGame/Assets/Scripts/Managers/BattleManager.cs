@@ -83,16 +83,17 @@ namespace TwitchIRCGame
 
             // BattleManager에서 구현할 부분이 아니므로, 임시로 쓰고 나중에 다른 씬에서 구현
             // 아군 행동 설정
-            /*
+            
             summoner.AddAction(new NonTypeAttackAll());
-            summoner.AddAction(new TargetBuff());
-            summoner.AddAction(new TargetHealing());
-            summoner.AddAction(new AllHealing());
-            */
-
-            summoner.AddAction(new TauntAction());
+            //summoner.AddAction(new TargetBuff());
+            //summoner.AddAction(new TargetHealing());
+            // summoner.AddAction(new AllHealing());
+            
+            
+            //summoner.AddAction(new TauntAction());
             summoner.AddAction(new TypedAttack());
             summoner.AddAction(new NonTypeAttack());
+            
 
             servants[0].AddAction(new TauntAction());
             servants[0].AddAction(new NonTypeAttack());
@@ -127,7 +128,7 @@ namespace TwitchIRCGame
         private void TestScenario()
         {
             Debug.Log("Test Scenario");
-            /*
+            
             // 소환사 행동 지정은 버튼으로 선택(UIManager)
             // 사역마 행동 지정, 행동을 선택하지 않은 경우 ActionList에 null
             SelectAction<Servant>(servants, 0, 1, 1);
@@ -146,29 +147,10 @@ namespace TwitchIRCGame
                 }
                 SelectAction<Enemy>(enemies, i, randAct, randTarget);
                 Debug.Log($"{i}th enemy, act: {randAct},target: {randTarget}");
-            }           
-            */
-
-            /// 적 행동 지정
-            for (int i = 0; i < servants.Count; i++)
-            {
-                System.Random rand = new System.Random();
-                int randAct = rand.Next(servants[i].Actions.Count); //0,1 중 하나 선택                
-                int randTarget = 0; // 1. 대상공격인 경우 대상을 랜덤으로 선택, 2. 공격이 아닌 경우 대상 없음
-                if (servants[i].Actions[randAct].IsTargeted)
-                {
-                    randTarget = rand.Next(0, enemies.Count); // 소환사, 사역마 중 하나 선택
-                }
-                SelectAction<Servant>(servants, i, randAct, randTarget);
-                Debug.Log($"{i}th servant, act: {randAct},target: {randTarget}");
-            }
+            }          
             
-
-            SelectAction<Enemy>(enemies, 0, 1, 1);
-            SelectAction<Enemy>(enemies, 1, 1, 1);
-            SelectAction<Enemy>(enemies, 2, 1, 1);
         }
-        
+
         /// <summary>현재 턴에서 사용될 행동을 지정합니다.</summary>
         /// <param name="characters">해당 캐릭터가 포함된 캐릭터 리스트</param>
         /// <param name="characterIndex">캐릭터 리스트에서 해당 캐릭터의 인덱스</param>

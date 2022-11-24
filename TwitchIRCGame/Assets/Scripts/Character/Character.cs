@@ -177,7 +177,7 @@ namespace TwitchIRCGame
 
         public void AttackAll(bool typedAttack)
         {
-            foreach (var target in GameManager.Battle.servants)
+            foreach (var target in GameManager.Battle.enemies)
             {
                 //Servant Animation
                 Debug.Log($"{characterName} attacked {target.Name}!");
