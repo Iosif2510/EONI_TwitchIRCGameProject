@@ -144,8 +144,6 @@ namespace TwitchIRCGame
 
         private IEnumerator _EndTurn()
         {
-            GetComponent<UnityEngine.UI.CanvasScaler>().scaleFactor = 100;
-                
             yield return GameManager.Battle.EndTurn();
                 
             // 초기화
@@ -153,8 +151,6 @@ namespace TwitchIRCGame
                 actionNameTextObjects[selectedActionIndex].color = Color.white;
             selectedActionIndex = NOT_SELECTED;
             selectedTargetIndex = NOT_SELECTED;
-
-            GetComponent<UnityEngine.UI.CanvasScaler>().scaleFactor = 1;
         }
     }
 
