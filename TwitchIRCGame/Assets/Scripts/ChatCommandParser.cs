@@ -22,55 +22,9 @@ namespace TwitchIRCGame
             twitchIRC.newChatMessageEvent.AddListener(CommandParse);
         }
 
-        // gamemanager.createservant
-
-
         // 여기서 직접 함수를 실행시키는 게 아닌
         // 반대로 battlemanager에게 정보를 전달하는 형태로 만들어보자
         // 응 싫어 퍼블릭으로 바꿀거야
-
-        //public void NewMessageParse(Chatter chatter)
-        //{
-        //    string[] message = chatter.message.Split(' ');
-        //    if (playerTeams[0].ContainsKey(chatter.tags.userId) || playerTeams[1].ContainsKey(chatter.tags.userId))
-        //    {
-        //        //TODO action
-        //        if (message[0] == "!leave")
-        //        {
-        //            PlayerCharacter deletePlayer;
-        //            string deleteId = chatter.tags.userId;
-        //            int containTeam = playerTeams[0].ContainsKey(deleteId) ? 0 : 1;
-        //            deletePlayer = playerTeams[containTeam][deleteId];
-        //            playerTeams[containTeam].Remove(deleteId);
-        //            Destroy(deletePlayer.gameObject);
-        //        }
-        //    }
-        //    else if (spawnCount < maxTeamPlayerCount * 2)
-        //    {
-        //        if ((message.Length == 2) && (message[0] == "!join"))
-        //        {
-        //            PlayerCharacter newPlayer;
-        //            spawnCount++;
-        //            if ((teamIndex == 0) || (teamIndex == 1))
-        //            {
-        //                if (playerTeams[teamIndex].Count < maxTeamPlayerCount)
-        //                {
-        //                    newPlayer = Instantiate(playerPrefab);
-        //                    playerTeams[teamIndex].Add(chatter.tags.userId, newPlayer);
-        //                    newPlayer.Name = chatter.tags.displayName;
-        //                    newPlayer.teamNumber = teamIndex + 1;
-        //                }
-        //                else
-        //                {
-        //                    Debug.Log($"Team {teamIndex + 1} full!");
-        //                }
-        //            }
-
-        //        }
-        //    }
-
-
-
         private void CommandParse(Chatter chatter)
         {
             // action chat
@@ -131,8 +85,6 @@ namespace TwitchIRCGame
 
                 }
             }
-
-
         }
 
         private bool IsPlayer(string playerID)
