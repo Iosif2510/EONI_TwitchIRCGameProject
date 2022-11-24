@@ -73,27 +73,10 @@ namespace TwitchIRCGame
 
         private void CommandParse(Chatter chatter)
         {
-            // 꽉 안찼으면 !join 가능
-            Debug.Log($"Action {GameManager.Instance.servantIDs.Count}");
-            if (GameManager.Instance.servantIDs.Count < GameManager.Battle.MaxServantNum)
-            {
-                if (chatter.message.Length == 5)
-                {
-                    // 조금이라도 채팅을 걸러보자
-                    string[] message = chatter.message.Split(' ');
-                    if (message[0] == "!join")
-                    {
-                        Debug.Log("Create Servant");
-                        GameManager.Instance.CreateServant(chatter.tags.userId);
-                        GameManager.Battle.servants[GameManager.Instance.servantIDs.Count].Name = chatter.tags.displayName;
-                    }
-                }
-                
-            }
-
             // action chat
             if (IsPlayer(chatter.tags.userId))
             {
+                Debug.Log("Is player");
                 string[] message = chatter.message.Split(' ');
                 // command chat
                 if (message[0][0] == '!')
@@ -101,17 +84,50 @@ namespace TwitchIRCGame
                     switch (message[0])
                     {
                         case "!attack":
-                            Debug.Log("attack!");
-                            GameManager.Battle.SelectAction<Servant>(GameManager.Battle.servants, 0, 0);
-                            GameManager.Battle.SelectAction<Servant>(GameManager.Battle.servants, 1, 1, 1);
-                            GameManager.Battle.SelectAction<Servant>(GameManager.Battle.servants, 2, 1, 1);
+                            if (message.Length == 2 && int.Parse(message[1]) >= 1 && int.Parse(message[1]) <= 4)
+                            {
+                                Debug.Log($"{chatter.tags.displayName} attacks {message[1]}!");
+                                GameManager.Battle.SelectAction<Servant>(GameManager.Battle.servants, GameManager.Instance.servantIDs.IndexOf(chatter.tags.userId), 1, int.Parse(message[1]) - 1);
+                            }
+                            else
+                            {
+                                Debug.Log("Invalid command. Require target");
+                            }
                             break;
-
+                        case "!taunt":
+                            Debug.Log($"{chatter.tags.displayName} taunts!");
+                            GameManager.Battle.SelectAction<Servant>(GameManager.Battle.servants, GameManager.Instance.servantIDs.IndexOf(chatter.tags.userId), 0);
+                            break;
+                        case "!leave":
+                            Debug.Log($"{chatter.tags.displayName} leaves");
+                            //GameManager.Instance.ServantDelete(chatter.tags.userId);
+                            GameManager.Battle.servants[GameManager.Instance.servantIDs.Count].Name = chatter.tags.displayName;
+                            break;
                     }
                 }
                 // idle chat
                 else
                 {
+
+                }
+            }
+            else
+            {
+                // 꽉 안찼으면 !join 가능
+                Debug.Log($"Current team {GameManager.Instance.servantIDs.Count}");
+                if (GameManager.Instance.servantIDs.Count < GameManager.Battle.MaxServantNum)
+                {
+                    if (chatter.message.Length == 5)
+                    {
+                        // 조금이라도 채팅을 걸러보자
+                        string[] message = chatter.message.Split(' ');
+                        if (message[0] == "!join")
+                        {
+                            Debug.Log($"Servant {chatter.tags.displayName} summoned");
+                            GameManager.Instance.CreateServant(chatter.tags.userId);
+                            GameManager.Battle.servants[GameManager.Instance.servantIDs.Count].Name = chatter.tags.displayName;
+                        }
+                    }
 
                 }
             }
@@ -121,7 +137,7 @@ namespace TwitchIRCGame
 
         private bool IsPlayer(string playerID)
         {
-            return GameManager.Instance.servantTeam.ContainsKey(playerID);
+            return GameManager.Instance.servantIDs.Contains(playerID);
         }
     }
 

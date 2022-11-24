@@ -126,8 +126,8 @@ namespace TwitchIRCGame
         public void CreateServant(string newID)
         {
             servantIDs.Add(newID);
-            //newServant = Instantiate()
-            //servantTeam.Add(newID, )
+            //newServant = new Servant();
+            //servantTeam.Add(newID, newServant);
         }
 
         public string ServantDelete(Servant servant)
