@@ -88,12 +88,6 @@ namespace TwitchIRCGame
             summoner.AddAction(new TargetBuff());
             summoner.AddAction(new TargetHealing());
             summoner.AddAction(new AllHealing());
-            
-            
-            //summoner.AddAction(new TauntAction());
-            //summoner.AddAction(new TypedAttack());
-            // summoner.AddAction(new NonTypeAttack());
-            
 
             servants[0].AddAction(new TauntAction());
             servants[0].AddAction(new NonTypeAttack());
@@ -134,9 +128,9 @@ namespace TwitchIRCGame
             
             // 소환사 행동 지정은 버튼으로 선택(UIManager)
             // 사역마 행동 지정, 행동을 선택하지 않은 경우 ActionList에 null
-            SelectAction<Servant>(servants, 0, 2, 1);
-            SelectAction<Servant>(servants, 1, 2, 1);
-            SelectAction<Servant>(servants, 2, 2, 1);
+            SelectAction<Servant>(servants, 0, 1, 0);
+            SelectAction<Servant>(servants, 1, 1, 1);
+            SelectAction<Servant>(servants, 2, 2);
             
             /// 적 행동 지정
             for (int i = 0; i < enemies.Count; i++)
