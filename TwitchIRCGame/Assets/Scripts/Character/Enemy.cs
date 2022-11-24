@@ -15,7 +15,6 @@ namespace TwitchIRCGame
         protected override void Awake()
         {
             base.Awake();
-            opponentTarget = new List<Character>(GameManager.Battle.MaxServantNum);
             positionText = $"{this.place}";
         }
 
