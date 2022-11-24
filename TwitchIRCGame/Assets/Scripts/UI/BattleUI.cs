@@ -119,17 +119,14 @@ namespace TwitchIRCGame
             if (isInputTargetEnemy)
             {
                 GameManager.Battle.summoner.SetSingleTarget(GameManager.Battle.enemies[selectedTargetIndex]);
-                Debug.Log($"Target: Enemy {-targetIndex}");
             }
             else if (selectedTargetIndex == SUMMONER)
             {
                 GameManager.Battle.summoner.SetSingleTarget(GameManager.Battle.summoner);
-                Debug.Log($"Target: Summoner");
             }
             else
             {
                 GameManager.Battle.summoner.SetSingleTarget(GameManager.Battle.servants[selectedTargetIndex]);
-                Debug.Log($"Target: Servant {targetIndex}");                
             }
         }
 
@@ -144,7 +141,6 @@ namespace TwitchIRCGame
             }
             else
             {
-                Debug.Log("Turn ended");
                 GameManager.Battle.EndTurn();
 
                 // 초기화

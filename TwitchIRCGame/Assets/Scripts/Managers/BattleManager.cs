@@ -123,9 +123,7 @@ namespace TwitchIRCGame
 
 
         private void TestScenario()
-        {
-            Debug.Log("Test Scenario");
-            
+        {   
             // 소환사 행동 지정은 버튼으로 선택(UIManager)
             // 사역마 행동 지정, 행동을 선택하지 않은 경우 ActionList에 null
             SelectAction<Servant>(servants, 0, 1, 0);
