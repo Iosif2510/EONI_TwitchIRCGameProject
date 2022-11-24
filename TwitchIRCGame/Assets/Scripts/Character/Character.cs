@@ -260,10 +260,12 @@ namespace TwitchIRCGame
         }
         
         protected abstract void OnHealthZero();
+
         public virtual void Die()
         {
-
+            
         }
+        
         public void Healing(int heal)
         {
             health += heal;
@@ -309,7 +311,7 @@ namespace TwitchIRCGame
             target.Guarding(basicGuarding);
         }
 
-        public virtual void Guardreset()
+        public virtual void GuardReset()
         {
             Guardpoint = 0;
         }
