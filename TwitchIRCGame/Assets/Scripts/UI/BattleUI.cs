@@ -51,11 +51,10 @@ namespace TwitchIRCGame
 
         }
 
-        public void ToggleSummonerAction(int actionIndex)
+        private void ToggleSummonerAction(int actionIndex)
         {
             if (GameManager.Battle.summoner.Actions.Count < actionIndex)
             {
-                Debug.Log($"Action {actionIndex} is not in the slot");
                 return;
             }
 
@@ -68,13 +67,11 @@ namespace TwitchIRCGame
             {
                 selectedActionIndex = actionIndex - 1; // 인터페이스상 index는 1-indexed, 실제 구현된 index는 0-indexed
                 GameManager.Battle.summonerAction = GameManager.Battle.summoner.Actions[selectedActionIndex];
-                Debug.Log($"Action {actionIndex} selected");
             }
             else // 선택 해제
             {
                 selectedActionIndex = NOT_SELECTED;
                 GameManager.Battle.summonerAction = null;
-                Debug.Log($"Action {actionIndex} deselected");
             }
             
             // 기존 행동 선택 표시 (빨간색)
@@ -87,7 +84,7 @@ namespace TwitchIRCGame
         /// 음수이면 적군 (-1, -2, -3 -> 적 1, 2, 3),
         /// 0이면 소환사 자신을 의미합니다.
         /// </param>
-        public void SetSummonerTarget(int targetIndex)
+        private void SetSummonerTarget(int targetIndex)
         {
             if (selectedActionIndex == NOT_SELECTED)
                 return;
@@ -130,7 +127,7 @@ namespace TwitchIRCGame
             }
         }
 
-        public void EndTurn()
+        private void EndTurn()
         {
             bool isActionSelected = selectedActionIndex != NOT_SELECTED;
             bool isActionTargeted = isActionSelected && GameManager.Battle.summonerAction.IsTargeted;
@@ -141,14 +138,23 @@ namespace TwitchIRCGame
             }
             else
             {
-                GameManager.Battle.EndTurn();
-
-                // 초기화
-                if (selectedActionIndex != NOT_SELECTED)
-                    actionNameTextObjects[selectedActionIndex].color = Color.white;
-                selectedActionIndex = NOT_SELECTED;
-                selectedTargetIndex = NOT_SELECTED;
+                StartCoroutine(_EndTurn());
             }
+        }
+
+        private IEnumerator _EndTurn()
+        {
+            GetComponent<UnityEngine.UI.CanvasScaler>().scaleFactor = 100;
+                
+            yield return GameManager.Battle.EndTurn();
+                
+            // 초기화
+            if (selectedActionIndex != NOT_SELECTED)
+                actionNameTextObjects[selectedActionIndex].color = Color.white;
+            selectedActionIndex = NOT_SELECTED;
+            selectedTargetIndex = NOT_SELECTED;
+
+            GetComponent<UnityEngine.UI.CanvasScaler>().scaleFactor = 1;
         }
     }
 

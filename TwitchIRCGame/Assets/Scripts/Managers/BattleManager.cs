@@ -115,7 +115,7 @@ namespace TwitchIRCGame
         }
         
 
-        public void EndTurn()
+        public IEnumerator EndTurn()
         {
             // 전투 페이즈로 변경
             CurrentPhase = BattlePhase.FightPhase;
@@ -124,8 +124,8 @@ namespace TwitchIRCGame
             
             if (summonerAction != null)
                 summonerAction.DoAction();
-            
-            StartActions();
+
+            yield return StartActions();
             
             if (CheckClear()) StageClear();
             
@@ -142,8 +142,10 @@ namespace TwitchIRCGame
         {   
             // 소환사 행동 지정은 버튼으로 선택(UIManager)
             // 사역마 행동 지정, 행동을 선택하지 않은 경우 ActionList에 null
+            SelectAction<Servant>(servants, 0, 0);
             SelectAction<Servant>(servants, 0, 1, 0);
             SelectAction<Servant>(servants, 1, 1, 1);
+            SelectAction<Servant>(servants, 1, 0);
             SelectAction<Servant>(servants, 2, 2);
             
             /// 적 행동 지정
@@ -157,8 +159,7 @@ namespace TwitchIRCGame
                     randTarget = rand.Next(-1, servants.Count); // 소환사, 사역마 중 하나 선택
                 }
                 SelectAction<Enemy>(enemies, i, randAct, randTarget);
-            }          
-            
+            }
         }
 
         /// <summary>현재 턴에서 사용될 행동을 지정합니다.</summary>
@@ -249,7 +250,7 @@ namespace TwitchIRCGame
                     }   
                     else
                     {
-                        // 소환사 진
+                        // 소환사 진영
                         if (targetIndex == -1) target = summoner;
                         else target = servants[targetIndex];
                     }
@@ -271,7 +272,7 @@ namespace TwitchIRCGame
         } 
 
         /// <summary>지정한 행동들을 실행합니다.</summary>
-        private void StartActions()
+        private IEnumerator StartActions()
         {
             for (int order = 0; order < ORDER_MAX; order++)
             {
@@ -290,6 +291,7 @@ namespace TwitchIRCGame
                         else
                         {
                             servantActionList[i].DoAction();
+                            yield return new WaitForSeconds(2);
                         }
                     }
                 }
@@ -300,6 +302,7 @@ namespace TwitchIRCGame
                     if (enemyActionList[i].ActionOrder == order)
                     {
                         enemyActionList[i].DoAction();
+                        yield return new WaitForSeconds(2);
                     }
                 }
                 
