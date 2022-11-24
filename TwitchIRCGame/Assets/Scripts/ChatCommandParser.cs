@@ -50,7 +50,6 @@ namespace TwitchIRCGame
                         case "!b":
                             if (message.Length == 2)
                             {
-                                // µð¹ö±ë Çò°¥·Á¼­ ±æ°Ô ¾¸
                                 Debug.Log($"{chatter.tags.displayName} selects b to {message[1]} action");
                                 GameManager.Battle.SelectAction<Servant>(GameManager.Battle.servants, GameManager.Instance.servantIDs.IndexOf(chatter.tags.userId), 1, int.Parse(message[1]) - 1);
                             }
@@ -63,7 +62,6 @@ namespace TwitchIRCGame
                         case "!c":
                             if (message.Length == 2)
                             {
-                                // µð¹ö±ë Çò°¥·Á¼­ ±æ°Ô ¾¸
                                 Debug.Log($"{chatter.tags.displayName} selects c to {message[1]} action");
                                 GameManager.Battle.SelectAction<Servant>(GameManager.Battle.servants, GameManager.Instance.servantIDs.IndexOf(chatter.tags.userId), 2, int.Parse(message[1]) - 1);
                             }
