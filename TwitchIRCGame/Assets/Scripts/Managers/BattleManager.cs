@@ -143,7 +143,6 @@ namespace TwitchIRCGame
                     randTarget = rand.Next(-1, servants.Count); // 소환사, 사역마 중 하나 선택
                 }
                 SelectAction<Enemy>(enemies, i, randAct, randTarget);
-                Debug.Log($"{i+1}th enemy, act: {randAct},target: {randTarget}");
             }          
             
         }
