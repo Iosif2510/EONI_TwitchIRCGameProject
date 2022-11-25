@@ -9,9 +9,6 @@ namespace TwitchIRCGame
 {
     public class TargetBuff : CharacterAction
     {
-        public override string ActionName => "Inspire";
-        public override string Description => "Increase the strength of a target ally.";
-
         public override bool IsTargeted => true;
         public override bool IsTargetOpponent => false;
         public override int ActionOrder => ORDER_BEFORE_ATTACK;

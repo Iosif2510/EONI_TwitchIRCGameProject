@@ -51,10 +51,11 @@ namespace TwitchIRCGame
 
         }
 
-        private void ToggleSummonerAction(int actionIndex)
+        public void ToggleSummonerAction(int actionIndex)
         {
             if (GameManager.Battle.summoner.Actions.Count < actionIndex)
             {
+                Debug.Log($"Action {actionIndex} is not in the slot");
                 return;
             }
 
@@ -67,11 +68,13 @@ namespace TwitchIRCGame
             {
                 selectedActionIndex = actionIndex - 1; // 인터페이스상 index는 1-indexed, 실제 구현된 index는 0-indexed
                 GameManager.Battle.summonerAction = GameManager.Battle.summoner.Actions[selectedActionIndex];
+                Debug.Log($"Action {actionIndex} selected");
             }
             else // 선택 해제
             {
                 selectedActionIndex = NOT_SELECTED;
                 GameManager.Battle.summonerAction = null;
+                Debug.Log($"Action {actionIndex} deselected");
             }
             
             // 기존 행동 선택 표시 (빨간색)
@@ -84,7 +87,7 @@ namespace TwitchIRCGame
         /// 음수이면 적군 (-1, -2, -3 -> 적 1, 2, 3),
         /// 0이면 소환사 자신을 의미합니다.
         /// </param>
-        private void SetSummonerTarget(int targetIndex)
+        public void SetSummonerTarget(int targetIndex)
         {
             if (selectedActionIndex == NOT_SELECTED)
                 return;
@@ -102,10 +105,7 @@ namespace TwitchIRCGame
 
             // 대상이 없거나 전체가 대상인 행동일 경우 무효
             if (isTargetless)
-            {
-                GameManager.Battle.summoner.ClearTarget();
                 return;
-            }
 
             // 잘못된 대상을 선택한 경우 무효
             if (isInputTargetEnemy != isRequiredTargetEnemy || !doesInputTargetExist)
@@ -119,18 +119,21 @@ namespace TwitchIRCGame
             if (isInputTargetEnemy)
             {
                 GameManager.Battle.summoner.SetSingleTarget(GameManager.Battle.enemies[selectedTargetIndex]);
+                Debug.Log($"Target: Enemy {-targetIndex}");
             }
             else if (selectedTargetIndex == SUMMONER)
             {
                 GameManager.Battle.summoner.SetSingleTarget(GameManager.Battle.summoner);
+                Debug.Log($"Target: Summoner");
             }
             else
             {
                 GameManager.Battle.summoner.SetSingleTarget(GameManager.Battle.servants[selectedTargetIndex]);
+                Debug.Log($"Target: Servant {targetIndex}");                
             }
         }
 
-        private void EndTurn()
+        public void EndTurn()
         {
             bool isActionSelected = selectedActionIndex != NOT_SELECTED;
             bool isActionTargeted = isActionSelected && GameManager.Battle.summonerAction.IsTargeted;
@@ -141,19 +144,15 @@ namespace TwitchIRCGame
             }
             else
             {
-                StartCoroutine(_EndTurn());
-            }
-        }
+                Debug.Log("Turn ended");
+                GameManager.Battle.EndTurn();
 
-        private IEnumerator _EndTurn()
-        {
-            yield return GameManager.Battle.EndTurn();
-                
-            // 초기화
-            if (selectedActionIndex != NOT_SELECTED)
-                actionNameTextObjects[selectedActionIndex].color = Color.white;
-            selectedActionIndex = NOT_SELECTED;
-            selectedTargetIndex = NOT_SELECTED;
+                // 초기화
+                if (selectedActionIndex != NOT_SELECTED)
+                    actionNameTextObjects[selectedActionIndex].color = Color.white;
+                selectedActionIndex = NOT_SELECTED;
+                selectedTargetIndex = NOT_SELECTED;
+            }
         }
     }
 

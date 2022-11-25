@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static TwitchIRCGame.Define;
-using TMPro;
 
 namespace TwitchIRCGame
 {
@@ -42,10 +41,6 @@ namespace TwitchIRCGame
         public CharacterAction summonerAction;
         private CharacterAction[] servantActionList;
         private CharacterAction[] enemyActionList;
-
-        // 임시; 행동 이펙트/애니메이션 구현 후 삭제할 것
-        [SerializeField]
-        private TMP_Text actionLogObject;
         
         private void Awake()
         {
@@ -88,77 +83,62 @@ namespace TwitchIRCGame
 
             // BattleManager에서 구현할 부분이 아니므로, 임시로 쓰고 나중에 다른 씬에서 구현
             // 아군 행동 설정
-            
-            //summoner.AddAction(new NonTypeAttackAll());
-            summoner.AddAction(new TargetBuff());
-            summoner.AddAction(new TargetHealing());
-            summoner.AddAction(new AllHealing());
-
+            summoner.AddAction(new TauntAction());
+            summoner.AddAction(new NonTypeAttack());
             servants[0].AddAction(new TauntAction());
             servants[0].AddAction(new NonTypeAttack());
-            servants[0].AddAction(new Guard());
-
             servants[1].AddAction(new TauntAction());
             servants[1].AddAction(new TypedAttack());
-            servants[1].AddAction(new Guard());
-
-            servants[2].AddAction(new NonTypeAttack());
+            servants[2].AddAction(new TauntAction());
             servants[2].AddAction(new TypedAttack());
-            servants[2].AddAction(new Guard());
 
             // 적군 행동 설정
             enemies[0].AddAction(new TauntAction());
             enemies[0].AddAction(new NonTypeAttack());
-
             enemies[1].AddAction(new TauntAction());
             enemies[1].AddAction(new TypedAttack());
-
-            enemies[2].AddAction(new NonTypeAttack());
+            enemies[2].AddAction(new TauntAction());
             enemies[2].AddAction(new TypedAttack());
             
             TestScenario();
         }
         
-
-        public IEnumerator EndTurn()
+        /*
+        private void Update()
         {
-            // 전투 페이즈로 변경
-            CurrentPhase = BattlePhase.FightPhase;
-            for (int i = 0; i < enemies.Count; i++)
-                enemies[i].SetPositionTextDisplay(false);
+            ActionChoiceTime();
+        }
+        */
 
-            yield return StartActions();
-            
-            if (CheckClear()) StageClear();
-            
-            // 선택 페이즈로 변경
-            CurrentPhase = BattlePhase.SummonerSelectPhase;
-            for (int i = 0; i < enemies.Count; i++)
-                enemies[i].SetPositionTextDisplay(true);
-            
+        public void EndTurn()
+        {
+            StartActions();
             TestScenario();
         }
 
+        private void ActionChoiceTime()
+        {
+            // summoner는 클릭을 통해서 행동과 대상 선택            
 
+            // servant는 채팅을 통해서 행동과 대상 선택
+            // Twitch chat 연동 기능 필요            
+            // 해당 사역마가 선택 완료 시에 이를 나타내는 interface 필요
+        }
         private void TestScenario()
-        {   
+        {
+            Debug.Log("Test Scenario");            
             // 소환사 행동 지정은 버튼으로 선택(UIManager)
             // 사역마 행동 지정, 행동을 선택하지 않은 경우 ActionList에 null
-            
-            /// 적 행동 지정
-            for (int i = 0; i < enemies.Count; i++)
-            {
-                System.Random rand = new System.Random();
-                int randAct = rand.Next(enemies[i].Actions.Count); //0,1 중 하나 선택                
-                int randTarget = 0; // 1. 대상공격인 경우 대상을 랜덤으로 선택, 2. 공격이 아닌 경우 대상 없음
-                if (enemies[i].Actions[randAct].IsTargeted)
-                {
-                    randTarget = rand.Next(-1, servants.Count); // 소환사, 사역마 중 하나 선택
-                }
-                SelectAction<Enemy>(enemies, i, randAct, randTarget);
-            }
-        }
+            //SelectAction<Servant>(servants, 0, 0);
+            SelectAction<Servant>(servants, 1, 1, 1);
+            SelectAction<Servant>(servants, 2, 1, 2);
 
+            /// 적 행동 지정
+            SelectAction<Enemy>(enemies, 0, 1, 0);
+            SelectAction<Enemy>(enemies, 1, 0);
+            SelectAction<Enemy>(enemies, 2, 1, -1);
+        }
+        
         /// <summary>현재 턴에서 사용될 행동을 지정합니다.</summary>
         /// <param name="characters">해당 캐릭터가 포함된 캐릭터 리스트</param>
         /// <param name="characterIndex">캐릭터 리스트에서 해당 캐릭터의 인덱스</param>
@@ -262,34 +242,24 @@ namespace TwitchIRCGame
                     }
 
                     // 실제로 대상 지정
-
-                    characters[characterIndex].SetSingleTarget(target);
-                }
-                else
-                {
-                    characters[characterIndex].ClearTarget();
+                    if (isTargetOpponent)
+                        characters[characterIndex].SetSingleTarget(target);
+                    else
+                        characters[characterIndex].SetSingleSupport(target);
                 }
             }
         } 
 
         /// <summary>지정한 행동들을 실행합니다.</summary>
-        private IEnumerator StartActions()
+        private void StartActions()
         {
+            // 전투 페이즈로 변경
+            CurrentPhase = BattlePhase.FightPhase;
+            for (int i = 0; i < enemies.Count; i++)
+                enemies[i].SetPositionTextDisplay(false);
+            
             if (summonerAction != null)
-            {
                 summonerAction.DoAction();
-                if (summonerAction.IsTargeted)
-                {
-                    actionLogObject.text =
-                        $"{summoner.Name} performed {summonerAction.ActionName} to {summoner.Targets[0].Name}";
-                }
-                else
-                {
-                    actionLogObject.text =
-                        $"{summoner.Name} performed {summonerAction.ActionName}";
-                }
-                yield return new WaitForSeconds(2);
-            }
             
             for (int order = 0; order < ORDER_MAX; order++)
             {
@@ -308,17 +278,6 @@ namespace TwitchIRCGame
                         else
                         {
                             servantActionList[i].DoAction();
-                            if (servantActionList[i].IsTargeted)
-                            {
-                                actionLogObject.text =
-                                    $"{servants[i].Name} performed {servantActionList[i].ActionName} to {servants[i].Targets[0].Name}";
-                            }
-                            else
-                            {
-                                actionLogObject.text =
-                                    $"{servants[i].Name} performed {servantActionList[i].ActionName}";
-                            }
-                            yield return new WaitForSeconds(2);
                         }
                     }
                 }
@@ -329,18 +288,6 @@ namespace TwitchIRCGame
                     if (enemyActionList[i].ActionOrder == order)
                     {
                         enemyActionList[i].DoAction();
-                        if (enemyActionList[i].IsTargeted)
-                        {
-                            actionLogObject.text =
-                                $"{enemies[i].Name} performed {enemyActionList[i].ActionName} to {enemies[i].Targets[0].Name}";
-                        }
-                        else
-                        {
-                            actionLogObject.text =
-                                $"{enemies[i].Name} performed {enemyActionList[i].ActionName}";
-                        }
-                                
-                        yield return new WaitForSeconds(2);
                     }
                 }
                 
@@ -358,7 +305,13 @@ namespace TwitchIRCGame
                 enemyActionList[i] = null;
                 enemies[i].ClearTarget();
             }
-            actionLogObject.text = "";
+
+            if (CheckClear()) StageClear();
+            
+            // 선택 페이즈로 변경
+            CurrentPhase = BattlePhase.SummonerSelectPhase;
+            for (int i = 0; i < enemies.Count; i++)
+                enemies[i].SetPositionTextDisplay(true);
         }
 
         private bool CheckClear()
