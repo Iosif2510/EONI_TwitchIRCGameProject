@@ -52,9 +52,13 @@ namespace TwitchIRCGame
             {
                 characterNameTextObjects[i + 1].text = GameManager.Battle.servants[i].Name;
 
-                if (GameManager.Battle.servantActionList[i] != null)
+                for (int j = 0; j < 3; j++)
                 {
-                    for (int j = 0; j < 3; j++)
+                    if (GameManager.Battle.servantActionList[i] != null)
+                    {
+                        actionNameTextObjects[(i + 1) * 3 + j].color = Color.white;
+                    }
+                    else
                     {
                         // 준내 임시로 짬
                         // 같은 행동 두개 이상이 슬롯에 들어가있는 경우는 고려 안함
