@@ -27,7 +27,6 @@ namespace TwitchIRCGame
             // action chat
             if (IsPlayer(chatter.tags.userId))
             {
-                Debug.Log("Is player");
                 string[] message = chatter.message.Split(' ');
                 // command chat
                 if (message[0][0] == '!')
@@ -88,8 +87,8 @@ namespace TwitchIRCGame
             }
             else
             {
+                // 나중에 페이즈 별 join 잠금 기능 추가해야함
                 // 꽉 안찼으면 !join 가능
-                Debug.Log($"Current team {GameManager.Instance.servantIDs.Count}");
                 if (GameManager.Instance.servantIDs.Count < GameManager.Battle.MaxServantNum)
                 {
                     if (chatter.message.Length == 5)
@@ -100,7 +99,7 @@ namespace TwitchIRCGame
                         {
                             Debug.Log($"Servant {chatter.tags.displayName} summoned");
                             GameManager.Instance.CreateServant(chatter.tags.userId);
-                            GameManager.Battle.servants[GameManager.Instance.servantIDs.Count].Name = chatter.tags.displayName;
+                            GameManager.Battle.servants[GameManager.Instance.servantIDs.Count - 1].Name = chatter.tags.displayName;
                         }
                     }
 
