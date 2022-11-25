@@ -62,9 +62,9 @@ namespace TwitchIRCGame
                         string currentAction = GameManager.Battle.servants[i].Actions[j].ActionName;
 
                         if (selectedAction == currentAction)
-                            actionNameTextObjects[selectedActionIndex].color = Color.red;
+                            actionNameTextObjects[(i + 1) * 3 + j].color = Color.red;
                         else
-                            actionNameTextObjects[selectedActionIndex].color = Color.white;
+                            actionNameTextObjects[(i + 1) * 3 + j].color = Color.white;
                     }
                 }
             }
