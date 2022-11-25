@@ -92,7 +92,7 @@ namespace TwitchIRCGame
             //summoner.AddAction(new NonTypeAttackAll());
             summoner.AddAction(new TargetBuff());
             summoner.AddAction(new TargetHealing());
-            summoner.AddAction(new AllHealing());
+            summoner.AddAction(new NonTypeAttackAll());
 
             servants[0].AddAction(new TauntAction());
             servants[0].AddAction(new NonTypeAttack());
