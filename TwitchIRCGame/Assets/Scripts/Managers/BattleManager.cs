@@ -147,7 +147,7 @@ namespace TwitchIRCGame
             /// 적 행동 지정
             for (int i = 0; i < enemies.Count; i++)
             {
-                if (enemies[i].gameObject.activeSelf) continue;
+                if (!enemies[i].gameObject.activeSelf) continue;
                 
                 System.Random rand = new System.Random();
                 int randAct = rand.Next(enemies[i].Actions.Count); //0,1 중 하나 선택                
