@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static TwitchIRCGame.Define;
+using TMPro;
 
 namespace TwitchIRCGame
 {
@@ -41,6 +42,10 @@ namespace TwitchIRCGame
         public CharacterAction summonerAction;
         private CharacterAction[] servantActionList;
         private CharacterAction[] enemyActionList;
+
+        // 임시; 행동 이펙트/애니메이션 구현 후 삭제할 것
+        [SerializeField]
+        private TMP_Text actionLogObject;
         
         private void Awake()
         {
@@ -115,10 +120,23 @@ namespace TwitchIRCGame
         }
         
 
-        public void EndTurn()
+        public IEnumerator EndTurn()
         {
-            StartActions();
-            TestScenario();                     
+            // 전투 페이즈로 변경
+            CurrentPhase = BattlePhase.FightPhase;
+            for (int i = 0; i < enemies.Count; i++)
+                enemies[i].SetPositionTextDisplay(false);
+
+            yield return StartActions();
+            
+            if (CheckClear()) StageClear();
+            
+            // 선택 페이즈로 변경
+            CurrentPhase = BattlePhase.SummonerSelectPhase;
+            for (int i = 0; i < enemies.Count; i++)
+                enemies[i].SetPositionTextDisplay(true);
+            
+            TestScenario();
         }
 
 
@@ -126,8 +144,10 @@ namespace TwitchIRCGame
         {   
             // 소환사 행동 지정은 버튼으로 선택(UIManager)
             // 사역마 행동 지정, 행동을 선택하지 않은 경우 ActionList에 null
+            SelectAction<Servant>(servants, 0, 0);
             SelectAction<Servant>(servants, 0, 1, 0);
             SelectAction<Servant>(servants, 1, 1, 1);
+            SelectAction<Servant>(servants, 1, 0);
             SelectAction<Servant>(servants, 2, 2);
             
             /// 적 행동 지정
@@ -141,8 +161,7 @@ namespace TwitchIRCGame
                     randTarget = rand.Next(-1, servants.Count); // 소환사, 사역마 중 하나 선택
                 }
                 SelectAction<Enemy>(enemies, i, randAct, randTarget);
-            }          
-            
+            }
         }
 
         /// <summary>현재 턴에서 사용될 행동을 지정합니다.</summary>
@@ -233,7 +252,7 @@ namespace TwitchIRCGame
                     }   
                     else
                     {
-                        // 소환사 진
+                        // 소환사 진영
                         if (targetIndex == -1) target = summoner;
                         else target = servants[targetIndex];
                     }
@@ -249,21 +268,32 @@ namespace TwitchIRCGame
                     // 실제로 대상 지정
 
                     characters[characterIndex].SetSingleTarget(target);
-
+                }
+                else
+                {
+                    characters[characterIndex].ClearTarget();
                 }
             }
         } 
 
         /// <summary>지정한 행동들을 실행합니다.</summary>
-        private void StartActions()
+        private IEnumerator StartActions()
         {
-            // 전투 페이즈로 변경
-            CurrentPhase = BattlePhase.FightPhase;
-            for (int i = 0; i < enemies.Count; i++)
-                enemies[i].SetPositionTextDisplay(false);
-            
             if (summonerAction != null)
+            {
                 summonerAction.DoAction();
+                if (summonerAction.IsTargeted)
+                {
+                    actionLogObject.text =
+                        $"{summoner.Name} performed {summonerAction.ActionName} to {summoner.Targets[0].Name}";
+                }
+                else
+                {
+                    actionLogObject.text =
+                        $"{summoner.Name} performed {summonerAction.ActionName}";
+                }
+                yield return new WaitForSeconds(2);
+            }
             
             for (int order = 0; order < ORDER_MAX; order++)
             {
@@ -282,6 +312,17 @@ namespace TwitchIRCGame
                         else
                         {
                             servantActionList[i].DoAction();
+                            if (servantActionList[i].IsTargeted)
+                            {
+                                actionLogObject.text =
+                                    $"{servants[i].Name} performed {servantActionList[i].ActionName} to {servants[i].Targets[0].Name}";
+                            }
+                            else
+                            {
+                                actionLogObject.text =
+                                    $"{servants[i].Name} performed {servantActionList[i].ActionName}";
+                            }
+                            yield return new WaitForSeconds(2);
                         }
                     }
                 }
@@ -292,6 +333,18 @@ namespace TwitchIRCGame
                     if (enemyActionList[i].ActionOrder == order)
                     {
                         enemyActionList[i].DoAction();
+                        if (enemyActionList[i].IsTargeted)
+                        {
+                            actionLogObject.text =
+                                $"{enemies[i].Name} performed {enemyActionList[i].ActionName} to {enemies[i].Targets[0].Name}";
+                        }
+                        else
+                        {
+                            actionLogObject.text =
+                                $"{enemies[i].Name} performed {enemyActionList[i].ActionName}";
+                        }
+                                
+                        yield return new WaitForSeconds(2);
                     }
                 }
                 
@@ -309,13 +362,7 @@ namespace TwitchIRCGame
                 enemyActionList[i] = null;
                 enemies[i].ClearTarget();
             }
-
-            if (CheckClear()) StageClear();
-            
-            // 선택 페이즈로 변경
-            CurrentPhase = BattlePhase.SummonerSelectPhase;
-            for (int i = 0; i < enemies.Count; i++)
-                enemies[i].SetPositionTextDisplay(true);
+            actionLogObject.text = "";
         }
 
         private bool CheckClear()
