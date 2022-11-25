@@ -218,6 +218,14 @@ PrefabInstance:
       propertyPath: characterType
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4431378805498436406, guid: 0065992ebcf943c46b567fc7f715dbbc, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 076fdd8b20858f3489f1da9050d30433, type: 2}
+    - target: {fileID: 4431378805498436406, guid: 0065992ebcf943c46b567fc7f715dbbc, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 2718093954202697528, guid: 076fdd8b20858f3489f1da9050d30433, type: 2}
     - target: {fileID: 8010755354027664099, guid: 0065992ebcf943c46b567fc7f715dbbc, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -587,6 +595,14 @@ PrefabInstance:
       propertyPath: characterType
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 4431378805498436406, guid: 0065992ebcf943c46b567fc7f715dbbc, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 076fdd8b20858f3489f1da9050d30433, type: 2}
+    - target: {fileID: 4431378805498436406, guid: 0065992ebcf943c46b567fc7f715dbbc, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 2718093954202697528, guid: 076fdd8b20858f3489f1da9050d30433, type: 2}
     - target: {fileID: 8010755354027664099, guid: 0065992ebcf943c46b567fc7f715dbbc, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -848,6 +864,14 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 7266201006924984453, guid: 75069d97f26d5f14185cf00a4558dc3c, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 076fdd8b20858f3489f1da9050d30433, type: 2}
+    - target: {fileID: 7266201006924984453, guid: 75069d97f26d5f14185cf00a4558dc3c, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 2718093954202697528, guid: 076fdd8b20858f3489f1da9050d30433, type: 2}
     m_RemovedComponents:
     - {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: 75069d97f26d5f14185cf00a4558dc3c, type: 3}
@@ -975,6 +999,51 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentScene: 1
+--- !u!1 &1173959876
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1173959878}
+  - component: {fileID: 1173959877}
+  m_Layer: 0
+  m_Name: ChatCommandParser
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1173959877
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1173959876}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2669376fd38c0e74b9172cbb6923cabe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  twitchIRC: {fileID: 1338832836}
+--- !u!4 &1173959878
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1173959876}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.5452331, y: 0.2614791, z: -0.050708838}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1294982759
 GameObject:
   m_ObjectHideFlags: 0
@@ -1059,6 +1128,17 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1338832836 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3039776206827660459, guid: b1ba9e45c7a770f4f9b408f2a9b34c36, type: 3}
+  m_PrefabInstance: {fileID: 1731702032}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da6a2e7300291fe4e90ad1a4b47edb3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1498500556 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1421710110681207415, guid: 0065992ebcf943c46b567fc7f715dbbc, type: 3}
@@ -1175,6 +1255,14 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 7266201006924984453, guid: 75069d97f26d5f14185cf00a4558dc3c, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 076fdd8b20858f3489f1da9050d30433, type: 2}
+    - target: {fileID: 7266201006924984453, guid: 75069d97f26d5f14185cf00a4558dc3c, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 2718093954202697528, guid: 076fdd8b20858f3489f1da9050d30433, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 75069d97f26d5f14185cf00a4558dc3c, type: 3}
 --- !u!114 &1667904072 stripped
@@ -1388,6 +1476,14 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: TwitchIRCGame.BattleUI, Assembly-CSharp
       objectReference: {fileID: 0}
+    - target: {fileID: 4628945769885431530, guid: 134435056fa5b5f4a9bc2e982967ce5a, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 076fdd8b20858f3489f1da9050d30433, type: 2}
+    - target: {fileID: 4628945769885431530, guid: 134435056fa5b5f4a9bc2e982967ce5a, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 2718093954202697528, guid: 076fdd8b20858f3489f1da9050d30433, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 134435056fa5b5f4a9bc2e982967ce5a, type: 3}
 --- !u!114 &702223658418260395 stripped
@@ -1492,6 +1588,18 @@ PrefabInstance:
       propertyPath: characterType
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4431378805498436406, guid: 0065992ebcf943c46b567fc7f715dbbc, type: 3}
+      propertyPath: m_text
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4431378805498436406, guid: 0065992ebcf943c46b567fc7f715dbbc, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 076fdd8b20858f3489f1da9050d30433, type: 2}
+    - target: {fileID: 4431378805498436406, guid: 0065992ebcf943c46b567fc7f715dbbc, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 2718093954202697528, guid: 076fdd8b20858f3489f1da9050d30433, type: 2}
     - target: {fileID: 8010755354027664099, guid: 0065992ebcf943c46b567fc7f715dbbc, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -1624,6 +1732,14 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1145988222}
+    - target: {fileID: 7266201006924984453, guid: 75069d97f26d5f14185cf00a4558dc3c, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 076fdd8b20858f3489f1da9050d30433, type: 2}
+    - target: {fileID: 7266201006924984453, guid: 75069d97f26d5f14185cf00a4558dc3c, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 2718093954202697528, guid: 076fdd8b20858f3489f1da9050d30433, type: 2}
     m_RemovedComponents:
     - {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: 75069d97f26d5f14185cf00a4558dc3c, type: 3}

@@ -7,7 +7,12 @@ namespace TwitchIRCGame
     public class Servant : Character
     {
         protected string chatterID;
-        public string ChatterID => chatterID;
+        // 프로퍼티
+        public string ChatterID
+        {
+            get => chatterID; 
+            set => chatterID = value; 
+        }
         
         protected override void Awake()
         {
