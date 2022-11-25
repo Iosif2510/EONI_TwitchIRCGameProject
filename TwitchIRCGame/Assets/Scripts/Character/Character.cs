@@ -73,8 +73,12 @@ namespace TwitchIRCGame
         protected TMP_Text levelTextObject;
         [SerializeField]
         protected TMP_Text targetTextObject;
-
-        public string Name => characterName;
+        // [용] setter 추가
+        public string Name
+        {
+            get => characterName;
+            set => characterName = value;
+        }
         public int Health => health;
         /// <summary>팀 진영 내에서의 위치를 의미합니다.</summary>
         public int Place => place;

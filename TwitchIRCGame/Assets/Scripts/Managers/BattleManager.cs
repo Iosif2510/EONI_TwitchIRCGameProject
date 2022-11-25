@@ -144,11 +144,6 @@ namespace TwitchIRCGame
         {   
             // 소환사 행동 지정은 버튼으로 선택(UIManager)
             // 사역마 행동 지정, 행동을 선택하지 않은 경우 ActionList에 null
-            SelectAction<Servant>(servants, 0, 0);
-            SelectAction<Servant>(servants, 0, 1, 0);
-            SelectAction<Servant>(servants, 1, 1, 1);
-            SelectAction<Servant>(servants, 1, 0);
-            SelectAction<Servant>(servants, 2, 2);
             
             /// 적 행동 지정
             for (int i = 0; i < enemies.Count; i++)
@@ -169,7 +164,8 @@ namespace TwitchIRCGame
         /// <param name="characterIndex">캐릭터 리스트에서 해당 캐릭터의 인덱스</param>
         /// <param name="actionIndex">행동 슬롯에서 해당 행동의 인덱스</param>
         /// <param name="targetIndex">대상 캐릭터의 인덱스 (-1이면 사역마를 의미)</param>
-        private void SelectAction<T>(List<T> characters, int characterIndex, int actionIndex, int targetIndex = 0)
+        // 파서 연동 위해 public으로 바꿈 (용)
+        public void SelectAction<T>(List<T> characters, int characterIndex, int actionIndex, int targetIndex = 0)
         where T : Character
         {
             if (characterIndex < 0)
