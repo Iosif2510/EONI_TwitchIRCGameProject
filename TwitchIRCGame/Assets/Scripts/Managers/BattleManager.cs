@@ -10,8 +10,7 @@ namespace TwitchIRCGame
     {
         public enum BattlePhase
         {
-            SummonerSelectPhase,
-            WaitServantSelectPhase,
+            SelectPhase,
             FightPhase,
             CheckPhase,
             BattleFinish
@@ -82,7 +81,7 @@ namespace TwitchIRCGame
         private void Start()
         {
             // 선택 페이즈로 변경
-            CurrentPhase = BattlePhase.SummonerSelectPhase;
+            CurrentPhase = BattlePhase.SelectPhase;
             for (int i = 0; i < enemies.Count; i++)
                 enemies[i].SetPositionTextDisplay(true);
 
@@ -132,7 +131,7 @@ namespace TwitchIRCGame
             if (CheckClear()) StageClear();
             
             // 선택 페이즈로 변경
-            CurrentPhase = BattlePhase.SummonerSelectPhase;
+            CurrentPhase = BattlePhase.SelectPhase;
             for (int i = 0; i < enemies.Count; i++)
                 enemies[i].SetPositionTextDisplay(true);
             
@@ -148,6 +147,8 @@ namespace TwitchIRCGame
             /// 적 행동 지정
             for (int i = 0; i < enemies.Count; i++)
             {
+                if (enemies[i].gameObject.activeSelf) continue;
+                
                 System.Random rand = new System.Random();
                 int randAct = rand.Next(enemies[i].Actions.Count); //0,1 중 하나 선택                
                 int randTarget = 0; // 1. 대상공격인 경우 대상을 랜덤으로 선택, 2. 공격이 아닌 경우 대상 없음
@@ -168,6 +169,10 @@ namespace TwitchIRCGame
         public void SelectAction<T>(List<T> characters, int characterIndex, int actionIndex, int targetIndex = 0)
         where T : Character
         {
+            // 선택 페이즈에만 활성화
+            if (CurrentPhase != BattlePhase.SelectPhase)
+                return;
+            
             if (characterIndex < 0)
                 throw new System.Exception($"Invalid character index: {characterIndex}");
             if (actionIndex < 0)
