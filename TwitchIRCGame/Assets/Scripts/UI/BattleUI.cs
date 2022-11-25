@@ -54,7 +54,7 @@ namespace TwitchIRCGame
 
                 for (int j = 0; j < 3; j++)
                 {
-                    if (GameManager.Battle.servantActionList[i] != null)
+                    if (GameManager.Battle.servantActionList[i] == null)
                     {
                         actionNameTextObjects[(i + 1) * 3 + j].color = Color.white;
                     }
