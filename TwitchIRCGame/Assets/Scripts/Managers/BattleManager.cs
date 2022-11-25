@@ -40,7 +40,7 @@ namespace TwitchIRCGame
         public List<Enemy> enemies;
 
         public CharacterAction summonerAction;
-        private CharacterAction[] servantActionList;
+        public CharacterAction[] servantActionList;
         private CharacterAction[] enemyActionList;
 
         // 임시; 행동 이펙트/애니메이션 구현 후 삭제할 것

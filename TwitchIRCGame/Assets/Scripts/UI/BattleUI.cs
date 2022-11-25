@@ -51,6 +51,22 @@ namespace TwitchIRCGame
             for (int i = 0; i < GameManager.Battle.servants.Count; i++)
             {
                 characterNameTextObjects[i + 1].text = GameManager.Battle.servants[i].Name;
+
+                if (GameManager.Battle.servantActionList[i] != null)
+                {
+                    for (int j = 0; j < 3; j++)
+                    {
+                        // 준내 임시로 짬
+                        // 같은 행동 두개 이상이 슬롯에 들어가있는 경우는 고려 안함
+                        string selectedAction = GameManager.Battle.servantActionList[i].ActionName;
+                        string currentAction = GameManager.Battle.servants[i].Actions[j].ActionName;
+
+                        if (selectedAction == currentAction)
+                            actionNameTextObjects[selectedActionIndex].color = Color.red;
+                        else
+                            actionNameTextObjects[selectedActionIndex].color = Color.white;
+                    }
+                }
             }
         }
 
