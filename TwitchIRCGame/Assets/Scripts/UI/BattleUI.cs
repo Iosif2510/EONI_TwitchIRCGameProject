@@ -77,7 +77,7 @@ namespace TwitchIRCGame
         private void ToggleSummonerAction(int actionIndex)
         {
             // 선택 페이즈에만 활성화
-            if (GameManager.Battle.CurrentPhase != BattlePhase.SelectPhase)
+            if (GameManager.Battle.CurrentPhase != BattleManager.BattlePhase.SelectPhase)
                 return;
             
             if (GameManager.Battle.summoner.Actions.Count < actionIndex)
@@ -114,7 +114,7 @@ namespace TwitchIRCGame
         private void SetSummonerTarget(int targetIndex)
         {
             // 선택 페이즈에만 활성화
-            if (GameManager.Battle.CurrentPhase != BattlePhase.SelectPhase)
+            if (GameManager.Battle.CurrentPhase != BattleManager.BattlePhase.SelectPhase)
                 return;
             
             if (selectedActionIndex == NOT_SELECTED)
@@ -164,7 +164,7 @@ namespace TwitchIRCGame
         private void EndTurn()
         {
             // 선택 페이즈에만 활성화
-            if (GameManager.Battle.CurrentPhase != BattlePhase.SelectPhase)
+            if (GameManager.Battle.CurrentPhase != BattleManager.BattlePhase.SelectPhase)
                 return;
             
             bool isActionSelected = selectedActionIndex != NOT_SELECTED;
