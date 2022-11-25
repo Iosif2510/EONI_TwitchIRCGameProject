@@ -48,7 +48,10 @@ namespace TwitchIRCGame
         // Update is called once per frame
         void Update()
         {
-
+            for (int i = 0; i < GameManager.Battle.servants.Count; i++)
+            {
+                characterNameTextObjects[i + 1].text = GameManager.Battle.servants[i].Name;
+            }
         }
 
         private void ToggleSummonerAction(int actionIndex)
