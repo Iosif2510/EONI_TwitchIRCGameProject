@@ -135,11 +135,13 @@ MonoBehaviour:
   level: 1
   characterType: 3
   maxHealth: 100
+  Guardpoint: 0
   basicDamage: 10
   basicCritPercentage: 0.02
   basicCritDamageScale: 2
   place: 0
   healthBar: {fileID: 7741355574148578172}
+  nameTextObject: {fileID: 3067082662019038830}
   levelTextObject: {fileID: 4667345879402831286}
   targetTextObject: {fileID: 4628945769885431530}
 --- !u!1 &8044851330340900324
@@ -407,6 +409,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 4716836671028229669, guid: 264bc240c12ab51458f08f294f00ddb8, type: 3}
   m_PrefabInstance: {fileID: 6361716727403478657}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &3067082662019038830 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8275695020073025775, guid: 264bc240c12ab51458f08f294f00ddb8, type: 3}
+  m_PrefabInstance: {fileID: 6361716727403478657}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &4628945769885431530 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1762044415496030315, guid: 264bc240c12ab51458f08f294f00ddb8, type: 3}

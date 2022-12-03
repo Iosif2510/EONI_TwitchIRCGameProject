@@ -70,6 +70,8 @@ namespace TwitchIRCGame
         }
         
         [SerializeField]
+        protected TMP_Text nameTextObject;
+        [SerializeField]
         protected TMP_Text levelTextObject;
         [SerializeField]
         protected TMP_Text targetTextObject;
@@ -77,8 +79,13 @@ namespace TwitchIRCGame
         public string Name
         {
             get => characterName;
-            set => characterName = value;
+            set
+            {
+                characterName = value;
+                nameTextObject.text = $"{Name}";
+            }
         }
+
         public int Health => health;
         /// <summary>팀 진영 내에서의 위치를 의미합니다.</summary>
         public int Place => place;
@@ -106,11 +113,12 @@ namespace TwitchIRCGame
             level = 1;
             isGroggy = false;
             targets = new List<Character>(Mathf.Max(GameManager.Battle.MaxEnemyNum, GameManager.Battle.MaxServantNum + 1));
+            nameTextObject.text = $"{Name}";
             levelTextObject.text = $"Level: {level}";
             targetTextObject.text = TARGET_NONE;
         }
 
-        private void Start()
+        private void Update()
         {
         }
         
@@ -163,7 +171,7 @@ namespace TwitchIRCGame
         {
             this.targets.Add(target);
             if (this.targets.Count == 1)
-                targetTextObject.text = this.targets[0].Name;
+                targetTextObject.text = $"Target: {this.targets[0].Name}";
             else
                 targetTextObject.text = TARGET_MULTIPLE;
         }
